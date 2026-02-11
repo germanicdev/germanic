@@ -1,7 +1,7 @@
 {
-  "name": "Max Mustermann",
+  "name": "Thomas Waldberg",
   "bezeichnung": "Heilpraktiker",
-  "praxisname": "Heilpraxis Mustermann",
+  "praxisname": "Heilpraxis Waldberg",
   "adresse": {
     "strasse": "Testweg",
     "hausnummer": "7",
@@ -10,8 +10,8 @@
     "land": "DE"
   },
   "telefon": "+49 987 1234567",
-  "email": "kontakt@heilpraxis-mustermann.example",
-  "website": "https://heilpraxis-mustermann.example",
+  "email": "kontakt@heilpraxis-waldberg.example",
+  "website": "https://heilpraxis-waldberg.example",
   "schwerpunkte": [
     "Biologische Zahnmedizin",
     "Keramikimplantate",
@@ -27,7 +27,7 @@
     "Master of Science Biologische Zahnmedizin",
     "Umweltzahnmedizinerin"
   ],
-  "terminbuchung_url": "https://doctolib.example/heilpraxis-mustermann",
+  "terminbuchung_url": "https://doctolib.example/heilpraxis-waldberg",
   "oeffnungszeiten": "Mo-Fr 8-18 Uhr",
   "privatpatienten": true,
   "kassenpatienten": true,

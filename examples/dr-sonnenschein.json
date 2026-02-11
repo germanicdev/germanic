@@ -1,7 +1,7 @@
 {
-  "name": "Dr. Anna Schmidt",
+  "name": "Dr. Maria Sonnenschein",
   "bezeichnung": "Zahnärztin",
-  "praxisname": "Praxis Schmidt",
+  "praxisname": "Praxis Sonnenschein",
   "adresse": {
     "strasse": "Musterstraße",
     "hausnummer": "42",
@@ -10,8 +10,8 @@
     "land": "DE"
   },
   "telefon": "+49 123 9876543",
-  "email": "info@praxis-schmidt.example",
-  "website": "https://praxis-schmidt.example",
+  "email": "info@praxis-sonnenschein.example",
+  "website": "https://praxis-sonnenschein.example",
   "schwerpunkte": [
     "Zahnerhaltung",
     "Prophylaxe",
@@ -30,7 +30,7 @@
     "Physiotherapeutin",
     "Regulationstherapeutin IGAF"
   ],
-  "terminbuchung_url": "https://praxis-schmidt.example/termin",
+  "terminbuchung_url": "https://praxis-sonnenschein.example/termin",
   "oeffnungszeiten": "Nach Vereinbarung",
   "privatpatienten": true,
   "kassenpatienten": false,

@@ -18,7 +18,7 @@ cargo build
 # 4. Praxis kompilieren (nach Macro-Implementierung)
 ./target/release/germanic compile \
     --schema praxis \
-    --input beispiele/dr-schmidt.json
+    --input examples/dr-sonnenschein.json
 ```
 
 ## Struktur
@@ -52,9 +52,9 @@ germanic/
 │   ├── common/meta.fbs        # GermanicMeta, Signatur, Hinweis
 │   └── de/praxis.fbs          # Praxis, Adresse
 │
-└── beispiele/
-    ├── dr-schmidt.json              # Test-Daten (fictional)
-    └── heilpraxis-mustermann.json   # Test-Daten (fictional)
+└── examples/
+    ├── dr-sonnenschein.json         # Test-Daten (fictional)
+    └── heilpraxis-waldberg.json     # Test-Daten (fictional)
 ```
 
 ## FlatBuffers Namespace-Bug (#5275)
