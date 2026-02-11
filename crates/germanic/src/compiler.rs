@@ -76,8 +76,8 @@ where
     schema.validiere().map_err(GermanicError::Validation)?;
 
     // 2. Erstelle Header
-    let header = GrmHeader::neu(schema.schema_id());
-    let header_bytes = header.zu_bytes();
+    let header = GrmHeader::new(schema.schema_id());
+    let header_bytes = header.to_bytes();
 
     // 3. Serialisiere Schema zu FlatBuffer
     let payload_bytes = schema.zu_bytes();

@@ -1,209 +1,212 @@
-//! # .grm Format-Definitionen
+//! # .grm Format Definitions
 //!
-//! Definiert das binäre .grm Format für GERMANIC-Schemas.
+//! Defines the binary .grm format for GERMANIC schemas.
 //!
-//! ## Format-Spezifikation
+//! ## Format Specification
 //!
 //! ```text
 //! ┌─────────────────────────────────────────────────────────────────────────────┐
-//! │                        .grm DATEIFORMAT                                     │
+//! │                        .grm FILE FORMAT                                     │
 //! ├─────────────────────────────────────────────────────────────────────────────┤
 //! │                                                                             │
-//! │   Offset │ Größe │ Inhalt                                                   │
+//! │   Offset │ Size  │ Content                                                  │
 //! │   ───────┼───────┼────────────────────────────────────────                  │
-//! │   0x00   │ 3     │ Magic: "GRM" (0x47 0x52 0x4D)                             │
-//! │   0x03   │ 1     │ Version (aktuell: 0x01)                                   │
-//! │   0x04   │ 2     │ Schema-ID Länge (little-endian u16)                       │
-//! │   0x06   │ n     │ Schema-ID (UTF-8, z.B. "de.gesundheit.praxis.v1")         │
-//! │   0x06+n │ 64    │ Ed25519 Signatur (optional, 0x00 wenn nicht signiert)     │
-//! │   ...    │ ...   │ FlatBuffer Payload                                        │
+//! │   0x00   │ 3     │ Magic: "GRM" (0x47 0x52 0x4D)                            │
+//! │   0x03   │ 1     │ Version (current: 0x01)                                  │
+//! │   0x04   │ 2     │ Schema-ID length (little-endian u16)                     │
+//! │   0x06   │ n     │ Schema-ID (UTF-8, e.g. "de.gesundheit.praxis.v1")        │
+//! │   0x06+n │ 64    │ Ed25519 signature (optional, 0x00 if unsigned)           │
+//! │   ...    │ ...   │ FlatBuffer Payload                                       │
 //! │                                                                             │
-//! │   BEISPIEL (praxis.grm):                                                    │
-//! │   47 52 4D 01              → "GRM" + Version 1                               │
-//! │   19 00                    → Schema-ID Länge: 25 Bytes                       │
-//! │   64 65 2E 67 65 ...       → "de.gesundheit.praxis.v1"                       │
-//! │   00 00 00 ... (64 Bytes)  → Keine Signatur                                  │
-//! │   <flatbuffer bytes>       → Eigentliche Daten                               │
+//! │   EXAMPLE (praxis.grm):                                                     │
+//! │   47 52 4D 01              → "GRM" + Version 1                              │
+//! │   19 00                    → Schema-ID length: 25 bytes                     │
+//! │   64 65 2E 67 65 ...       → "de.gesundheit.praxis.v1"                      │
+//! │   00 00 00 ... (64 bytes)  → No signature                                   │
+//! │   <flatbuffer bytes>       → Actual data                                    │
 //! │                                                                             │
 //! └─────────────────────────────────────────────────────────────────────────────┘
 //! ```
 //!
-//! ## Architektonische Entscheidungen
+//! ## Architectural Decisions
 //!
-//! 1. **Magic Bytes**: Ermöglichen schnelle Identifikation ohne Parsing
-//! 2. **Schema-ID im Header**: KI-Systeme können das Schema identifizieren
-//! 3. **Optionale Signatur**: Für vertrauenswürdige Quellen
-//! 4. **FlatBuffer Payload**: Zero-Copy Deserialisierung
+//! 1. **Magic Bytes**: Enable fast identification without parsing
+//! 2. **Schema-ID in header**: AI systems can identify the schema
+//! 3. **Optional signature**: For trusted sources
+//! 4. **FlatBuffer payload**: Zero-copy deserialization
 
-/// Magische Bytes am Anfang jeder .grm Datei.
+/// Magic bytes at the beginning of every .grm file.
 ///
-/// - Bytes 0-2: "GRM" als ASCII
-/// - Byte 3: Formatversion (aktuell: 0x01)
+/// - Bytes 0-2: "GRM" as ASCII
+/// - Byte 3: Format version (current: 0x01)
 pub const GRM_MAGIC: [u8; 4] = [0x47, 0x52, 0x4D, 0x01]; // "GRM" + Version 1
 
-/// Aktuelle .grm Format-Version.
+/// Current .grm format version.
 pub const GRM_VERSION: u8 = 0x01;
 
-/// Größe der Ed25519-Signatur in Bytes.
-pub const SIGNATUR_GROESSE: usize = 64;
+/// Size of the Ed25519 signature in bytes.
+pub const SIGNATURE_SIZE: usize = 64;
 
-/// Header-Struktur für .grm Dateien.
+/// Header structure for .grm files.
 ///
-/// ## Verwendung
+/// ## Usage
 ///
 /// ```rust,ignore
 /// let header = GrmHeader {
 ///     schema_id: "de.gesundheit.praxis.v1".to_string(),
-///     signatur: None,
+///     signature: None,
 /// };
 ///
-/// let bytes = header.zu_bytes();
+/// let bytes = header.to_bytes();
 /// ```
 #[derive(Debug, Clone)]
 pub struct GrmHeader {
-    /// Eindeutige Schema-ID.
+    /// Unique schema ID.
     ///
     /// Format: `"{namespace}.{domain}.{name}.v{version}"`
-    /// Beispiel: `"de.gesundheit.praxis.v1"`
+    /// Example: `"de.gesundheit.praxis.v1"`
     pub schema_id: String,
 
-    /// Optionale Ed25519-Signatur.
+    /// Optional Ed25519 signature.
     ///
-    /// Wenn vorhanden: 64 Bytes
-    /// Wenn nicht: None (wird als 64 Null-Bytes geschrieben)
-    pub signatur: Option<[u8; SIGNATUR_GROESSE]>,
+    /// If present: 64 bytes
+    /// If not: None (written as 64 null bytes)
+    pub signature: Option<[u8; SIGNATURE_SIZE]>,
 }
 
 impl GrmHeader {
-    /// Erstellt einen neuen Header ohne Signatur.
-    pub fn neu(schema_id: impl Into<String>) -> Self {
+    /// Creates a new header without signature.
+    pub fn new(schema_id: impl Into<String>) -> Self {
         Self {
             schema_id: schema_id.into(),
-            signatur: None,
+            signature: None,
         }
     }
 
-    /// Erstellt einen neuen Header mit Signatur.
-    pub fn signiert(schema_id: impl Into<String>, signatur: [u8; SIGNATUR_GROESSE]) -> Self {
+    /// Creates a new header with signature.
+    pub fn signed(schema_id: impl Into<String>, signature: [u8; SIGNATURE_SIZE]) -> Self {
         Self {
             schema_id: schema_id.into(),
-            signatur: Some(signatur),
+            signature: Some(signature),
         }
     }
 
-    /// Serialisiert den Header in Bytes.
+    /// Serializes the header to bytes.
     ///
     /// ## Format
     ///
     /// ```text
-    /// [Magic 4B][Schema-ID Länge 2B][Schema-ID nB][Signatur 64B]
+    /// [Magic 4B][Schema-ID length 2B][Schema-ID nB][Signature 64B]
     /// ```
-    pub fn zu_bytes(&self) -> Vec<u8> {
+    pub fn to_bytes(&self) -> Vec<u8> {
         let schema_bytes = self.schema_id.as_bytes();
         let schema_len = schema_bytes.len() as u16;
 
-        // Kapazität: 4 (Magic) + 2 (Länge) + n (Schema) + 64 (Signatur)
-        let kapazitaet = 4 + 2 + schema_bytes.len() + SIGNATUR_GROESSE;
-        let mut bytes = Vec::with_capacity(kapazitaet);
+        // Capacity: 4 (Magic) + 2 (Length) + n (Schema) + 64 (Signature)
+        let capacity = 4 + 2 + schema_bytes.len() + SIGNATURE_SIZE;
+        let mut bytes = Vec::with_capacity(capacity);
 
-        // 1. Magic Bytes
+        // 1. Magic bytes
         bytes.extend_from_slice(&GRM_MAGIC);
 
-        // 2. Schema-ID Länge (little-endian u16)
+        // 2. Schema-ID length (little-endian u16)
         bytes.extend_from_slice(&schema_len.to_le_bytes());
 
         // 3. Schema-ID
         bytes.extend_from_slice(schema_bytes);
 
-        // 4. Signatur (64 Bytes, oder Nullen)
-        match &self.signatur {
+        // 4. Signature (64 bytes, or zeros)
+        match &self.signature {
             Some(sig) => bytes.extend_from_slice(sig),
-            None => bytes.extend_from_slice(&[0u8; SIGNATUR_GROESSE]),
+            None => bytes.extend_from_slice(&[0u8; SIGNATURE_SIZE]),
         }
 
         bytes
     }
 
-    /// Parst einen Header aus Bytes.
+    /// Parses a header from bytes.
     ///
-    /// # Fehler
+    /// # Errors
     ///
-    /// - Zu wenige Bytes
-    /// - Falsche Magic Bytes
-    /// - Ungültige UTF-8 Schema-ID
-    pub fn von_bytes(daten: &[u8]) -> Result<(Self, usize), HeaderParseFehler> {
-        // Mindestgröße: 4 (Magic) + 2 (Länge) + 64 (Signatur)
-        const MIN_GROESSE: usize = 4 + 2 + SIGNATUR_GROESSE;
+    /// - Too few bytes
+    /// - Invalid magic bytes
+    /// - Invalid UTF-8 schema ID
+    pub fn from_bytes(data: &[u8]) -> Result<(Self, usize), HeaderParseError> {
+        // Minimum size: 4 (Magic) + 2 (Length) + 64 (Signature)
+        const MIN_SIZE: usize = 4 + 2 + SIGNATURE_SIZE;
 
-        if daten.len() < MIN_GROESSE {
-            return Err(HeaderParseFehler::ZuWenigDaten {
-                erwartet: MIN_GROESSE,
-                erhalten: daten.len(),
+        if data.len() < MIN_SIZE {
+            return Err(HeaderParseError::InsufficientData {
+                expected: MIN_SIZE,
+                received: data.len(),
             });
         }
 
-        // 1. Magic prüfen
-        if &daten[0..4] != &GRM_MAGIC {
-            return Err(HeaderParseFehler::FalscheMagicBytes {
-                erhalten: [daten[0], daten[1], daten[2], daten[3]],
+        // 1. Check magic bytes
+        if &data[0..4] != &GRM_MAGIC {
+            return Err(HeaderParseError::InvalidMagicBytes {
+                received: [data[0], data[1], data[2], data[3]],
             });
         }
 
-        // 2. Schema-ID Länge lesen
-        let schema_len = u16::from_le_bytes([daten[4], daten[5]]) as usize;
+        // 2. Read schema-ID length
+        let schema_len = u16::from_le_bytes([data[4], data[5]]) as usize;
 
-        // 3. Prüfen ob genug Daten für Schema-ID
-        let total_header_len = 4 + 2 + schema_len + SIGNATUR_GROESSE;
-        if daten.len() < total_header_len {
-            return Err(HeaderParseFehler::ZuWenigDaten {
-                erwartet: total_header_len,
-                erhalten: daten.len(),
+        // 3. Check if enough data for schema-ID
+        let total_header_len = 4 + 2 + schema_len + SIGNATURE_SIZE;
+        if data.len() < total_header_len {
+            return Err(HeaderParseError::InsufficientData {
+                expected: total_header_len,
+                received: data.len(),
             });
         }
 
-        // 4. Schema-ID parsen
+        // 4. Parse schema-ID
         let schema_start = 6;
         let schema_end = schema_start + schema_len;
-        let schema_id = std::str::from_utf8(&daten[schema_start..schema_end])
-            .map_err(|_| HeaderParseFehler::UngueltigeSchemaId)?
+        let schema_id = std::str::from_utf8(&data[schema_start..schema_end])
+            .map_err(|_| HeaderParseError::InvalidSchemaId)?
             .to_string();
 
-        // 5. Signatur lesen
+        // 5. Read signature
         let sig_start = schema_end;
-        let sig_end = sig_start + SIGNATUR_GROESSE;
-        let sig_bytes: [u8; SIGNATUR_GROESSE] = daten[sig_start..sig_end]
+        let sig_end = sig_start + SIGNATURE_SIZE;
+        let sig_bytes: [u8; SIGNATURE_SIZE] = data[sig_start..sig_end]
             .try_into()
-            .expect("Signatur-Slice hat falsche Länge");
+            .expect("Signature slice has wrong length");
 
-        // Prüfen ob Signatur alle Nullen ist
-        let signatur = if sig_bytes.iter().all(|&b| b == 0) {
+        // Check if signature is all zeros
+        let signature = if sig_bytes.iter().all(|&b| b == 0) {
             None
         } else {
             Some(sig_bytes)
         };
 
-        let header = GrmHeader { schema_id, signatur };
+        let header = GrmHeader {
+            schema_id,
+            signature,
+        };
 
         Ok((header, total_header_len))
     }
 
-    /// Berechnet die Header-Größe in Bytes.
-    pub fn groesse(&self) -> usize {
-        4 + 2 + self.schema_id.len() + SIGNATUR_GROESSE
+    /// Calculates the header size in bytes.
+    pub fn size(&self) -> usize {
+        4 + 2 + self.schema_id.len() + SIGNATURE_SIZE
     }
 }
 
-/// Fehler beim Parsen eines .grm Headers.
+/// Error when parsing a .grm header.
 #[derive(Debug, Clone, thiserror::Error)]
-pub enum HeaderParseFehler {
-    #[error("Zu wenige Daten: erwartet {erwartet}, erhalten {erhalten}")]
-    ZuWenigDaten { erwartet: usize, erhalten: usize },
+pub enum HeaderParseError {
+    #[error("Insufficient data: expected {expected}, received {received}")]
+    InsufficientData { expected: usize, received: usize },
 
-    #[error("Falsche Magic Bytes: erhalten {:02X?}", erhalten)]
-    FalscheMagicBytes { erhalten: [u8; 4] },
+    #[error("Invalid magic bytes: received {:02X?}", received)]
+    InvalidMagicBytes { received: [u8; 4] },
 
-    #[error("Ungültige Schema-ID (kein gültiges UTF-8)")]
-    UngueltigeSchemaId,
+    #[error("Invalid schema ID (not valid UTF-8)")]
+    InvalidSchemaId,
 }
 
 // ============================================================================
@@ -222,33 +225,33 @@ mod tests {
 
     #[test]
     fn test_header_roundtrip() {
-        let original = GrmHeader::neu("de.gesundheit.praxis.v1");
-        let bytes = original.zu_bytes();
-        let (geparst, laenge) = GrmHeader::von_bytes(&bytes).unwrap();
+        let original = GrmHeader::new("de.gesundheit.praxis.v1");
+        let bytes = original.to_bytes();
+        let (parsed, length) = GrmHeader::from_bytes(&bytes).unwrap();
 
-        assert_eq!(geparst.schema_id, original.schema_id);
-        assert_eq!(geparst.signatur, None);
-        assert_eq!(laenge, bytes.len());
+        assert_eq!(parsed.schema_id, original.schema_id);
+        assert_eq!(parsed.signature, None);
+        assert_eq!(length, bytes.len());
     }
 
     #[test]
-    fn test_header_mit_signatur() {
-        let signatur = [0xAB; SIGNATUR_GROESSE];
-        let original = GrmHeader::signiert("test.v1", signatur);
-        let bytes = original.zu_bytes();
-        let (geparst, _) = GrmHeader::von_bytes(&bytes).unwrap();
+    fn test_header_with_signature() {
+        let signature = [0xAB; SIGNATURE_SIZE];
+        let original = GrmHeader::signed("test.v1", signature);
+        let bytes = original.to_bytes();
+        let (parsed, _) = GrmHeader::from_bytes(&bytes).unwrap();
 
-        assert_eq!(geparst.signatur, Some(signatur));
+        assert_eq!(parsed.signature, Some(signature));
     }
 
     #[test]
-    fn test_falsche_magic_bytes() {
-        let daten = [0x00; 100];
-        let ergebnis = GrmHeader::von_bytes(&daten);
+    fn test_invalid_magic_bytes() {
+        let data = [0x00; 100];
+        let result = GrmHeader::from_bytes(&data);
 
         assert!(matches!(
-            ergebnis,
-            Err(HeaderParseFehler::FalscheMagicBytes { .. })
+            result,
+            Err(HeaderParseError::InvalidMagicBytes { .. })
         ));
     }
 }

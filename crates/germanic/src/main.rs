@@ -237,13 +237,13 @@ fn cmd_inspect(datei: &PathBuf, hex: bool) -> Result<()> {
     println!("│");
 
     // Header parsen
-    match GrmHeader::von_bytes(&daten) {
+    match GrmHeader::from_bytes(&daten) {
         Ok((header, header_len)) => {
             println!("│ Header:");
             println!("│   Schema-ID: {}", header.schema_id);
             println!(
                 "│   Signiert:  {}",
-                if header.signatur.is_some() {
+                if header.signature.is_some() {
                     "Ja"
                 } else {
                     "Nein"

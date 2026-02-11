@@ -82,7 +82,7 @@ pub fn validiere_grm(daten: &[u8]) -> GermanicResult<GrmValidierung> {
     }
 
     // 3. Header parsen
-    match GrmHeader::von_bytes(daten) {
+    match GrmHeader::from_bytes(daten) {
         Ok((header, _laenge)) => Ok(GrmValidierung {
             gueltig: true,
             schema_id: Some(header.schema_id),
@@ -167,8 +167,8 @@ mod tests {
 
     #[test]
     fn test_validiere_grm_gueltig() {
-        let header = GrmHeader::neu("test.v1");
-        let bytes = header.zu_bytes();
+        let header = GrmHeader::new("test.v1");
+        let bytes = header.to_bytes();
         let ergebnis = validiere_grm(&bytes).unwrap();
 
         assert!(ergebnis.gueltig);
