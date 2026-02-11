@@ -106,7 +106,7 @@ fn main() -> Result<()> {
 
 /// Kompiliert JSON zu .grm
 fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Path>) -> Result<()> {
-    use germanic::compiler::{SchemaTyp, kompiliere_json};
+    use germanic::compiler::{SchemaType, compile_json};
     use germanic::schemas::PraxisSchema;
 
     println!("┌─────────────────────────────────────────");
@@ -116,7 +116,7 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
     println!("│ Input:  {}", input.display());
 
     // 1. Schema-Typ validieren
-    let schema_typ = SchemaTyp::von_str(schema_name).ok_or_else(|| {
+    let schema_typ = SchemaType::from_str(schema_name).ok_or_else(|| {
         anyhow::anyhow!(
             "Unbekanntes Schema: '{}'\n\
              Verfügbare Schemas: praxis",
@@ -129,8 +129,8 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
 
     // 3. Schema-spezifisch kompilieren
     let grm_bytes = match schema_typ {
-        SchemaTyp::Praxis => {
-            kompiliere_json::<PraxisSchema>(&json).context("Kompilierung fehlgeschlagen")?
+        SchemaType::Practice => {
+            compile_json::<PraxisSchema>(&json).context("Kompilierung fehlgeschlagen")?
         }
     };
 

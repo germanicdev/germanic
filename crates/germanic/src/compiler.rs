@@ -1,30 +1,30 @@
 //! # JSON → .grm Compiler
 //!
-//! Kompiliert JSON-Daten in das binäre .grm Format.
+//! Compiles JSON data into the binary .grm format.
 //!
-//! ## Architektur
+//! ## Architecture
 //!
 //! ```text
 //! ┌─────────────────────────────────────────────────────────────────────────────┐
-//! │                    KOMPILIERUNGS-PIPELINE                                   │
+//! │                    COMPILATION PIPELINE                                     │
 //! ├─────────────────────────────────────────────────────────────────────────────┤
 //! │                                                                             │
-//! │   INPUT                         VERARBEITUNG                    OUTPUT      │
+//! │   INPUT                         PROCESSING                      OUTPUT      │
 //! │   ┌─────────┐                   ┌─────────────┐                ┌─────────┐  │
 //! │   │ praxis  │                   │             │                │         │  │
-//! │   │  .json  │ ──→ Parse ──→     │ PraxisSchema│ ──→ Serialize  │ .grm    │  │
+//! │   │  .json  │ ──→ Parse ──→     │ PracticeSchema ──→ Serialize │ .grm    │  │
 //! │   │         │                   │             │                │         │  │
 //! │   └─────────┘                   └─────────────┘                └─────────┘  │
 //! │        │                              │                             │       │
 //! │        ▼                              ▼                             ▼       │
-//! │   serde_json::from_str          1. validiere()              GrmHeader +     │
-//! │                                 2. zu_bytes()               FlatBuffer      │
+//! │   serde_json::from_str          1. validate()               GrmHeader +     │
+//! │                                 2. to_bytes()               FlatBuffer      │
 //! │                                                                             │
-//! │   FEHLER-PUNKTE:                                                            │
-//! │   1. JSON-Syntax ungültig        → JsonFehler                               │
-//! │   2. Schema-Struktur falsch      → DeserializeFehler                        │
-//! │   3. Pflichtfelder fehlen        → ValidierungsFehler                       │
-//! │   4. IO-Fehler beim Schreiben    → IoFehler                                 │
+//! │   ERROR POINTS:                                                             │
+//! │   1. Invalid JSON syntax         → JsonError                                │
+//! │   2. Wrong schema structure      → DeserializeError                         │
+//! │   3. Missing required fields     → ValidationError                          │
+//! │   4. IO error when writing       → IoError                                  │
 //! │                                                                             │
 //! └─────────────────────────────────────────────────────────────────────────────┘
 //! ```
@@ -36,153 +36,153 @@ use serde::de::DeserializeOwned;
 use std::path::Path;
 
 // ============================================================================
-// KOMPILIERUNG
+// COMPILATION
 // ============================================================================
 
-/// Kompiliert ein Schema-Objekt zu .grm Bytes.
+/// Compiles a schema object to .grm bytes.
 ///
 /// ## Pipeline
 ///
 /// ```text
-/// Schema ──► validiere() ──► zu_bytes() ──► Header + Payload
+/// Schema ──► validate() ──► to_bytes() ──► Header + Payload
 /// ```
 ///
-/// ## Architektonische Leitfragen:
+/// ## Architectural Guiding Questions:
 ///
-/// 1. **Wer validiert?** Der Compiler, bevor Bytes geschrieben werden.
-/// 2. **Was passiert bei Fehlern?** Fail-Fast mit aussagekräftiger Meldung.
-/// 3. **Wer besitzt die Daten?** Unveränderliche Leihe (`&schema`).
+/// 1. **Who validates?** The compiler, before bytes are written.
+/// 2. **What happens on errors?** Fail-fast with meaningful message.
+/// 3. **Who owns the data?** Immutable borrow (`&schema`).
 ///
-/// ## Beispiel
+/// ## Example
 ///
 /// ```rust,ignore
-/// use germanic::compiler::kompiliere;
-/// use germanic::schemas::PraxisSchema;
+/// use germanic::compiler::compile;
+/// use germanic::schemas::PracticeSchema;
 ///
-/// let praxis = PraxisSchema {
+/// let practice = PracticeSchema {
 ///     name: "Dr. Maria Sonnenschein".to_string(),
 ///     bezeichnung: "Zahnärztin".to_string(),
 ///     // ...
 /// };
 ///
-/// let bytes = kompiliere(&praxis)?;
-/// std::fs::write("praxis.grm", bytes)?;
+/// let bytes = compile(&practice)?;
+/// std::fs::write("practice.grm", bytes)?;
 /// ```
-pub fn kompiliere<S>(schema: &S) -> GermanicResult<Vec<u8>>
+pub fn compile<S>(schema: &S) -> GermanicResult<Vec<u8>>
 where
     S: SchemaMetadata + Validate + GermanicSerialize,
 {
-    // 1. Validiere Pflichtfelder
+    // 1. Validate required fields
     schema.validate().map_err(GermanicError::Validation)?;
 
-    // 2. Erstelle Header
+    // 2. Create header
     let header = GrmHeader::new(schema.schema_id());
     let header_bytes = header.to_bytes();
 
-    // 3. Serialisiere Schema zu FlatBuffer
+    // 3. Serialize schema to FlatBuffer
     let payload_bytes = schema.to_bytes();
 
-    // 4. Kombiniere Header + Payload
-    let mut ausgabe = Vec::with_capacity(header_bytes.len() + payload_bytes.len());
-    ausgabe.extend_from_slice(&header_bytes);
-    ausgabe.extend_from_slice(&payload_bytes);
+    // 4. Combine header + payload
+    let mut output = Vec::with_capacity(header_bytes.len() + payload_bytes.len());
+    output.extend_from_slice(&header_bytes);
+    output.extend_from_slice(&payload_bytes);
 
-    Ok(ausgabe)
+    Ok(output)
 }
 
-/// Kompiliert JSON-String zu .grm Bytes.
+/// Compiles JSON string to .grm bytes.
 ///
-/// Dies ist die Hauptfunktion für den Concierge-Workflow:
-/// 1. Plugin exportiert JSON
-/// 2. CLI ruft diese Funktion auf
-/// 3. .grm wird generiert
+/// This is the main function for the Concierge workflow:
+/// 1. Plugin exports JSON
+/// 2. CLI calls this function
+/// 3. .grm is generated
 ///
-/// ## Beispiel
+/// ## Example
 ///
 /// ```rust,ignore
-/// use germanic::compiler::kompiliere_json;
-/// use germanic::schemas::PraxisSchema;
+/// use germanic::compiler::compile_json;
+/// use germanic::schemas::PracticeSchema;
 ///
-/// let json = std::fs::read_to_string("praxis.json")?;
-/// let bytes = kompiliere_json::<PraxisSchema>(&json)?;
-/// std::fs::write("praxis.grm", bytes)?;
+/// let json = std::fs::read_to_string("practice.json")?;
+/// let bytes = compile_json::<PracticeSchema>(&json)?;
+/// std::fs::write("practice.grm", bytes)?;
 /// ```
-pub fn kompiliere_json<S>(json: &str) -> GermanicResult<Vec<u8>>
+pub fn compile_json<S>(json: &str) -> GermanicResult<Vec<u8>>
 where
     S: DeserializeOwned + SchemaMetadata + Validate + GermanicSerialize,
 {
-    // 1. Parse JSON zu Rust-Struct
+    // 1. Parse JSON to Rust struct
     let schema: S = serde_json::from_str(json)?;
 
-    // 2. Delegiere an kompiliere()
-    kompiliere(&schema)
+    // 2. Delegate to compile()
+    compile(&schema)
 }
 
-/// Kompiliert eine JSON-Datei zu .grm Bytes.
+/// Compiles a JSON file to .grm bytes.
 ///
-/// ## Beispiel
+/// ## Example
 ///
 /// ```rust,ignore
-/// use germanic::compiler::kompiliere_datei;
-/// use germanic::schemas::PraxisSchema;
+/// use germanic::compiler::compile_file;
+/// use germanic::schemas::PracticeSchema;
 ///
-/// let bytes = kompiliere_datei::<PraxisSchema>(Path::new("praxis.json"))?;
+/// let bytes = compile_file::<PracticeSchema>(Path::new("practice.json"))?;
 /// ```
-pub fn kompiliere_datei<S>(pfad: &Path) -> GermanicResult<Vec<u8>>
+pub fn compile_file<S>(path: &Path) -> GermanicResult<Vec<u8>>
 where
     S: DeserializeOwned + SchemaMetadata + Validate + GermanicSerialize,
 {
-    let json = std::fs::read_to_string(pfad)?;
-    kompiliere_json::<S>(&json)
+    let json = std::fs::read_to_string(path)?;
+    compile_json::<S>(&json)
 }
 
-/// Schreibt .grm Bytes in eine Datei.
+/// Writes .grm bytes to a file.
 ///
-/// ## Beispiel
+/// ## Example
 ///
 /// ```rust,ignore
-/// let bytes = kompiliere(&praxis)?;
-/// schreibe_grm(&bytes, Path::new("praxis.grm"))?;
+/// let bytes = compile(&practice)?;
+/// write_grm(&bytes, Path::new("practice.grm"))?;
 /// ```
-pub fn schreibe_grm(daten: &[u8], pfad: &Path) -> GermanicResult<()> {
-    std::fs::write(pfad, daten)?;
+pub fn write_grm(data: &[u8], path: &Path) -> GermanicResult<()> {
+    std::fs::write(path, data)?;
     Ok(())
 }
 
 // ============================================================================
-// SCHEMA-REGISTRY (für CLI)
+// SCHEMA REGISTRY (for CLI)
 // ============================================================================
 
-/// Bekannte Schema-Typen für die CLI.
+/// Known schema types for the CLI.
 ///
-/// Der CLI-Befehl `germanic compile --schema praxis` braucht
-/// eine Zuordnung von String-Namen zu konkreten Typen.
+/// The CLI command `germanic compile --schema practice` needs
+/// a mapping from string names to concrete types.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum SchemaTyp {
-    /// Praxis-Schema für Heilpraktiker/Ärzte
-    Praxis,
+pub enum SchemaType {
+    /// Practice schema for healthcare practitioners
+    Practice,
 }
 
-impl SchemaTyp {
-    /// Parst einen Schema-Namen aus einem String.
-    pub fn von_str(name: &str) -> Option<Self> {
+impl SchemaType {
+    /// Parses a schema name from a string.
+    pub fn from_str(name: &str) -> Option<Self> {
         match name.to_lowercase().as_str() {
-            "praxis" => Some(Self::Praxis),
+            "praxis" | "practice" => Some(Self::Practice),
             _ => None,
         }
     }
 
-    /// Gibt den Schema-Namen zurück.
+    /// Returns the schema name.
     pub fn name(&self) -> &'static str {
         match self {
-            Self::Praxis => "praxis",
+            Self::Practice => "practice",
         }
     }
 
-    /// Gibt die Schema-ID zurück.
+    /// Returns the schema ID.
     pub fn schema_id(&self) -> &'static str {
         match self {
-            Self::Praxis => "de.gesundheit.praxis.v1",
+            Self::Practice => "de.gesundheit.praxis.v1",
         }
     }
 }
@@ -197,15 +197,16 @@ mod tests {
     use crate::schemas::{AdresseSchema, PraxisSchema};
 
     #[test]
-    fn test_schema_typ_parsing() {
-        assert_eq!(SchemaTyp::von_str("praxis"), Some(SchemaTyp::Praxis));
-        assert_eq!(SchemaTyp::von_str("PRAXIS"), Some(SchemaTyp::Praxis));
-        assert_eq!(SchemaTyp::von_str("unknown"), None);
+    fn test_schema_type_parsing() {
+        assert_eq!(SchemaType::from_str("praxis"), Some(SchemaType::Practice));
+        assert_eq!(SchemaType::from_str("practice"), Some(SchemaType::Practice));
+        assert_eq!(SchemaType::from_str("PRAXIS"), Some(SchemaType::Practice));
+        assert_eq!(SchemaType::from_str("unknown"), None);
     }
 
     #[test]
-    fn test_kompiliere_praxis() {
-        let praxis = PraxisSchema {
+    fn test_compile_practice() {
+        let practice = PraxisSchema {
             name: "Test".to_string(),
             bezeichnung: "Arzt".to_string(),
             adresse: AdresseSchema {
@@ -218,19 +219,19 @@ mod tests {
             ..Default::default()
         };
 
-        let bytes = kompiliere(&praxis).expect("Kompilierung sollte funktionieren");
+        let bytes = compile(&practice).expect("Compilation should succeed");
 
-        // Header prüfen (Magic Bytes)
+        // Check header (magic bytes)
         assert_eq!(&bytes[0..3], b"GRM");
 
-        // Schema-ID im Header prüfen
+        // Check schema-ID in header
         let schema_id_len = u16::from_le_bytes([bytes[4], bytes[5]]) as usize;
         let schema_id = std::str::from_utf8(&bytes[6..6 + schema_id_len]).unwrap();
         assert_eq!(schema_id, "de.gesundheit.praxis.v1");
     }
 
     #[test]
-    fn test_kompiliere_json_praxis() {
+    fn test_compile_json_practice() {
         let json = r#"{
             "name": "Dr. Müller",
             "bezeichnung": "Arzt",
@@ -241,20 +242,19 @@ mod tests {
             }
         }"#;
 
-        let bytes =
-            kompiliere_json::<PraxisSchema>(json).expect("Kompilierung sollte funktionieren");
+        let bytes = compile_json::<PraxisSchema>(json).expect("Compilation should succeed");
 
         assert!(!bytes.is_empty());
         assert_eq!(&bytes[0..3], b"GRM");
     }
 
     #[test]
-    fn test_kompiliere_validierung_fehler() {
-        let praxis = PraxisSchema::default(); // Alle Pflichtfelder leer
+    fn test_compile_validation_error() {
+        let practice = PraxisSchema::default(); // All required fields empty
 
-        let ergebnis = kompiliere(&praxis);
+        let result = compile(&practice);
 
-        assert!(ergebnis.is_err());
-        assert!(matches!(ergebnis, Err(GermanicError::Validation(_))));
+        assert!(result.is_err());
+        assert!(matches!(result, Err(GermanicError::Validation(_))));
     }
 }
