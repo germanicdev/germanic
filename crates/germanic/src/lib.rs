@@ -102,6 +102,6 @@ pub mod validator;
 pub mod prelude {
     pub use crate::GermanicSchema;
     pub use crate::error::{GermanicError, ValidationError};
-    pub use crate::schema::{SchemaMetadaten, Validieren};
+    pub use crate::schema::{SchemaMetadata, Validate};
     pub use crate::schemas::{AdresseSchema, PraxisSchema};
 }

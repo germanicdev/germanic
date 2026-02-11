@@ -1,33 +1,33 @@
-//! # Schema-Traits
+//! # Schema Traits
 //!
-//! Definiert die Verträge (Traits), die das Macro implementiert.
+//! Defines the contracts (traits) that the macro implements.
 //!
-//! ## Architektur: Warum Traits?
+//! ## Architecture: Why Traits?
 //!
 //! ```text
 //! ┌─────────────────────────────────────────────────────────────────────────────┐
-//! │                    TRAIT-BASIERTE ABSTRAKTION                               │
+//! │                    TRAIT-BASED ABSTRACTION                                  │
 //! ├─────────────────────────────────────────────────────────────────────────────┤
 //! │                                                                             │
 //! │   PROBLEM:                                                                  │
 //! │   ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐            │
-//! │   │  PraxisSchema   │  │  RestaurantSchema│  │   HotelSchema   │            │
+//! │   │  PracticeSchema │  │ RestaurantSchema│  │   HotelSchema   │            │
 //! │   └─────────────────┘  └─────────────────┘  └─────────────────┘            │
 //! │          ↓                    ↓                    ↓                        │
-//! │   Wie behandelt der Compiler all diese Typen einheitlich?                   │
+//! │   How does the compiler treat all these types uniformly?                    │
 //! │                                                                             │
-//! │   LÖSUNG: Gemeinsamer Vertrag (Trait)                                       │
+//! │   SOLUTION: Common contract (Trait)                                         │
 //! │   ┌─────────────────────────────────────────────────────────────┐           │
-//! │   │                  trait Validieren                           │           │
-//! │   │   fn validiere(&self) -> Result<(), ValidierungsFehler>     │           │
+//! │   │                  trait Validate                             │           │
+//! │   │   fn validate(&self) -> Result<(), ValidationError>         │           │
 //! │   └─────────────────────────────────────────────────────────────┘           │
 //! │          ↑                    ↑                    ↑                        │
 //! │   ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐            │
-//! │   │  PraxisSchema   │  │  RestaurantSchema│  │   HotelSchema   │            │
-//! │   │ impl Validieren │  │ impl Validieren │  │ impl Validieren │            │
+//! │   │  PracticeSchema │  │ RestaurantSchema│  │   HotelSchema   │            │
+//! │   │ impl Validate   │  │ impl Validate   │  │ impl Validate   │            │
 //! │   └─────────────────┘  └─────────────────┘  └─────────────────┘            │
 //! │                                                                             │
-//! │   Compiler kann jetzt mit `dyn Validieren` oder Generics arbeiten           │
+//! │   Compiler can now work with `dyn Validate` or generics                     │
 //! │                                                                             │
 //! └─────────────────────────────────────────────────────────────────────────────┘
 //! ```
@@ -35,123 +35,123 @@
 use crate::error::ValidationError;
 
 // ============================================================================
-// SCHEMA-METADATEN
+// SCHEMA METADATA
 // ============================================================================
 
-/// Trait für Schema-Metadaten.
+/// Trait for schema metadata.
 ///
-/// Wird vom `#[derive(GermanicSchema)]` Macro automatisch implementiert.
+/// Automatically implemented by the `#[derive(GermanicSchema)]` macro.
 ///
-/// ## Verwendung
+/// ## Usage
 ///
 /// ```rust,ignore
-/// use germanic::schema::SchemaMetadaten;
+/// use germanic::schema::SchemaMetadata;
 ///
-/// let praxis = PraxisSchema { /* ... */ };
-/// println!("Schema-ID: {}", praxis.schema_id());  // "de.gesundheit.praxis.v1"
+/// let practice = PracticeSchema { /* ... */ };
+/// println!("Schema-ID: {}", practice.schema_id());  // "de.gesundheit.praxis.v1"
 /// ```
 ///
-/// ## Architektonische Bedeutung
+/// ## Architectural Significance
 ///
-/// Die Schema-ID wird in den .grm Header geschrieben und ermöglicht:
-/// - KI-Systeme können das Schema identifizieren
-/// - Versionierung für Rückwärtskompatibilität
-/// - Registry-Lookup für Schema-Definitionen
-pub trait SchemaMetadaten {
-    /// Die eindeutige Schema-ID.
+/// The schema ID is written to the .grm header and enables:
+/// - AI systems can identify the schema
+/// - Versioning for backward compatibility
+/// - Registry lookup for schema definitions
+pub trait SchemaMetadata {
+    /// The unique schema ID.
     ///
     /// Format: `"{namespace}.{domain}.{name}.v{version}"`
-    /// Beispiel: `"de.gesundheit.praxis.v1"`
+    /// Example: `"de.gesundheit.praxis.v1"`
     fn schema_id(&self) -> &'static str;
 
-    /// Die Schema-Version (1-255).
+    /// The schema version (1-255).
     ///
-    /// Wird für Migrations-Logik verwendet.
+    /// Used for migration logic.
     fn schema_version(&self) -> u8;
 }
 
 // ============================================================================
-// VALIDIERUNG
+// VALIDATION
 // ============================================================================
 
-/// Trait für Schema-Validierung.
+/// Trait for schema validation.
 ///
-/// Prüft, ob alle Pflichtfelder (`#[germanic(required)]`) ausgefüllt sind.
+/// Checks if all required fields (`#[germanic(required)]`) are filled.
 ///
-/// ## Beispiel
+/// ## Example
 ///
 /// ```rust,ignore
-/// use germanic::schema::Validieren;
+/// use germanic::schema::Validate;
 ///
-/// let praxis = PraxisSchema {
-///     name: "".to_string(),  // LEER! → Fehler
+/// let practice = PracticeSchema {
+///     name: "".to_string(),  // EMPTY! → Error
 ///     bezeichnung: "Heilpraktiker".to_string(),
 ///     // ...
 /// };
 ///
-/// match praxis.validiere() {
-///     Ok(()) => println!("Alles in Ordnung"),
-///     Err(e) => eprintln!("Validierung fehlgeschlagen: {}", e),
+/// match practice.validate() {
+///     Ok(()) => println!("All good"),
+///     Err(e) => eprintln!("Validation failed: {}", e),
 /// }
 /// ```
 ///
-/// ## Architektonische Bedeutung
+/// ## Architectural Significance
 ///
-/// Validierung passiert **vor** der FlatBuffer-Serialisierung.
-/// Das garantiert:
-/// - Frühes Fehlschlagen (fail fast)
-/// - Keine korrupten .grm Dateien
-/// - Aussagekräftige Fehlermeldungen für den Nutzer
-pub trait Validieren {
-    /// Validiert das Schema.
+/// Validation happens **before** FlatBuffer serialization.
+/// This guarantees:
+/// - Early failure (fail fast)
+/// - No corrupt .grm files
+/// - Meaningful error messages for the user
+pub trait Validate {
+    /// Validates the schema.
     ///
-    /// # Rückgabe
+    /// # Returns
     ///
-    /// - `Ok(())` wenn alle Pflichtfelder ausgefüllt sind
-    /// - `Err(ValidationError)` mit Liste der fehlenden Felder
-    fn validiere(&self) -> Result<(), ValidationError>;
+    /// - `Ok(())` if all required fields are filled
+    /// - `Err(ValidationError)` with list of missing fields
+    fn validate(&self) -> Result<(), ValidationError>;
 }
 
 // ============================================================================
-// SERIALISIERUNG (Platzhalter für später)
+// SERIALIZATION (Placeholder for later)
 // ============================================================================
 
-/// Trait für FlatBuffer-Serialisierung.
+/// Trait for FlatBuffer serialization.
 ///
-/// **Noch nicht implementiert** – kommt in Phase 3 der Macro-Entwicklung.
+/// **Not yet implemented** – coming in Phase 3 of macro development.
 ///
-/// ## Geplante Signatur
+/// ## Planned Signature
 ///
 /// ```rust,ignore
-/// pub trait GermanicSerialisieren {
-///     /// Serialisiert das Schema in FlatBuffer-Bytes.
-///     fn serialisiere(&self, builder: &mut FlatBufferBuilder) -> WIPOffset<UnionWIPOffset>;
+/// pub trait GermanicSerialize {
+///     /// Serializes the schema into FlatBuffer bytes.
+///     fn serialize(&self, builder: &mut FlatBufferBuilder) -> WIPOffset<UnionWIPOffset>;
 /// }
 /// ```
-pub trait GermanicSerialisieren {
-    /// Serialisiert das Schema in einen Byte-Vektor.
-    fn zu_bytes(&self) -> Vec<u8>;
+pub trait GermanicSerialize {
+    /// Serializes the schema into a byte vector.
+    fn to_bytes(&self) -> Vec<u8>;
 }
 
 // ============================================================================
-// KOMPOSITIONS-TRAIT
+// COMPOSITION TRAIT
 // ============================================================================
 
-/// Marker-Trait für vollständige GERMANIC-Schemas.
+/// Marker trait for complete GERMANIC schemas.
 ///
-/// Ein Typ implementiert `GermanicSchemaVollstaendig` wenn er alle
-/// notwendigen Traits implementiert.
+/// A type implements `GermanicSchemaComplete` if it implements all
+/// necessary traits.
 ///
-/// ## Automatische Implementierung
+/// ## Automatic Implementation
 ///
 /// ```rust,ignore
-/// // Automatisch für jeden Typ, der alle Traits implementiert:
-/// impl<T> GermanicSchemaVollstaendig for T
+/// // Automatically for any type that implements all traits:
+/// impl<T> GermanicSchemaComplete for T
 /// where
-///     T: SchemaMetadaten + Validieren + GermanicSerialisieren
+///     T: SchemaMetadata + Validate + GermanicSerialize
 /// {}
 /// ```
-pub trait GermanicSchemaVollstaendig: SchemaMetadaten + Validieren {}
+pub trait GermanicSchemaComplete: SchemaMetadata + Validate {}
 
-// Blanket Implementation: Jeder Typ, der alle Traits hat, ist automatisch vollständig
-impl<T> GermanicSchemaVollstaendig for T where T: SchemaMetadaten + Validieren {}
+// Blanket implementation: Any type that has all traits is automatically complete
+impl<T> GermanicSchemaComplete for T where T: SchemaMetadata + Validate {}

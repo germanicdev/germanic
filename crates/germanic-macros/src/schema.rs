@@ -129,7 +129,7 @@ pub fn implementiere_germanic_schema(eingabe: DeriveInput) -> Result<TokenStream
         // GENERIERTER CODE - NICHT MANUELL BEARBEITEN
         // ════════════════════════════════════════════════════════════════════
 
-        impl #impl_generics ::germanic::schema::SchemaMetadaten for #struct_name #ty_generics
+        impl #impl_generics ::germanic::schema::SchemaMetadata for #struct_name #ty_generics
         #where_clause
         {
             fn schema_id(&self) -> &'static str {
@@ -141,10 +141,10 @@ pub fn implementiere_germanic_schema(eingabe: DeriveInput) -> Result<TokenStream
             }
         }
 
-        impl #impl_generics ::germanic::schema::Validieren for #struct_name #ty_generics
+        impl #impl_generics ::germanic::schema::Validate for #struct_name #ty_generics
         #where_clause
         {
-            fn validiere(&self) -> ::std::result::Result<(), ::germanic::error::ValidationError> {
+            fn validate(&self) -> ::std::result::Result<(), ::germanic::error::ValidationError> {
                 let mut fehler = Vec::new();
                 #validierungen
                 if fehler.is_empty() {
@@ -222,7 +222,7 @@ fn generiere_validierungen(felder: &[FeldOptionen]) -> TokenStream2 {
         if typ == TypKategorie::Andere {
             validierungen.push(quote! {
                 // Rekursive Validierung des Nested Structs
-                if let Err(nested_fehler) = self.#feld_name.validiere() {
+                if let Err(nested_fehler) = self.#feld_name.validate() {
                     // Präfix hinzufügen für bessere Fehlermeldungen
                     if let ::germanic::error::ValidationError::RequiredFieldsMissing(nested_felder) = nested_fehler {
                         for f in nested_felder {

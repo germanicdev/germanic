@@ -128,13 +128,13 @@ pub struct GrmValidierung {
 /// ```
 pub fn validiere_json<S>(json: &str) -> GermanicResult<S>
 where
-    S: serde::de::DeserializeOwned + crate::schema::Validieren,
+    S: serde::de::DeserializeOwned + crate::schema::Validate,
 {
     // 1. Parse JSON zu Struct
     let schema: S = serde_json::from_str(json)?;
 
     // 2. Validiere Pflichtfelder
-    schema.validiere()?;
+    schema.validate()?;
 
     Ok(schema)
 }

@@ -6,7 +6,7 @@
 //! - SchemaMetadaten Trait (schema_id)
 
 use germanic::GermanicSchema;
-use germanic::schema::{SchemaMetadaten, Validieren};
+use germanic::schema::{SchemaMetadata, Validate};
 
 // ============================================================================
 // TEST 1: Validierung von Pflichtfeldern
@@ -29,7 +29,7 @@ fn test_validierung_name_leer() {
     };
 
     // Leerer required String sollte Fehler werfen
-    let ergebnis = schema.validiere();
+    let ergebnis = schema.validate();
     assert!(ergebnis.is_err());
 }
 
@@ -40,7 +40,7 @@ fn test_validierung_ok() {
         optional: None,
     };
 
-    assert!(schema.validiere().is_ok());
+    assert!(schema.validate().is_ok());
 }
 
 // ============================================================================
@@ -127,7 +127,7 @@ fn test_default_erfuellt_nicht_required() {
     // Default erzeugt leere Strings/Vecs, die bei required fehlschlagen sollten
     let schema = KombiniertTestSchema::default();
 
-    let ergebnis = schema.validiere();
+    let ergebnis = schema.validate();
     assert!(ergebnis.is_err());
 
     // Prüfe welche Felder fehlen
@@ -147,7 +147,7 @@ fn test_kombiniert_valide() {
         pflicht_vec: vec!["Eintrag".to_string()],
     };
 
-    assert!(schema.validiere().is_ok());
+    assert!(schema.validate().is_ok());
 }
 
 // ============================================================================
@@ -192,7 +192,7 @@ fn test_nested_default() {
 fn test_nested_validierung_fehler() {
     let schema = PraxisTestSchema::default();
 
-    let ergebnis = schema.validiere();
+    let ergebnis = schema.validate();
     assert!(ergebnis.is_err());
 
     if let Err(germanic::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
@@ -217,7 +217,7 @@ fn test_nested_validierung_ok() {
         },
     };
 
-    assert!(schema.validiere().is_ok());
+    assert!(schema.validate().is_ok());
 }
 
 #[test]
@@ -233,7 +233,7 @@ fn test_nested_partial_fehler() {
         },
     };
 
-    let ergebnis = schema.validiere();
+    let ergebnis = schema.validate();
     assert!(ergebnis.is_err());
 
     if let Err(germanic::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {

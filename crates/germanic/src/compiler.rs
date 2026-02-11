@@ -30,7 +30,7 @@
 //! ```
 
 use crate::error::{GermanicError, GermanicResult};
-use crate::schema::{GermanicSerialisieren, SchemaMetadaten, Validieren};
+use crate::schema::{GermanicSerialize, SchemaMetadata, Validate};
 use crate::types::GrmHeader;
 use serde::de::DeserializeOwned;
 use std::path::Path;
@@ -70,17 +70,17 @@ use std::path::Path;
 /// ```
 pub fn kompiliere<S>(schema: &S) -> GermanicResult<Vec<u8>>
 where
-    S: SchemaMetadaten + Validieren + GermanicSerialisieren,
+    S: SchemaMetadata + Validate + GermanicSerialize,
 {
     // 1. Validiere Pflichtfelder
-    schema.validiere().map_err(GermanicError::Validation)?;
+    schema.validate().map_err(GermanicError::Validation)?;
 
     // 2. Erstelle Header
     let header = GrmHeader::new(schema.schema_id());
     let header_bytes = header.to_bytes();
 
     // 3. Serialisiere Schema zu FlatBuffer
-    let payload_bytes = schema.zu_bytes();
+    let payload_bytes = schema.to_bytes();
 
     // 4. Kombiniere Header + Payload
     let mut ausgabe = Vec::with_capacity(header_bytes.len() + payload_bytes.len());
@@ -109,7 +109,7 @@ where
 /// ```
 pub fn kompiliere_json<S>(json: &str) -> GermanicResult<Vec<u8>>
 where
-    S: DeserializeOwned + SchemaMetadaten + Validieren + GermanicSerialisieren,
+    S: DeserializeOwned + SchemaMetadata + Validate + GermanicSerialize,
 {
     // 1. Parse JSON zu Rust-Struct
     let schema: S = serde_json::from_str(json)?;
@@ -130,7 +130,7 @@ where
 /// ```
 pub fn kompiliere_datei<S>(pfad: &Path) -> GermanicResult<Vec<u8>>
 where
-    S: DeserializeOwned + SchemaMetadaten + Validieren + GermanicSerialisieren,
+    S: DeserializeOwned + SchemaMetadata + Validate + GermanicSerialize,
 {
     let json = std::fs::read_to_string(pfad)?;
     kompiliere_json::<S>(&json)

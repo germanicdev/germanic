@@ -26,7 +26,7 @@
 //! ```
 
 use crate::GermanicSchema;
-use crate::schema::GermanicSerialisieren;
+use crate::schema::GermanicSerialize;
 use flatbuffers::FlatBufferBuilder;
 use serde::{Deserialize, Serialize};
 
@@ -80,13 +80,13 @@ fn default_land() -> String {
     "DE".to_string()
 }
 
-impl GermanicSerialisieren for AdresseSchema {
+impl GermanicSerialize for AdresseSchema {
     /// Serialisiert die Adresse zu FlatBuffer-Bytes.
     ///
     /// **Hinweis:** AdresseSchema allein ist kein gültiger Root-Typ.
     /// Diese Methode wird hauptsächlich für Tests verwendet.
     /// Im Normalfall wird Adresse als Teil von PraxisSchema serialisiert.
-    fn zu_bytes(&self) -> Vec<u8> {
+    fn to_bytes(&self) -> Vec<u8> {
         let mut builder = FlatBufferBuilder::with_capacity(256);
 
         // Strings erstellen (Blätter zuerst)
@@ -212,7 +212,7 @@ pub struct PraxisSchema {
     pub kassenpatienten: bool,
 }
 
-impl GermanicSerialisieren for PraxisSchema {
+impl GermanicSerialize for PraxisSchema {
     /// Serialisiert das Praxis-Schema zu FlatBuffer-Bytes.
     ///
     /// ## Algorithmus (Inside-Out)
@@ -224,7 +224,7 @@ impl GermanicSerialisieren for PraxisSchema {
     /// 4. Praxis erstellen           → Offset (braucht alle anderen)
     /// 5. finish()                   → Bytes
     /// ```
-    fn zu_bytes(&self) -> Vec<u8> {
+    fn to_bytes(&self) -> Vec<u8> {
         // Kapazität schätzen: ~100 Bytes Basis + Strings
         let kapazitaet = 256 + self.name.len() + self.bezeichnung.len();
         let mut builder = FlatBufferBuilder::with_capacity(kapazitaet);
@@ -379,7 +379,7 @@ impl GermanicSerialisieren for PraxisSchema {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::schema::{SchemaMetadaten, Validieren};
+    use crate::schema::{SchemaMetadata, Validate};
 
     // ────────────────────────────────────────────────────────────────────────
     // BESTEHENDE TESTS
@@ -413,7 +413,7 @@ mod tests {
     #[test]
     fn test_praxis_validierung_fehlt() {
         let praxis = PraxisSchema::default();
-        let ergebnis = praxis.validiere();
+        let ergebnis = praxis.validate();
 
         assert!(ergebnis.is_err());
 
@@ -441,7 +441,7 @@ mod tests {
             ..Default::default()
         };
 
-        assert!(praxis.validiere().is_ok());
+        assert!(praxis.validate().is_ok());
     }
 
     #[test]
@@ -461,7 +461,7 @@ mod tests {
         assert_eq!(praxis.name, "Dr. Müller");
         assert_eq!(praxis.bezeichnung, "Arzt");
         assert_eq!(praxis.adresse.land, "DE"); // Default
-        assert!(praxis.validiere().is_ok());
+        assert!(praxis.validate().is_ok());
     }
 
     #[test]
@@ -497,7 +497,7 @@ mod tests {
         assert!(praxis.privatpatienten);
         assert!(!praxis.kassenpatienten);
         assert_eq!(praxis.schwerpunkte.len(), 2);
-        assert!(praxis.validiere().is_ok());
+        assert!(praxis.validate().is_ok());
     }
 
     // ────────────────────────────────────────────────────────────────────────
@@ -519,7 +519,7 @@ mod tests {
             ..Default::default()
         };
 
-        let bytes = praxis.zu_bytes();
+        let bytes = praxis.to_bytes();
 
         // FlatBuffer hat mindestens Header + Daten
         assert!(!bytes.is_empty());
@@ -546,7 +546,7 @@ mod tests {
         };
 
         // Serialisieren
-        let bytes = original.zu_bytes();
+        let bytes = original.to_bytes();
 
         // Deserialisieren (Zero-Copy!)
         let praxis = flatbuffers::root::<FbPraxis>(&bytes).expect("FlatBuffer ungültig");
@@ -594,7 +594,7 @@ mod tests {
             ..Default::default()
         };
 
-        let bytes = praxis.zu_bytes();
+        let bytes = praxis.to_bytes();
         let fb = flatbuffers::root::<FbPraxis>(&bytes).unwrap();
 
         assert_eq!(fb.schwerpunkte().unwrap().len(), 2);
@@ -613,7 +613,7 @@ mod tests {
             land: "DE".to_string(),
         };
 
-        let bytes = adresse.zu_bytes();
+        let bytes = adresse.to_bytes();
 
         // Adresse deserialisieren
         let fb = flatbuffers::root::<FbAdresse>(&bytes).expect("FlatBuffer ungültig");
