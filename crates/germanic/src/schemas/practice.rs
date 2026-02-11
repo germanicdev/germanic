@@ -417,7 +417,7 @@ mod tests {
 
         assert!(ergebnis.is_err());
 
-        if let Err(crate::fehler::ValidierungsFehler::PflichtfelderFehlen(felder)) = ergebnis {
+        if let Err(crate::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
             assert!(felder.contains(&"name".to_string()));
             assert!(felder.contains(&"bezeichnung".to_string()));
             assert!(felder.contains(&"adresse.strasse".to_string()));

@@ -79,7 +79,7 @@ pub mod schemas;
 pub mod schema;
 
 /// Fehlertypen.
-pub mod fehler;
+pub mod error;
 
 /// Header und .grm Format.
 pub mod types;
@@ -101,7 +101,7 @@ pub mod validator;
 /// ```
 pub mod prelude {
     pub use crate::GermanicSchema;
-    pub use crate::fehler::{GermanicFehler, ValidierungsFehler};
+    pub use crate::error::{GermanicError, ValidationError};
     pub use crate::schema::{SchemaMetadaten, Validieren};
     pub use crate::schemas::{AdresseSchema, PraxisSchema};
 }

@@ -71,8 +71,10 @@ pub mod praxis {
 // RE-EXPORTS
 // ============================================================================
 
-// Meta-Typen: crate::generated::meta::germanic::meta::*
-pub use meta::germanic::meta::{Meta, MetaArgs, Signatur, SignaturArgs};
+// Meta-Typen: crate::generated::meta::germanic::common::*
+pub use meta::germanic::common::{
+    GermanicMeta, GermanicMetaArgs, Hinweis, HinweisArgs, Signatur, SignaturArgs,
+};
 
 // Praxis-Typen: crate::generated::praxis::de::gesundheit::*
 pub use praxis::de::gesundheit::{Adresse, AdresseArgs, Praxis, PraxisArgs};

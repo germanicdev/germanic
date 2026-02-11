@@ -32,7 +32,7 @@
 //! └─────────────────────────────────────────────────────────────────────────────┘
 //! ```
 
-use crate::fehler::ValidierungsFehler;
+use crate::error::ValidationError;
 
 // ============================================================================
 // SCHEMA-METADATEN
@@ -108,8 +108,8 @@ pub trait Validieren {
     /// # Rückgabe
     ///
     /// - `Ok(())` wenn alle Pflichtfelder ausgefüllt sind
-    /// - `Err(ValidierungsFehler)` mit Liste der fehlenden Felder
-    fn validiere(&self) -> Result<(), ValidierungsFehler>;
+    /// - `Err(ValidationError)` mit Liste der fehlenden Felder
+    fn validiere(&self) -> Result<(), ValidationError>;
 }
 
 // ============================================================================

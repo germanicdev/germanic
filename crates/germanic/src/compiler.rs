@@ -29,7 +29,7 @@
 //! └─────────────────────────────────────────────────────────────────────────────┘
 //! ```
 
-use crate::fehler::{GermanicFehler, GermanicResult};
+use crate::error::{GermanicError, GermanicResult};
 use crate::schema::{GermanicSerialisieren, SchemaMetadaten, Validieren};
 use crate::types::GrmHeader;
 use serde::de::DeserializeOwned;
@@ -73,7 +73,7 @@ where
     S: SchemaMetadaten + Validieren + GermanicSerialisieren,
 {
     // 1. Validiere Pflichtfelder
-    schema.validiere().map_err(GermanicFehler::Validierung)?;
+    schema.validiere().map_err(GermanicError::Validation)?;
 
     // 2. Erstelle Header
     let header = GrmHeader::neu(schema.schema_id());
@@ -255,6 +255,6 @@ mod tests {
         let ergebnis = kompiliere(&praxis);
 
         assert!(ergebnis.is_err());
-        assert!(matches!(ergebnis, Err(GermanicFehler::Validierung(_))));
+        assert!(matches!(ergebnis, Err(GermanicError::Validation(_))));
     }
 }

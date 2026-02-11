@@ -1,8 +1,8 @@
-//! # Schema-Definitionen
+//! # Schema Definitions
 //!
-//! Enthält die Rust-Repräsentationen der FlatBuffer-Schemas.
+//! Contains Rust representations of FlatBuffer schemas.
 
-pub mod praxis;
+pub mod practice;
 
-// Re-exports für bequemen Zugriff
-pub use praxis::{AdresseSchema, PraxisSchema};
+// Re-exports for convenient access
+pub use practice::{AdresseSchema, PraxisSchema};

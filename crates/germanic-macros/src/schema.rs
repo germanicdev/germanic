@@ -144,13 +144,13 @@ pub fn implementiere_germanic_schema(eingabe: DeriveInput) -> Result<TokenStream
         impl #impl_generics ::germanic::schema::Validieren for #struct_name #ty_generics
         #where_clause
         {
-            fn validiere(&self) -> ::std::result::Result<(), ::germanic::fehler::ValidierungsFehler> {
+            fn validiere(&self) -> ::std::result::Result<(), ::germanic::error::ValidationError> {
                 let mut fehler = Vec::new();
                 #validierungen
                 if fehler.is_empty() {
                     Ok(())
                 } else {
-                    Err(::germanic::fehler::ValidierungsFehler::PflichtfelderFehlen(fehler))
+                    Err(::germanic::error::ValidationError::RequiredFieldsMissing(fehler))
                 }
             }
         }
@@ -224,7 +224,7 @@ fn generiere_validierungen(felder: &[FeldOptionen]) -> TokenStream2 {
                 // Rekursive Validierung des Nested Structs
                 if let Err(nested_fehler) = self.#feld_name.validiere() {
                     // Präfix hinzufügen für bessere Fehlermeldungen
-                    if let ::germanic::fehler::ValidierungsFehler::PflichtfelderFehlen(nested_felder) = nested_fehler {
+                    if let ::germanic::error::ValidationError::RequiredFieldsMissing(nested_felder) = nested_fehler {
                         for f in nested_felder {
                             fehler.push(format!("{}.{}", #feld_name_str, f));
                         }

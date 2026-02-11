@@ -131,7 +131,7 @@ fn test_default_erfuellt_nicht_required() {
     assert!(ergebnis.is_err());
 
     // Prüfe welche Felder fehlen
-    if let Err(germanic::fehler::ValidierungsFehler::PflichtfelderFehlen(felder)) = ergebnis {
+    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
         assert!(felder.contains(&"pflicht".to_string()));
         assert!(felder.contains(&"pflicht_vec".to_string()));
         // mit_default hat einen Wert, sollte NICHT in der Fehlerliste sein
@@ -195,7 +195,7 @@ fn test_nested_validierung_fehler() {
     let ergebnis = schema.validiere();
     assert!(ergebnis.is_err());
 
-    if let Err(germanic::fehler::ValidierungsFehler::PflichtfelderFehlen(felder)) = ergebnis {
+    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
         // Hauptfeld
         assert!(felder.contains(&"name".to_string()));
         // Nested Felder mit Präfix
@@ -236,7 +236,7 @@ fn test_nested_partial_fehler() {
     let ergebnis = schema.validiere();
     assert!(ergebnis.is_err());
 
-    if let Err(germanic::fehler::ValidierungsFehler::PflichtfelderFehlen(felder)) = ergebnis {
+    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
         assert_eq!(felder.len(), 1);
         assert!(felder.contains(&"adresse.strasse".to_string()));
     }
