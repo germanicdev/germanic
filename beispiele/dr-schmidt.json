@@ -1,17 +1,17 @@
 {
-  "name": "Dr. Maria Sonnenschein",
+  "name": "Dr. Anna Schmidt",
   "bezeichnung": "Zahnärztin",
-  "praxisname": "Praxis Sonnenschein",
+  "praxisname": "Praxis Schmidt",
   "adresse": {
-    "strasse": "Lindenallee",
-    "hausnummer": "26",
-    "plz": "10115",
-    "ort": "Berlin",
+    "strasse": "Musterstraße",
+    "hausnummer": "42",
+    "plz": "12345",
+    "ort": "Beispielstadt",
     "land": "DE"
   },
-  "telefon": "+49 30 1234567",
-  "email": "info@praxis-sonnenschein.example.de",
-  "website": "https://praxis-sonnenschein.example.de",
+  "telefon": "+49 123 9876543",
+  "email": "info@praxis-schmidt.example",
+  "website": "https://praxis-schmidt.example",
   "schwerpunkte": [
     "Zahnerhaltung",
     "Prophylaxe",
@@ -30,10 +30,10 @@
     "Physiotherapeutin",
     "Regulationstherapeutin IGAF"
   ],
-  "terminbuchung_url": "https://praxis-sonnenschein.example.de/termin",
+  "terminbuchung_url": "https://praxis-schmidt.example/termin",
   "oeffnungszeiten": "Nach Vereinbarung",
   "privatpatienten": true,
   "kassenpatienten": false,
   "sprachen": ["Deutsch"],
-  "kurzbeschreibung": "Als Zahnärztin für moderne Zahnmedizin in Berlin ist es mir wichtig, Sie in Ihrer Gesamtheit zu betrachten."
+  "kurzbeschreibung": "Als Zahnärztin für moderne Zahnmedizin in Beispielstadt ist es mir wichtig, Sie in Ihrer Gesamtheit zu betrachten."
 }

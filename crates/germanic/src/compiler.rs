@@ -60,7 +60,7 @@ use std::path::Path;
 /// use germanic::schemas::PracticeSchema;
 ///
 /// let practice = PracticeSchema {
-///     name: "Dr. Maria Sonnenschein".to_string(),
+///     name: "Dr. Anna Schmidt".to_string(),
 ///     bezeichnung: "Zahnärztin".to_string(),
 ///     // ...
 /// };

@@ -429,13 +429,13 @@ mod tests {
     #[test]
     fn test_praxis_validierung_ok() {
         let praxis = PraxisSchema {
-            name: "Dr. Maria Sonnenschein".to_string(),
+            name: "Dr. Anna Schmidt".to_string(),
             bezeichnung: "Zahnärztin".to_string(),
             adresse: AdresseSchema {
-                strasse: "Lindenallee".to_string(),
-                hausnummer: Some("26".to_string()),
-                plz: "10115".to_string(),
-                ort: "Berlin".to_string(),
+                strasse: "Musterstraße".to_string(),
+                hausnummer: Some("42".to_string()),
+                plz: "12345".to_string(),
+                ort: "Beispielstadt".to_string(),
                 land: "DE".to_string(),
             },
             ..Default::default()
@@ -467,33 +467,33 @@ mod tests {
     #[test]
     fn test_json_vollstaendig() {
         let json = r#"{
-            "name": "Dr. Maria Sonnenschein",
+            "name": "Dr. Anna Schmidt",
             "bezeichnung": "Zahnärztin",
-            "praxisname": "Praxis Sonnenschein",
+            "praxisname": "Praxis Schmidt",
             "adresse": {
-                "strasse": "Lindenallee",
-                "hausnummer": "26",
-                "plz": "10115",
-                "ort": "Berlin",
+                "strasse": "Musterstraße",
+                "hausnummer": "42",
+                "plz": "12345",
+                "ort": "Beispielstadt",
                 "land": "DE"
             },
-            "telefon": "+49 30 1234567",
-            "email": "info@praxis-sonnenschein.example.de",
-            "website": "https://praxis-sonnenschein.example.de",
+            "telefon": "+49 123 9876543",
+            "email": "info@praxis-schmidt.example",
+            "website": "https://praxis-schmidt.example",
             "schwerpunkte": ["Zahnerhaltung", "Prophylaxe"],
             "therapieformen": ["Wurzelbehandlung", "Bleaching"],
             "qualifikationen": ["Zahnärztin", "Implantologie-Zertifikat"],
-            "terminbuchung_url": "https://praxis-sonnenschein.example.de/termin",
+            "terminbuchung_url": "https://praxis-schmidt.example/termin",
             "oeffnungszeiten": "Nach Vereinbarung",
             "privatpatienten": true,
             "kassenpatienten": false,
             "sprachen": ["Deutsch"],
-            "kurzbeschreibung": "Ganzheitliche Medizin in Berlin"
+            "kurzbeschreibung": "Ganzheitliche Medizin in Beispielstadt"
         }"#;
 
         let praxis: PraxisSchema = serde_json::from_str(json).unwrap();
 
-        assert_eq!(praxis.name, "Dr. Maria Sonnenschein");
+        assert_eq!(praxis.name, "Dr. Anna Schmidt");
         assert!(praxis.privatpatienten);
         assert!(!praxis.kassenpatienten);
         assert_eq!(praxis.schwerpunkte.len(), 2);
@@ -529,17 +529,17 @@ mod tests {
     #[test]
     fn test_praxis_serialisierung_roundtrip() {
         let original = PraxisSchema {
-            name: "Dr. Maria Sonnenschein".to_string(),
+            name: "Dr. Anna Schmidt".to_string(),
             bezeichnung: "Zahnärztin".to_string(),
             adresse: AdresseSchema {
-                strasse: "Lindenallee".to_string(),
-                hausnummer: Some("26".to_string()),
-                plz: "10115".to_string(),
-                ort: "Berlin".to_string(),
+                strasse: "Musterstraße".to_string(),
+                hausnummer: Some("42".to_string()),
+                plz: "12345".to_string(),
+                ort: "Beispielstadt".to_string(),
                 land: "DE".to_string(),
             },
-            praxisname: Some("Praxis Sonnenschein".to_string()),
-            telefon: Some("+49 30 1234567".to_string()),
+            praxisname: Some("Praxis Schmidt".to_string()),
+            telefon: Some("+49 123 9876543".to_string()),
             schwerpunkte: vec!["Zahnerhaltung".to_string()],
             privatpatienten: true,
             ..Default::default()
@@ -552,21 +552,21 @@ mod tests {
         let praxis = flatbuffers::root::<FbPraxis>(&bytes).expect("FlatBuffer ungültig");
 
         // Vergleichen - required Felder geben &str zurück
-        assert_eq!(praxis.name(), "Dr. Maria Sonnenschein");
+        assert_eq!(praxis.name(), "Dr. Anna Schmidt");
         assert_eq!(praxis.bezeichnung(), "Zahnärztin");
 
         // Optionale Felder geben Option<&str> zurück
-        assert_eq!(praxis.praxisname(), Some("Praxis Sonnenschein"));
-        assert_eq!(praxis.telefon(), Some("+49 30 1234567"));
+        assert_eq!(praxis.praxisname(), Some("Praxis Schmidt"));
+        assert_eq!(praxis.telefon(), Some("+49 123 9876543"));
         assert!(praxis.privatpatienten());
         assert!(!praxis.kassenpatienten());
 
         // Adresse prüfen - required, gibt Adresse zurück (kein Option)
         let adresse = praxis.adresse();
-        assert_eq!(adresse.strasse(), "Lindenallee");
-        assert_eq!(adresse.hausnummer(), Some("26"));
-        assert_eq!(adresse.plz(), "10115");
-        assert_eq!(adresse.ort(), "Berlin");
+        assert_eq!(adresse.strasse(), "Musterstraße");
+        assert_eq!(adresse.hausnummer(), Some("42"));
+        assert_eq!(adresse.plz(), "12345");
+        assert_eq!(adresse.ort(), "Beispielstadt");
         assert_eq!(adresse.land(), "DE");
 
         // Vektoren prüfen
@@ -608,8 +608,8 @@ mod tests {
         let adresse = AdresseSchema {
             strasse: "Hauptstraße".to_string(),
             hausnummer: Some("42".to_string()),
-            plz: "10115".to_string(),
-            ort: "Berlin".to_string(),
+            plz: "12345".to_string(),
+            ort: "Teststadt".to_string(),
             land: "DE".to_string(),
         };
 
@@ -620,8 +620,8 @@ mod tests {
 
         // required Felder: direkt &str
         assert_eq!(fb.strasse(), "Hauptstraße");
-        assert_eq!(fb.plz(), "10115");
-        assert_eq!(fb.ort(), "Berlin");
+        assert_eq!(fb.plz(), "12345");
+        assert_eq!(fb.ort(), "Teststadt");
 
         // optionale Felder: Option<&str>
         assert_eq!(fb.hausnummer(), Some("42"));

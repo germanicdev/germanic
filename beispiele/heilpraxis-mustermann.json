@@ -1,17 +1,17 @@
 {
-  "name": "Thomas Waldberg",
+  "name": "Max Mustermann",
   "bezeichnung": "Heilpraktiker",
-  "praxisname": "Naturheilpraxis am Park",
+  "praxisname": "Heilpraxis Mustermann",
   "adresse": {
-    "strasse": "Rothenbaumchaussee",
-    "hausnummer": "15",
-    "plz": "20148",
-    "ort": "Hamburg",
+    "strasse": "Testweg",
+    "hausnummer": "7",
+    "plz": "54321",
+    "ort": "Testdorf",
     "land": "DE"
   },
-  "telefon": "+49 40 12345678",
-  "email": "praxis@heilpraxis-waldberg.de",
-  "website": "https://heilpraxis-waldberg.de",
+  "telefon": "+49 987 1234567",
+  "email": "kontakt@heilpraxis-mustermann.example",
+  "website": "https://heilpraxis-mustermann.example",
   "schwerpunkte": [
     "Biologische Zahnmedizin",
     "Keramikimplantate",
@@ -27,7 +27,7 @@
     "Master of Science Biologische Zahnmedizin",
     "Umweltzahnmedizinerin"
   ],
-  "terminbuchung_url": "https://doctolib.de/heilpraxis-waldberg",
+  "terminbuchung_url": "https://doctolib.example/heilpraxis-mustermann",
   "oeffnungszeiten": "Mo-Fr 8-18 Uhr",
   "privatpatienten": true,
   "kassenpatienten": true,
