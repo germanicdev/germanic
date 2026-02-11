@@ -1,0 +1,36 @@
+{
+  "name": "Thomas Waldberg",
+  "bezeichnung": "Heilpraktiker",
+  "praxisname": "Naturheilpraxis am Park",
+  "adresse": {
+    "strasse": "Rothenbaumchaussee",
+    "hausnummer": "15",
+    "plz": "20148",
+    "ort": "Hamburg",
+    "land": "DE"
+  },
+  "telefon": "+49 40 12345678",
+  "email": "praxis@heilpraxis-waldberg.de",
+  "website": "https://heilpraxis-waldberg.de",
+  "schwerpunkte": [
+    "Biologische Zahnmedizin",
+    "Keramikimplantate",
+    "Amalgamsanierung"
+  ],
+  "therapieformen": [
+    "Metallfreier Zahnersatz",
+    "Ozontherapie",
+    "Neuraltherapie"
+  ],
+  "qualifikationen": [
+    "Heilpraktiker",
+    "Master of Science Biologische Zahnmedizin",
+    "Umweltzahnmedizinerin"
+  ],
+  "terminbuchung_url": "https://doctolib.de/heilpraxis-waldberg",
+  "oeffnungszeiten": "Mo-Fr 8-18 Uhr",
+  "privatpatienten": true,
+  "kassenpatienten": true,
+  "sprachen": ["Deutsch", "Englisch"],
+  "kurzbeschreibung": "Ganzheitliche Zahnmedizin ohne Metalle und Gifte – für Ihre Gesundheit."
+}

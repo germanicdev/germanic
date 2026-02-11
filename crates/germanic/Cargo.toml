@@ -1,0 +1,56 @@
+# GERMANIC
+# ========
+# CLI + Library für maschinenlesbare Schema-Feeds
+#
+# Verwendung:
+#   Als Library: use germanic::PraxisSchema;
+#   Als CLI:     germanic compile --schema praxis --input praxis.json
+
+[package]
+name = "germanic"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+description = "GERMANIC - Maschinenlesbare Schemas für Websites"
+
+# Binary und Library im selben Crate
+[[bin]]
+name = "germanic"
+path = "src/main.rs"
+
+[lib]
+name = "germanic"
+path = "src/lib.rs"
+
+[dependencies]
+# Re-export unserer Macros, damit Nutzer nur `use germanic::GermanicSchema` brauchen
+germanic-macros = { path = "../germanic-macros" }
+
+# Serialisierung
+serde.workspace = true
+serde_json.workspace = true
+
+# FlatBuffers für Zero-Copy
+flatbuffers.workspace = true
+
+# CLI
+clap.workspace = true
+
+# Fehlerbehandlung
+thiserror.workspace = true
+anyhow.workspace = true
+
+# Kryptografie
+ed25519-dalek.workspace = true
+rand.workspace = true
+
+[build-dependencies]
+# Für FlatBuffer-Schema-Kompilierung
+flatc-rust = "0.2"
+
+[dev-dependencies]
+# Für Integration-Tests
+tempfile = "3.10"

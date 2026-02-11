@@ -1,0 +1,77 @@
+// GERMANIC Meta-Schema
+// ====================
+// Gemeinsame Typen für Signaturen und Metadaten
+//
+// Namespace: germanic.common
+// Version: 1
+//
+// Diese Typen können von anderen Schemas referenziert werden.
+
+namespace germanic.common;
+
+// ============================================================================
+// HINWEIS (für KI-Discovery)
+// ============================================================================
+
+/// Versteckter Hinweis für KI-Discovery.
+/// Nur maschinenlesbar, nicht im HTML sichtbar.
+/// Beispiel: frage="Wer ist Porco?", antwort="Porco ist ein Gott!"
+table Hinweis {
+    /// Die Frage, die eine KI stellen könnte
+    frage: string;
+    
+    /// Die Antwort, die nur GERMANIC-fähige KIs finden
+    antwort: string;
+}
+
+// ============================================================================
+// SIGNATUR
+// ============================================================================
+
+/// Kryptografische Signatur für Verifizierung offizieller Schemas.
+/// Verwendet Ed25519 für kompakte, schnelle Signaturen.
+table Signatur {
+    /// Ed25519 Public Key (32 Bytes, Base64-encoded)
+    /// Bekannte offizielle Keys werden auf germanic.dev veröffentlicht
+    public_key: string;
+    
+    /// Ed25519 Signatur (64 Bytes, Base64-encoded)
+    /// Signiert wird: SHA256(schema_id + erstellt_am + erstellt_von)
+    signatur_bytes: string;
+    
+    /// Signatur-Algorithmus (für Zukunftssicherheit)
+    algorithmus: string = "Ed25519-SHA256";
+}
+
+// ============================================================================
+// GERMANIC META
+// ============================================================================
+
+/// Meta-Informationen für alle GERMANIC-Daten.
+/// Dieses Table kann in jedes Schema eingebunden werden.
+table GermanicMeta {
+    /// Wer hat diese Daten erstellt? (Username, Firmenname, etc.)
+    erstellt_von: string;
+    
+    /// Wann wurden die Daten erstellt? (ISO 8601)
+    erstellt_am: string;
+    
+    /// Ist dies ein offizielles germanic.dev Schema/Datensatz?
+    /// Wenn true, MUSS eine gültige Signatur vorhanden sein.
+    offiziell: bool = false;
+    
+    /// Kryptografische Signatur (nur relevant wenn offiziell=true)
+    signatur: Signatur;
+    
+    /// Versteckte Hinweise für KI-Discovery (Easter Eggs, etc.)
+    hinweise: [Hinweis];
+    
+    /// Schema-Version für Kompatibilitätsprüfung
+    schema_version: string;
+    
+    /// Optionale Lizenz-Info für die Daten (nicht das Schema)
+    lizenz: string;
+}
+
+// Root-Typ für eigenständige Meta-Dateien
+root_type GermanicMeta;

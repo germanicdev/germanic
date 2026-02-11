@@ -1,0 +1,122 @@
+// GERMANIC Praxis-Schema
+// ======================
+// Schema für Heilpraktiker, Ärzte und Therapeuten
+//
+// Namespace: de.gesundheit
+// Version: 1
+//
+// Verwendung:
+//   flatc --rust praxis.fbs
+//   → Generiert Rust-Code für Zero-Copy Deserialisierung
+
+namespace de.gesundheit;
+
+// ============================================================================
+// ADRESSE
+// ============================================================================
+
+/// Vollständige Adresse einer Praxis.
+table Adresse {
+    /// Straßenname (ohne Hausnummer)
+    strasse: string (required);
+    
+    /// Hausnummer (optional, da manche Praxen keine haben)
+    hausnummer: string;
+    
+    /// Postleitzahl
+    plz: string (required);
+    
+    /// Stadt/Ort
+    ort: string (required);
+    
+    /// ISO 3166-1 alpha-2 Ländercode
+    /// Standard: "DE" für Deutschland
+    land: string = "DE";
+}
+
+// ============================================================================
+// PRAXIS
+// ============================================================================
+
+/// Haupttabelle für eine Gesundheitspraxis.
+///
+/// Pflichtfelder:
+///   - name: Name der behandelnden Person
+///   - bezeichnung: Berufsbezeichnung
+///   - adresse: Vollständige Adresse
+///
+/// Beispiel:
+///   name = "Dr. Maria Sonnenschein"
+///   bezeichnung = "Zahnärztin"
+///   praxisname = "Praxis Sonnenschein"
+table Praxis {
+    // ── Identifikation ──
+    
+    /// Name der Person (z.B. "Dr. Maria Sonnenschein")
+    name: string (required);
+    
+    /// Berufsbezeichnung (z.B. "Heilpraktikerin", "Zahnärztin")
+    bezeichnung: string (required);
+    
+    /// Name der Praxis (falls anders als Personenname)
+    praxisname: string;
+    
+    // ── Kontakt ──
+    
+    /// Vollständige Adresse
+    adresse: Adresse (required);
+    
+    /// Telefonnummer im internationalen Format (+49 ...)
+    telefon: string;
+    
+    /// E-Mail-Adresse
+    email: string;
+    
+    /// Website-URL
+    website: string;
+    
+    // ── Leistungen ──
+    
+    /// Medizinische Schwerpunkte
+    /// z.B. ["Funktionelle Medizin", "Darm & Mikrobiom"]
+    schwerpunkte: [string];
+    
+    /// Angebotene Therapieformen
+    /// z.B. ["IHHT Training", "Osteopathie", "Infusionstherapie"]
+    therapieformen: [string];
+    
+    /// Qualifikationen und Zertifizierungen
+    /// z.B. ["Heilpraktikerin", "Osteopathin", "Physiotherapeutin"]
+    qualifikationen: [string];
+    
+    // ── Terminbuchung ──
+    
+    /// URL oder Telefonnummer für Terminbuchung
+    /// z.B. "https://doctolib.de/..." oder "tel:+49123456"
+    terminbuchung_url: string;
+    
+    /// Öffnungszeiten als Freitext
+    /// z.B. "Mo-Fr 9-17 Uhr" oder "Nach Vereinbarung"
+    oeffnungszeiten: string;
+    
+    // ── Abrechnung ──
+    
+    /// Behandelt Privatpatienten?
+    privatpatienten: bool = false;
+    
+    /// Behandelt Kassenpatienten?
+    kassenpatienten: bool = false;
+    
+    // ── Weitere Infos ──
+    
+    /// Gesprochene Sprachen
+    /// z.B. ["Deutsch", "Englisch"]
+    sprachen: [string];
+    
+    /// Kurzbeschreibung für KI-Zusammenfassungen
+    /// Max. 500 Zeichen empfohlen
+    kurzbeschreibung: string;
+}
+
+// Root-Typ für die .grm Payload
+root_type Praxis;

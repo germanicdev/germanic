@@ -1,0 +1,7 @@
+/target/
+/docs/
+*.grm
+README.md
+LICENSE
+CLAUDE.md
+Cargo.lock

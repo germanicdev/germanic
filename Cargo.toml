@@ -1,0 +1,49 @@
+# GERMANIC Workspace
+# ==================
+# Proprietäre Software - Alle Rechte vorbehalten
+#
+# Struktur:
+#   crates/germanic        → CLI + Library (Hauptcrate)
+#   crates/germanic-macros → Proc-Macro für #[derive(GermanicSchema)]
+
+[workspace]
+resolver = "2"  # Rust 2021+ Resolver für bessere Feature-Unifikation
+
+members = [
+    "crates/germanic",
+    "crates/germanic-macros",
+]
+
+# Gemeinsame Abhängigkeiten für alle Workspace-Mitglieder
+# Definiere hier Versionen zentral, nutze sie mit { workspace = true }
+[workspace.dependencies]
+# Serialisierung
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# FlatBuffers für Zero-Copy Serialisierung
+flatbuffers = "24.3"
+
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+
+# Fehlerbehandlung
+thiserror = "2.0"
+anyhow = "1.0"
+
+# Proc-Macro Infrastruktur (nur für germanic-macros)
+syn = { version = "2.0", features = ["full", "parsing", "extra-traits"] }
+quote = "1.0"
+proc-macro2 = "1.0"
+darling = "0.20"
+
+# Kryptografie für Signaturen
+ed25519-dalek = { version = "2.1", features = ["std"] }
+rand = "0.8"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "Proprietary"
+authors = ["GERMANIC Project"]

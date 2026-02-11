@@ -1,0 +1,51 @@
+# GERMANIC Macros
+# ================
+# Proc-Macro Crate für #[derive(GermanicSchema)]
+#
+# WICHTIG: proc-macro = true bedeutet:
+#   1. Dieses Crate wird zur Kompilierzeit ausgeführt
+#   2. Es kann NUR proc-macro Items exportieren
+#   3. Es wird als dynamische Bibliothek (.dylib) kompiliert
+
+[package]
+name = "germanic-macros"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+description = "Proc-Macros für das GERMANIC Schema-System"
+
+[lib]
+# KRITISCH: Diese Zeile macht das Crate zu einem Proc-Macro Crate
+# Ohne sie: normale Library
+# Mit ihr: Compiler-Plugin
+proc-macro = true
+
+[dependencies]
+# syn: Parst Rust-Quellcode in einen AST (Abstract Syntax Tree)
+# - "full": Alle Rust-Syntax-Konstrukte
+# - "parsing": Parser-Funktionalität
+# - "extra-traits": Debug, Eq, Hash für AST-Knoten (hilfreich beim Debuggen)
+syn.workspace = true
+
+# quote: Erzeugt Rust-Code aus einem Template
+# - quote! { ... } Macro für Code-Generierung
+# - Interpolation mit #variable
+quote.workspace = true
+
+# proc-macro2: Wrapper um proc_macro mit besserer Ergonomie
+# - Ermöglicht Unit-Tests für Macros
+# - Gleiche API wie proc_macro, aber außerhalb von Macro-Kontext nutzbar
+proc-macro2.workspace = true
+
+# darling: "Serde für Macros"
+# - Deklaratives Parsing von Attributen
+# - Automatische Fehlerbehandlung
+# - Stark typisierte Attribut-Definitionen
+darling.workspace = true
+
+[dev-dependencies]
+# Für Tests der Macro-Ausgabe
+trybuild = "1.0"

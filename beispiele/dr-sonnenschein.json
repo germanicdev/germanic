@@ -1,0 +1,39 @@
+{
+  "name": "Dr. Maria Sonnenschein",
+  "bezeichnung": "Zahnärztin",
+  "praxisname": "Praxis Sonnenschein",
+  "adresse": {
+    "strasse": "Lindenallee",
+    "hausnummer": "26",
+    "plz": "10115",
+    "ort": "Berlin",
+    "land": "DE"
+  },
+  "telefon": "+49 30 1234567",
+  "email": "info@praxis-sonnenschein.example.de",
+  "website": "https://praxis-sonnenschein.example.de",
+  "schwerpunkte": [
+    "Zahnerhaltung",
+    "Prophylaxe",
+    "Stress & Nervensystem"
+  ],
+  "therapieformen": [
+    "Wurzelbehandlung",
+    "Bleaching",
+    "Infusionstherapie",
+    "Lasertherapie",
+    "Borreliose Therapie"
+  ],
+  "qualifikationen": [
+    "Zahnärztin",
+    "Implantologie-Zertifikat",
+    "Physiotherapeutin",
+    "Regulationstherapeutin IGAF"
+  ],
+  "terminbuchung_url": "https://praxis-sonnenschein.example.de/termin",
+  "oeffnungszeiten": "Nach Vereinbarung",
+  "privatpatienten": true,
+  "kassenpatienten": false,
+  "sprachen": ["Deutsch"],
+  "kurzbeschreibung": "Als Zahnärztin für moderne Zahnmedizin in Berlin ist es mir wichtig, Sie in Ihrer Gesamtheit zu betrachten."
+}
