@@ -33,6 +33,9 @@ germanic-macros = { path = "../germanic-macros" }
 serde.workspace = true
 serde_json.workspace = true
 
+# Ordered maps for dynamic schema field ordering
+indexmap.workspace = true
+
 # FlatBuffers für Zero-Copy
 flatbuffers.workspace = true
 
