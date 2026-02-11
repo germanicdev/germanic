@@ -5,8 +5,14 @@
 //! ## Main Workflow
 //!
 //! ```bash
-//! # Compile practice JSON to .grm
+//! # Compile practice JSON to .grm (static mode)
 //! germanic compile --schema practice --input practice.json --output practice.grm
+//!
+//! # Infer schema from example JSON (dynamic mode)
+//! germanic init --from example.json --schema-id de.dining.restaurant.v1
+//!
+//! # Compile with dynamic schema
+//! germanic compile --schema restaurant.schema.json --input data.json
 //!
 //! # Validate a .grm file
 //! germanic validate practice.grm
@@ -33,8 +39,14 @@ Concierge Workflow:
   2. CLI compiles to .grm      → germanic compile --schema practice ...
   3. .grm is uploaded          → /germanic/data.grm
 
+Dynamic Workflow (Weg 3):
+  1. Provide example JSON      → germanic init --from example.json --schema-id ...
+  2. Edit .schema.json          → mark required fields
+  3. Compile dynamically       → germanic compile --schema my.schema.json --input data.json
+
 Example:
   germanic compile --schema practice --input dr-sonnenschein.json
+  germanic init --from restaurant.json --schema-id de.dining.restaurant.v1
 "#)]
 struct Cli {
     #[command(subcommand)]
@@ -47,8 +59,11 @@ enum Commands {
     ///
     /// Reads a JSON file, validates it against the schema,
     /// and creates a .grm binary file.
+    ///
+    /// Static mode: --schema practice (or praxis)
+    /// Dynamic mode: --schema path/to/schema.json
     Compile {
-        /// Name of the schema (currently: "practice" or "praxis")
+        /// Schema name (e.g. "practice") or path to .schema.json
         #[arg(short, long)]
         schema: String,
 
@@ -58,6 +73,22 @@ enum Commands {
 
         /// Path to .grm output file
         /// Default: same name as input with .grm extension
+        #[arg(short, long)]
+        output: Option<PathBuf>,
+    },
+
+    /// Infers a schema from example JSON
+    Init {
+        /// Path to example JSON file
+        #[arg(long)]
+        from: PathBuf,
+
+        /// Schema ID (e.g. "de.dining.restaurant.v1")
+        #[arg(long)]
+        schema_id: String,
+
+        /// Output path for .schema.json
+        /// Default: same directory, schema_id as filename
         #[arg(short, long)]
         output: Option<PathBuf>,
     },
@@ -94,7 +125,22 @@ fn main() -> Result<()> {
             schema,
             input,
             output,
-        } => cmd_compile(&schema, &input, output.as_deref()),
+        } => {
+            let schema_path = std::path::Path::new(&schema);
+            if schema_path.extension().is_some_and(|ext| ext == "json") && schema_path.exists() {
+                // Dynamic mode (Weg 3)
+                cmd_compile_dynamic(schema_path, &input, output.as_deref())
+            } else {
+                // Static mode (existing)
+                cmd_compile(&schema, &input, output.as_deref())
+            }
+        }
+
+        Commands::Init {
+            from,
+            schema_id,
+            output,
+        } => cmd_init(&from, &schema_id, output.as_deref()),
 
         Commands::Schemas { name } => cmd_schemas(name.as_deref()),
 
@@ -104,9 +150,13 @@ fn main() -> Result<()> {
     }
 }
 
-/// Compiles JSON to .grm
-fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Path>) -> Result<()> {
-    use germanic::compiler::{SchemaType, compile_json};
+/// Compiles JSON to .grm (static mode)
+fn cmd_compile(
+    schema_name: &str,
+    input: &PathBuf,
+    output: Option<&std::path::Path>,
+) -> Result<()> {
+    use germanic::compiler::{compile_json, SchemaType};
     use germanic::schemas::PraxisSchema;
 
     println!("┌─────────────────────────────────────────");
@@ -119,7 +169,8 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
     let schema_type = SchemaType::from_str(schema_name).ok_or_else(|| {
         anyhow::anyhow!(
             "Unknown schema: '{}'\n\
-             Available schemas: practice, praxis",
+             Available schemas: practice, praxis\n\
+             Or provide a .schema.json path for dynamic mode",
             schema_name
         )
     })?;
@@ -129,9 +180,7 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
 
     // 3. Compile schema-specifically
     let grm_bytes = match schema_type {
-        SchemaType::Practice => {
-            compile_json::<PraxisSchema>(&json).context("Compilation failed")?
-        }
+        SchemaType::Practice => compile_json::<PraxisSchema>(&json).context("Compilation failed")?,
     };
 
     // 4. Determine output path
@@ -146,6 +195,81 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
     println!("│ Size:   {} bytes", grm_bytes.len());
     println!("├─────────────────────────────────────────");
     println!("│ ✓ Compilation successful");
+    println!("└─────────────────────────────────────────");
+
+    Ok(())
+}
+
+/// Compiles JSON to .grm (dynamic mode — Weg 3)
+fn cmd_compile_dynamic(
+    schema_path: &std::path::Path,
+    input: &PathBuf,
+    output: Option<&std::path::Path>,
+) -> Result<()> {
+    use germanic::dynamic::compile_dynamic;
+
+    println!("┌─────────────────────────────────────────");
+    println!("│ GERMANIC Dynamic Compiler");
+    println!("├─────────────────────────────────────────");
+    println!("│ Schema: {}", schema_path.display());
+    println!("│ Input:  {}", input.display());
+
+    let grm_bytes =
+        compile_dynamic(schema_path, input).context("Dynamic compilation failed")?;
+
+    let output_path = output
+        .map(PathBuf::from)
+        .unwrap_or_else(|| input.with_extension("grm"));
+
+    std::fs::write(&output_path, &grm_bytes).context("Write failed")?;
+
+    println!("│ Output: {}", output_path.display());
+    println!("│ Size:   {} bytes", grm_bytes.len());
+    println!("├─────────────────────────────────────────");
+    println!("│ ✓ Dynamic compilation successful");
+    println!("└─────────────────────────────────────────");
+
+    Ok(())
+}
+
+/// Infers a schema from example JSON
+fn cmd_init(
+    from: &PathBuf,
+    schema_id: &str,
+    output: Option<&std::path::Path>,
+) -> Result<()> {
+    use germanic::dynamic::infer::infer_schema;
+
+    println!("┌─────────────────────────────────────────");
+    println!("│ GERMANIC Schema Inference");
+    println!("├─────────────────────────────────────────");
+    println!("│ Input: {}", from.display());
+    println!("│ Schema-ID: {}", schema_id);
+
+    let json_str = std::fs::read_to_string(from).context("Could not read JSON file")?;
+    let data: serde_json::Value = serde_json::from_str(&json_str).context("Invalid JSON")?;
+
+    let schema = infer_schema(&data, schema_id)
+        .ok_or_else(|| anyhow::anyhow!("Could not infer schema — input must be a JSON object"))?;
+
+    let output_path = output
+        .map(PathBuf::from)
+        .unwrap_or_else(|| {
+            let name = schema_id.replace('.', "_");
+            PathBuf::from(format!("{}.schema.json", name))
+        });
+
+    schema
+        .to_file(&output_path)
+        .context("Could not write schema file")?;
+
+    println!("│ Output: {}", output_path.display());
+    println!("│ Fields: {}", schema.field_count());
+    println!("├─────────────────────────────────────────");
+    println!(
+        "│ ✓ Schema inferred — edit {} to mark required fields",
+        output_path.display()
+    );
     println!("└─────────────────────────────────────────");
 
     Ok(())
@@ -190,6 +314,10 @@ fn cmd_schemas(name: Option<&str>) -> Result<()> {
             println!("│");
             println!("│   practice   Healthcare practitioners, doctors, therapists");
             println!("│   (praxis)   → germanic compile --schema practice ...");
+            println!("│");
+            println!("│ Dynamic schemas:");
+            println!("│   Any .schema.json file can be used with:");
+            println!("│   germanic compile --schema my.schema.json --input data.json");
         }
     }
 
