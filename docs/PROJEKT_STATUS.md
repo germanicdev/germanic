@@ -42,6 +42,7 @@
 |------|--------|-------|
 | 4.1-4.6 | ⬜ TODO | After Phase 3 |
 | 4.6b English schema translations | ✅ DONE | 47 schemas + 52 examples |
+| 4.7 JSON Schema Draft 7 Adapter | ✅ DONE | json_schema.rs + CLI auto-detect |
 
 ## Blockers
 - flatc must be installed for cargo test/build (`brew install flatbuffers`)
@@ -95,6 +96,24 @@
   - Landwirtschaft (2): hofladen, winzer
   - Recht (2): anwaltskanzlei, steuerberater
 - ✅ All files validated as proper JSON
+
+### 2026-02-11: JSON Schema Draft 7 Adapter (AP-4.7)
+- ✅ New module `dynamic/json_schema.rs` (~230 lines code + ~220 lines tests)
+- ✅ `convert_json_schema()`: Converts JSON Schema Draft 7 → SchemaDefinition
+- ✅ `is_json_schema()`: Auto-detects JSON Schema Draft 7 vs GERMANIC native format
+- ✅ `load_schema_auto()`: Transparent schema loading with auto-detection
+- ✅ Full type mapping: string, boolean, integer, number, object, array
+- ✅ Required-list inversion (object-level → per-field flags)
+- ✅ Nested objects → FieldType::Table (recursive)
+- ✅ Array items type inference (string/integer arrays)
+- ✅ Default value pass-through
+- ✅ Warnings for unsupported features: $ref, anyOf, oneOf, allOf, enum
+- ✅ Error on non-object root type
+- ✅ Schema ID from $id, title, or fallback
+- ✅ CLI auto-detection: `--schema` accepts both formats transparently
+- ✅ 23 unit tests including OpenClaw llm-task compatibility test
+- ✅ All 65 existing tests remain green (no breaking changes)
+- ✅ English identifiers throughout (function names adapted from AP spec: konvertiere → convert, ist → is)
 
 ## Next Action
 → Continue with Phase 1 Translation tasks

@@ -201,18 +201,29 @@ fn cmd_compile(
 }
 
 /// Compiles JSON to .grm (dynamic mode — Weg 3)
+///
+/// Supports both GERMANIC native `.schema.json` and JSON Schema Draft 7 input.
+/// Format is auto-detected transparently.
 fn cmd_compile_dynamic(
     schema_path: &std::path::Path,
     input: &PathBuf,
     output: Option<&std::path::Path>,
 ) -> Result<()> {
-    use germanic::dynamic::compile_dynamic;
+    use germanic::dynamic::{compile_dynamic, load_schema_auto};
 
     println!("┌─────────────────────────────────────────");
     println!("│ GERMANIC Dynamic Compiler");
     println!("├─────────────────────────────────────────");
     println!("│ Schema: {}", schema_path.display());
     println!("│ Input:  {}", input.display());
+
+    // Check for JSON Schema warnings (auto-detection happens inside compile_dynamic too,
+    // but we run detection separately here to surface warnings to the user)
+    if let Ok((_, warnings)) = load_schema_auto(schema_path) {
+        for warning in &warnings {
+            println!("│ ⚠ {}", warning);
+        }
+    }
 
     let grm_bytes =
         compile_dynamic(schema_path, input).context("Dynamic compilation failed")?;
