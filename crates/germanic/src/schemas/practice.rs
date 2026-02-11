@@ -1,8 +1,8 @@
-//! # Praxis-Schema
+//! # Practice Schema
 //!
-//! Schema für Heilpraktiker, Ärzte und Therapeuten.
+//! Schema for healthcare practitioners, doctors and therapists.
 //!
-//! ## Datenfluss
+//! ## Data Flow
 //!
 //! ```text
 //! WordPress Plugin
@@ -14,15 +14,15 @@
 //!   serde_json::from_str::<PraxisSchema>()
 //!       │
 //!       ▼
-//!   PraxisSchema (Rust-Struct)
+//!   PraxisSchema (Rust struct)
 //!       │
-//!       ├── validiere() → Ok(())
-//!       │
-//!       ▼
-//!   zu_bytes() → FlatBuffer Bytes
+//!       ├── validate() → Ok(())
 //!       │
 //!       ▼
-//!   .grm Datei (Header + Payload)
+//!   to_bytes() → FlatBuffer Bytes
+//!       │
+//!       ▼
+//!   .grm file (Header + Payload)
 //! ```
 
 use crate::GermanicSchema;
@@ -30,7 +30,7 @@ use crate::schema::GermanicSerialize;
 use flatbuffers::FlatBufferBuilder;
 use serde::{Deserialize, Serialize};
 
-// Import der generierten FlatBuffer-Typen
+// Import of generated FlatBuffer types
 use crate::generated::praxis::de::gesundheit::{
     Adresse as FbAdresse, AdresseArgs as FbAdresseArgs, Praxis as FbPraxis,
     PraxisArgs as FbPraxisArgs,
@@ -40,37 +40,37 @@ use crate::generated::praxis::de::gesundheit::{
 // ADRESSE
 // ============================================================================
 
-/// Adresse einer Praxis.
+/// Address of a practice.
 ///
-/// ## Felder
+/// ## Fields
 ///
-/// | Feld        | Typ            | Pflicht | Default |
-/// |-------------|----------------|---------|---------|
-/// | strasse     | String         | ✅      | -       |
-/// | hausnummer  | Option<String> | ❌      | None    |
-/// | plz         | String         | ✅      | -       |
-/// | ort         | String         | ✅      | -       |
-/// | land        | String         | ❌      | "DE"    |
+/// | Field       | Type           | Required | Default |
+/// |-------------|----------------|----------|---------|
+/// | strasse     | String         | ✅       | -       |
+/// | hausnummer  | Option<String> | ❌       | None    |
+/// | plz         | String         | ✅       | -       |
+/// | ort         | String         | ✅       | -       |
+/// | land        | String         | ❌       | "DE"    |
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, GermanicSchema)]
 #[germanic(schema_id = "de.gesundheit.adresse.v1")]
 pub struct AdresseSchema {
-    /// Straßenname (ohne Hausnummer)
+    /// Street name (without house number)
     #[germanic(required)]
     pub strasse: String,
 
-    /// Hausnummer (optional)
+    /// House number (optional)
     #[serde(default)]
     pub hausnummer: Option<String>,
 
-    /// Postleitzahl
+    /// Postal code
     #[germanic(required)]
     pub plz: String,
 
-    /// Ortsname
+    /// City name
     #[germanic(required)]
     pub ort: String,
 
-    /// Ländercode (ISO 3166-1 alpha-2)
+    /// Country code (ISO 3166-1 alpha-2)
     #[serde(default = "default_land")]
     #[germanic(default = "DE")]
     pub land: String,
@@ -81,22 +81,22 @@ fn default_land() -> String {
 }
 
 impl GermanicSerialize for AdresseSchema {
-    /// Serialisiert die Adresse zu FlatBuffer-Bytes.
+    /// Serializes the address to FlatBuffer bytes.
     ///
-    /// **Hinweis:** AdresseSchema allein ist kein gültiger Root-Typ.
-    /// Diese Methode wird hauptsächlich für Tests verwendet.
-    /// Im Normalfall wird Adresse als Teil von PraxisSchema serialisiert.
+    /// **Note:** AdresseSchema alone is not a valid root type.
+    /// This method is mainly used for tests.
+    /// Normally address is serialized as part of PraxisSchema.
     fn to_bytes(&self) -> Vec<u8> {
         let mut builder = FlatBufferBuilder::with_capacity(256);
 
-        // Strings erstellen (Blätter zuerst)
+        // Create strings (leaves first)
         let strasse = builder.create_string(&self.strasse);
         let hausnummer = self.hausnummer.as_ref().map(|h| builder.create_string(h));
         let plz = builder.create_string(&self.plz);
         let ort = builder.create_string(&self.ort);
         let land = builder.create_string(&self.land);
 
-        // Adresse-Table erstellen
+        // Create address table
         let adresse = FbAdresse::create(
             &mut builder,
             &FbAdresseArgs {
@@ -108,8 +108,8 @@ impl GermanicSerialize for AdresseSchema {
             },
         );
 
-        // Hinweis: Adresse ist kein Root-Type im FlatBuffer-Schema,
-        // daher verwenden wir finish_minimal statt finish
+        // Note: Address is not a root type in the FlatBuffer schema,
+        // so we use finish_minimal instead of finish
         builder.finish_minimal(adresse);
         builder.finished_data().to_vec()
     }
@@ -119,125 +119,125 @@ impl GermanicSerialize for AdresseSchema {
 // PRAXIS
 // ============================================================================
 
-/// Hauptschema für eine Gesundheitspraxis.
+/// Main schema for a healthcare practice.
 ///
-/// ## Felder
+/// ## Fields
 ///
-/// | Feld              | Typ            | Pflicht | Beschreibung                    |
-/// |-------------------|----------------|---------|----------------------------------|
-/// | name              | String         | ✅      | Name des Behandlers              |
-/// | bezeichnung       | String         | ✅      | "Heilpraktikerin", "Arzt", etc.  |
-/// | adresse           | AdresseSchema  | ✅      | Vollständige Adresse             |
-/// | praxisname        | Option<String> | ❌      | Name der Praxis                  |
-/// | telefon           | Option<String> | ❌      | Telefonnummer                    |
-/// | ...               | ...            | ...     | weitere optionale Felder         |
+/// | Field             | Type           | Required | Description                      |
+/// |-------------------|----------------|----------|----------------------------------|
+/// | name              | String         | ✅       | Name of practitioner             |
+/// | bezeichnung       | String         | ✅       | "Heilpraktikerin", "Arzt", etc.  |
+/// | adresse           | AdresseSchema  | ✅       | Complete address                 |
+/// | praxisname        | Option<String> | ❌       | Name of practice                 |
+/// | telefon           | Option<String> | ❌       | Phone number                     |
+/// | ...               | ...            | ...      | additional optional fields       |
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, GermanicSchema)]
 #[germanic(schema_id = "de.gesundheit.praxis.v1")]
 pub struct PraxisSchema {
     // ────────────────────────────────────────────────────────────────────────
-    // PFLICHTFELDER
+    // REQUIRED FIELDS
     // ────────────────────────────────────────────────────────────────────────
-    /// Name des Behandlers
+    /// Name of practitioner
     #[germanic(required)]
     pub name: String,
 
-    /// Berufsbezeichnung
+    /// Professional title
     #[germanic(required)]
     pub bezeichnung: String,
 
-    /// Vollständige Adresse der Praxis
+    /// Complete practice address
     pub adresse: AdresseSchema,
 
     // ────────────────────────────────────────────────────────────────────────
-    // OPTIONALE FELDER
+    // OPTIONAL FIELDS
     // ────────────────────────────────────────────────────────────────────────
-    /// Name der Praxis
+    /// Name of practice
     #[serde(default)]
     pub praxisname: Option<String>,
 
-    /// Telefonnummer
+    /// Phone number
     #[serde(default)]
     pub telefon: Option<String>,
 
-    /// E-Mail-Adresse
+    /// Email address
     #[serde(default)]
     pub email: Option<String>,
 
-    /// Website-URL
+    /// Website URL
     #[serde(default)]
     pub website: Option<String>,
 
-    /// URL zur Online-Terminbuchung
+    /// Online appointment booking URL
     #[serde(default)]
     pub terminbuchung_url: Option<String>,
 
-    /// Öffnungszeiten als Freitext
+    /// Opening hours as free text
     #[serde(default)]
     pub oeffnungszeiten: Option<String>,
 
-    /// Kurze Selbstbeschreibung
+    /// Brief self-description
     #[serde(default)]
     pub kurzbeschreibung: Option<String>,
 
     // ────────────────────────────────────────────────────────────────────────
-    // LISTEN
+    // LISTS
     // ────────────────────────────────────────────────────────────────────────
-    /// Medizinische Schwerpunkte
+    /// Medical specializations
     #[serde(default)]
     pub schwerpunkte: Vec<String>,
 
-    /// Angebotene Therapieformen
+    /// Offered therapy forms
     #[serde(default)]
     pub therapieformen: Vec<String>,
 
-    /// Qualifikationen und Zertifikate
+    /// Qualifications and certificates
     #[serde(default)]
     pub qualifikationen: Vec<String>,
 
-    /// Gesprochene Sprachen
+    /// Spoken languages
     #[serde(default)]
     pub sprachen: Vec<String>,
 
     // ────────────────────────────────────────────────────────────────────────
     // BOOLEANS
     // ────────────────────────────────────────────────────────────────────────
-    /// Behandelt Privatpatienten?
+    /// Treats private patients?
     #[serde(default)]
     #[germanic(default = "false")]
     pub privatpatienten: bool,
 
-    /// Behandelt Kassenpatienten?
+    /// Treats public insurance patients?
     #[serde(default)]
     #[germanic(default = "false")]
     pub kassenpatienten: bool,
 }
 
 impl GermanicSerialize for PraxisSchema {
-    /// Serialisiert das Praxis-Schema zu FlatBuffer-Bytes.
+    /// Serializes the practice schema to FlatBuffer bytes.
     ///
-    /// ## Algorithmus (Inside-Out)
+    /// ## Algorithm (Inside-Out)
     ///
     /// ```text
-    /// 1. Strings erstellen          → Offsets
-    /// 2. String-Vektoren erstellen  → Offsets
-    /// 3. Adresse erstellen          → Offset (braucht String-Offsets)
-    /// 4. Praxis erstellen           → Offset (braucht alle anderen)
+    /// 1. Create strings             → Offsets
+    /// 2. Create string vectors      → Offsets
+    /// 3. Create address             → Offset (needs string offsets)
+    /// 4. Create practice            → Offset (needs all others)
     /// 5. finish()                   → Bytes
     /// ```
     fn to_bytes(&self) -> Vec<u8> {
-        // Kapazität schätzen: ~100 Bytes Basis + Strings
-        let kapazitaet = 256 + self.name.len() + self.bezeichnung.len();
-        let mut builder = FlatBufferBuilder::with_capacity(kapazitaet);
+        // Estimate capacity: ~100 bytes base + strings
+        let capacity = 256 + self.name.len() + self.bezeichnung.len();
+        let mut builder = FlatBufferBuilder::with_capacity(capacity);
 
         // ════════════════════════════════════════════════════════════════════
-        // SCHRITT 1: Alle Strings erstellen (Blätter zuerst)
+        // STEP 1: Create all strings (leaves first)
         // ════════════════════════════════════════════════════════════════════
 
-        // Pflicht-Strings
+        // Required strings
         let name = builder.create_string(&self.name);
         let bezeichnung = builder.create_string(&self.bezeichnung);
 
-        // Optionale Strings (nur wenn vorhanden)
+        // Optional strings (only if present)
         let praxisname = self.praxisname.as_ref().map(|s| builder.create_string(s));
         let telefon = self.telefon.as_ref().map(|s| builder.create_string(s));
         let email = self.email.as_ref().map(|s| builder.create_string(s));
@@ -256,11 +256,11 @@ impl GermanicSerialize for PraxisSchema {
             .map(|s| builder.create_string(s));
 
         // ════════════════════════════════════════════════════════════════════
-        // SCHRITT 2: String-Vektoren erstellen
+        // STEP 2: Create string vectors
         // ════════════════════════════════════════════════════════════════════
         //
-        // FlatBuffer erwartet: Vector<WIPOffset<&str>>
-        // Wir müssen erst alle Strings im Vektor erstellen, dann den Vektor
+        // FlatBuffer expects: Vector<WIPOffset<&str>>
+        // We must first create all strings in the vector, then the vector
 
         let schwerpunkte = if !self.schwerpunkte.is_empty() {
             let offsets: Vec<_> = self
@@ -307,7 +307,7 @@ impl GermanicSerialize for PraxisSchema {
         };
 
         // ════════════════════════════════════════════════════════════════════
-        // SCHRITT 3: Adresse erstellen (Nested Table)
+        // STEP 3: Create address (Nested Table)
         // ════════════════════════════════════════════════════════════════════
 
         let adresse = {
@@ -334,13 +334,13 @@ impl GermanicSerialize for PraxisSchema {
         };
 
         // ════════════════════════════════════════════════════════════════════
-        // SCHRITT 4: Praxis (Root) erstellen
+        // STEP 4: Create practice (Root)
         // ════════════════════════════════════════════════════════════════════
 
         let praxis = FbPraxis::create(
             &mut builder,
             &FbPraxisArgs {
-                // Pflicht
+                // Required
                 name: Some(name),
                 bezeichnung: Some(bezeichnung),
                 adresse: Some(adresse),
@@ -364,7 +364,7 @@ impl GermanicSerialize for PraxisSchema {
         );
 
         // ════════════════════════════════════════════════════════════════════
-        // SCHRITT 5: Finalisieren
+        // STEP 5: Finalize
         // ════════════════════════════════════════════════════════════════════
 
         builder.finish(praxis, None);
@@ -382,7 +382,7 @@ mod tests {
     use crate::schema::{SchemaMetadata, Validate};
 
     // ────────────────────────────────────────────────────────────────────────
-    // BESTEHENDE TESTS
+    // EXISTING TESTS
     // ────────────────────────────────────────────────────────────────────────
 
     #[test]
@@ -411,23 +411,23 @@ mod tests {
     }
 
     #[test]
-    fn test_praxis_validierung_fehlt() {
+    fn test_practice_validation_missing() {
         let praxis = PraxisSchema::default();
-        let ergebnis = praxis.validate();
+        let result = praxis.validate();
 
-        assert!(ergebnis.is_err());
+        assert!(result.is_err());
 
-        if let Err(crate::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
-            assert!(felder.contains(&"name".to_string()));
-            assert!(felder.contains(&"bezeichnung".to_string()));
-            assert!(felder.contains(&"adresse.strasse".to_string()));
-            assert!(felder.contains(&"adresse.plz".to_string()));
-            assert!(felder.contains(&"adresse.ort".to_string()));
+        if let Err(crate::error::ValidationError::RequiredFieldsMissing(fields)) = result {
+            assert!(fields.contains(&"name".to_string()));
+            assert!(fields.contains(&"bezeichnung".to_string()));
+            assert!(fields.contains(&"adresse.strasse".to_string()));
+            assert!(fields.contains(&"adresse.plz".to_string()));
+            assert!(fields.contains(&"adresse.ort".to_string()));
         }
     }
 
     #[test]
-    fn test_praxis_validierung_ok() {
+    fn test_practice_validation_ok() {
         let praxis = PraxisSchema {
             name: "Dr. Anna Schmidt".to_string(),
             bezeichnung: "Zahnärztin".to_string(),
@@ -445,7 +445,7 @@ mod tests {
     }
 
     #[test]
-    fn test_json_deserialisierung() {
+    fn test_json_deserialization() {
         let json = r#"{
             "name": "Dr. Müller",
             "bezeichnung": "Arzt",
@@ -465,7 +465,7 @@ mod tests {
     }
 
     #[test]
-    fn test_json_vollstaendig() {
+    fn test_json_complete() {
         let json = r#"{
             "name": "Dr. Anna Schmidt",
             "bezeichnung": "Zahnärztin",
@@ -501,11 +501,11 @@ mod tests {
     }
 
     // ────────────────────────────────────────────────────────────────────────
-    // NEUE TESTS: FLATBUFFER-SERIALISIERUNG
+    // NEW TESTS: FLATBUFFER SERIALIZATION
     // ────────────────────────────────────────────────────────────────────────
 
     #[test]
-    fn test_praxis_serialisierung_minimal() {
+    fn test_practice_serialization_minimal() {
         let praxis = PraxisSchema {
             name: "Test".to_string(),
             bezeichnung: "Arzt".to_string(),
@@ -521,13 +521,13 @@ mod tests {
 
         let bytes = praxis.to_bytes();
 
-        // FlatBuffer hat mindestens Header + Daten
+        // FlatBuffer has at least header + data
         assert!(!bytes.is_empty());
-        assert!(bytes.len() > 50); // Mindestgröße für die Daten
+        assert!(bytes.len() > 50); // Minimum size for the data
     }
 
     #[test]
-    fn test_praxis_serialisierung_roundtrip() {
+    fn test_practice_serialization_roundtrip() {
         let original = PraxisSchema {
             name: "Dr. Anna Schmidt".to_string(),
             bezeichnung: "Zahnärztin".to_string(),
@@ -545,23 +545,23 @@ mod tests {
             ..Default::default()
         };
 
-        // Serialisieren
+        // Serialize
         let bytes = original.to_bytes();
 
-        // Deserialisieren (Zero-Copy!)
-        let praxis = flatbuffers::root::<FbPraxis>(&bytes).expect("FlatBuffer ungültig");
+        // Deserialize (Zero-Copy!)
+        let praxis = flatbuffers::root::<FbPraxis>(&bytes).expect("Invalid FlatBuffer");
 
-        // Vergleichen - required Felder geben &str zurück
+        // Compare - required fields return &str
         assert_eq!(praxis.name(), "Dr. Anna Schmidt");
         assert_eq!(praxis.bezeichnung(), "Zahnärztin");
 
-        // Optionale Felder geben Option<&str> zurück
+        // Optional fields return Option<&str>
         assert_eq!(praxis.praxisname(), Some("Praxis Schmidt"));
         assert_eq!(praxis.telefon(), Some("+49 123 9876543"));
         assert!(praxis.privatpatienten());
         assert!(!praxis.kassenpatienten());
 
-        // Adresse prüfen - required, gibt Adresse zurück (kein Option)
+        // Check address - required, returns Address (not Option)
         let adresse = praxis.adresse();
         assert_eq!(adresse.strasse(), "Musterstraße");
         assert_eq!(adresse.hausnummer(), Some("42"));
@@ -569,14 +569,14 @@ mod tests {
         assert_eq!(adresse.ort(), "Beispielstadt");
         assert_eq!(adresse.land(), "DE");
 
-        // Vektoren prüfen
-        let schwerpunkte = praxis.schwerpunkte().expect("Schwerpunkte fehlen");
+        // Check vectors
+        let schwerpunkte = praxis.schwerpunkte().expect("Specializations missing");
         assert_eq!(schwerpunkte.len(), 1);
         assert_eq!(schwerpunkte.get(0), "Zahnerhaltung");
     }
 
     #[test]
-    fn test_praxis_serialisierung_alle_vektoren() {
+    fn test_practice_serialization_all_vectors() {
         let praxis = PraxisSchema {
             name: "Test".to_string(),
             bezeichnung: "Test".to_string(),
@@ -604,7 +604,7 @@ mod tests {
     }
 
     #[test]
-    fn test_adresse_serialisierung() {
+    fn test_address_serialization() {
         let adresse = AdresseSchema {
             strasse: "Hauptstraße".to_string(),
             hausnummer: Some("42".to_string()),
@@ -615,15 +615,15 @@ mod tests {
 
         let bytes = adresse.to_bytes();
 
-        // Adresse deserialisieren
-        let fb = flatbuffers::root::<FbAdresse>(&bytes).expect("FlatBuffer ungültig");
+        // Deserialize address
+        let fb = flatbuffers::root::<FbAdresse>(&bytes).expect("Invalid FlatBuffer");
 
-        // required Felder: direkt &str
+        // required fields: direct &str
         assert_eq!(fb.strasse(), "Hauptstraße");
         assert_eq!(fb.plz(), "12345");
         assert_eq!(fb.ort(), "Teststadt");
 
-        // optionale Felder: Option<&str>
+        // optional fields: Option<&str>
         assert_eq!(fb.hausnummer(), Some("42"));
         assert_eq!(fb.land(), "DE");
     }

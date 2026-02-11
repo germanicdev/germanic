@@ -1,19 +1,19 @@
-//! # Build-Script für GERMANIC
+//! # Build script for GERMANIC
 //!
-//! Kompiliert FlatBuffer-Schemas zu Rust-Code und fixt den bekannten
-//! Cross-Namespace Bug (#5275) durch Post-Processing.
+//! Compiles FlatBuffer schemas to Rust code and fixes the known
+//! cross-namespace bug (#5275) through post-processing.
 //!
-//! ## Der Bug (seit 2019 offen, wird nie gefixt)
+//! ## The Bug (open since 2019, will never be fixed)
 //!
-//! flatc generiert fehlerhafte relative Pfade wie `super::super::common::`.
-//! Diese funktionieren nur, wenn ALLE Namespaces in EINER Datei liegen.
+//! flatc generates faulty relative paths like `super::super::common::`.
+//! These only work if ALL namespaces are in ONE file.
 //!
-//! ## Unsere Lösung
+//! ## Our Solution
 //!
-//! Nach der Codegenerierung ersetzen wir die fehlerhaften Pfade durch
-//! korrekte absolute `crate::`-Pfade. Ein simpler String-Replace.
+//! After code generation we replace the faulty paths with
+//! correct absolute `crate::` paths. A simple string replace.
 //!
-//! Siehe: https://github.com/google/flatbuffers/issues/5275
+//! See: https://github.com/google/flatbuffers/issues/5275
 
 use std::fs;
 use std::path::Path;
@@ -21,22 +21,22 @@ use std::process::Command;
 
 fn main() {
     // =========================================================================
-    // KONFIGURATION
+    // CONFIGURATION
     // =========================================================================
 
-    // Relativer Pfad zu den Schemas (von crates/germanic/ aus)
+    // Relative path to schemas (from crates/germanic/)
     let schema_dir = Path::new("../../schemas");
-    let out_dir = std::env::var("OUT_DIR").expect("OUT_DIR nicht gesetzt");
+    let out_dir = std::env::var("OUT_DIR").expect("OUT_DIR not set");
 
-    // Schemas in ABHÄNGIGKEITSREIHENFOLGE (Basis zuerst!)
-    // KRITISCH: Wenn Schema A von Schema B abhängt, muss B VOR A stehen!
+    // Schemas in DEPENDENCY ORDER (base first!)
+    // CRITICAL: If schema A depends on schema B, B must come BEFORE A!
     let schemas = [
-        "common/meta.fbs", // Keine Abhängigkeiten - Basis
-        "de/praxis.fbs",   // Könnte später meta.fbs referenzieren
+        "common/meta.fbs", // No dependencies - base
+        "de/praxis.fbs",   // Could later reference meta.fbs
     ];
 
     // =========================================================================
-    // SCHRITT 1: flatc-Verfügbarkeit prüfen
+    // STEP 1: Check flatc availability
     // =========================================================================
 
     let flatc_version = Command::new("flatc").arg("--version").output();
@@ -44,20 +44,20 @@ fn main() {
     match flatc_version {
         Ok(output) => {
             let version = String::from_utf8_lossy(&output.stdout);
-            println!("cargo:warning=GERMANIC: Verwende {}", version.trim());
+            println!("cargo:warning=GERMANIC: Using {}", version.trim());
         }
         Err(_) => {
             panic!(
                 r#"
 ╔═══════════════════════════════════════════════════════════════╗
-║  FEHLER: flatc nicht gefunden!                                ║
+║  ERROR: flatc not found!                                      ║
 ║                                                               ║
-║  Bitte installiere den FlatBuffers Compiler:                  ║
+║  Please install the FlatBuffers compiler:                     ║
 ║                                                               ║
 ║  macOS:   brew install flatbuffers                            ║
 ║  Linux:   apt install flatbuffers-compiler                    ║
 ║                                                               ║
-║  Oder lade von: https://github.com/google/flatbuffers/releases║
+║  Or download from: https://github.com/google/flatbuffers/releases║
 ╚═══════════════════════════════════════════════════════════════╝
 "#
             );
@@ -65,11 +65,11 @@ fn main() {
     }
 
     // =========================================================================
-    // SCHRITT 2: FlatBuffers kompilieren
+    // STEP 2: Compile FlatBuffers
     // =========================================================================
     //
-    // WICHTIG: Alle Schemas in EINEM Aufruf kompilieren!
-    // Das ist entscheidend für korrekte Namespace-Auflösung.
+    // IMPORTANT: Compile all schemas in ONE call!
+    // This is crucial for correct namespace resolution.
 
     let schema_paths: Vec<_> = schemas.iter().map(|s| schema_dir.join(s)).collect();
 
@@ -78,23 +78,23 @@ fn main() {
         .arg("-o")
         .arg(&out_dir)
         .arg("-I")
-        .arg(schema_dir); // Include-Pfad für Cross-Referenzen
+        .arg(schema_dir); // Include path for cross-references
 
     for path in &schema_paths {
         cmd.arg(path);
     }
 
-    println!("cargo:warning=GERMANIC: Führe aus: {:?}", cmd);
+    println!("cargo:warning=GERMANIC: Executing: {:?}", cmd);
 
-    let status = cmd.status().expect("flatc konnte nicht ausgeführt werden");
+    let status = cmd.status().expect("Could not execute flatc");
 
     if !status.success() {
         panic!(
             r#"
 ╔═══════════════════════════════════════════════════════════════╗
-║  FEHLER: flatc fehlgeschlagen!                                ║
+║  ERROR: flatc failed!                                         ║
 ║                                                               ║
-║  Prüfe deine Schema-Dateien mit:                              ║
+║  Check your schema files with:                                ║
 ║  flatc --rust -I ../../schemas ../../schemas/de/praxis.fbs    ║
 ╚═══════════════════════════════════════════════════════════════╝
 "#
@@ -102,18 +102,18 @@ fn main() {
     }
 
     // =========================================================================
-    // SCHRITT 3: POST-PROCESSING - Cross-Namespace Bug fixen
+    // STEP 3: POST-PROCESSING - Fix cross-namespace bug
     // =========================================================================
     //
-    // flatc generiert:   super::super::germanic::common::...
-    // Wir brauchen:      crate::generated::germanic::common::...
+    // flatc generates:   super::super::germanic::common::...
+    // We need:           crate::generated::germanic::common::...
     //
-    // Der Fix ist ein simpler String-Replace im generierten Code.
+    // The fix is a simple string replace in the generated code.
 
-    fix_cross_namespace_pfade(&out_dir);
+    fix_cross_namespace_paths(&out_dir);
 
     // =========================================================================
-    // SCHRITT 4: Rebuild-Trigger setzen
+    // STEP 4: Set rebuild triggers
     // =========================================================================
 
     for schema in &schemas {
@@ -121,8 +121,8 @@ fn main() {
     }
     println!("cargo:rerun-if-changed=build.rs");
 
-    // Debug-Info: Zeige was generiert wurde
-    zeige_generierte_dateien(&out_dir);
+    // Debug info: Show what was generated
+    show_generated_files(&out_dir);
 
     println!(
         "cargo:warning=GERMANIC: FlatBuffer-Code generiert in {}",
@@ -130,49 +130,49 @@ fn main() {
     );
 }
 
-/// Fixt die fehlerhaften Cross-Namespace-Pfade im generierten Code.
+/// Fixes the faulty cross-namespace paths in generated code.
 ///
-/// # Der Bug (#5275)
+/// # The Bug (#5275)
 ///
-/// flatc's Rust-Codegen generiert `super::super::...`-Pfade für
-/// Cross-Namespace-Referenzen. Diese funktionieren nur, wenn ALLE
-/// Namespaces in EINER Datei liegen.
+/// flatc's Rust codegen generates `super::super::...` paths for
+/// cross-namespace references. These only work if ALL
+/// namespaces are in ONE file.
 ///
-/// Da wir separate Dateien haben, müssen wir die relativen Pfade
-/// durch absolute `crate::`-Pfade ersetzen.
-fn fix_cross_namespace_pfade(out_dir: &str) {
+/// Since we have separate files, we must replace the relative paths
+/// with absolute `crate::` paths.
+fn fix_cross_namespace_paths(out_dir: &str) {
     // =========================================================================
-    // PFAD-MAPPINGS
+    // PATH MAPPINGS
     // =========================================================================
     //
-    // Format: (was flatc generiert, was wir brauchen)
+    // Format: (what flatc generates, what we need)
     //
-    // WICHTIG: Diese Mappings müssen angepasst werden, wenn:
-    // - Neue Schemas mit Cross-Namespace-Referenzen hinzukommen
-    // - Die Modulstruktur in lib.rs geändert wird
+    // IMPORTANT: These mappings must be adjusted when:
+    // - New schemas with cross-namespace references are added
+    // - The module structure in lib.rs is changed
     //
-    // Die Reihenfolge kann relevant sein - spezifischere Patterns zuerst!
+    // Order may matter - more specific patterns first!
 
     let mappings = [
         // ─────────────────────────────────────────────────────────────────────
-        // praxis.fbs (in crate::generated::praxis) referenziert
-        // germanic.common.* aus meta.fbs (in crate::generated::meta)
+        // praxis.fbs (in crate::generated::praxis) references
+        // germanic.common.* from meta.fbs (in crate::generated::meta)
         // ─────────────────────────────────────────────────────────────────────
         //
-        // flatc generiert:    super::super::germanic::common::GermanicMeta
-        // Wir brauchen:       crate::generated::meta::germanic::common::GermanicMeta
+        // flatc generates:    super::super::germanic::common::GermanicMeta
+        // We need:            crate::generated::meta::germanic::common::GermanicMeta
         //
         (
             "super::super::germanic::common::",
             "crate::generated::meta::germanic::common::",
         ),
-        // Fallback für tiefere Namespace-Hierarchien
+        // Fallback for deeper namespace hierarchies
         (
             "super::super::super::germanic::common::",
             "crate::generated::meta::germanic::common::",
         ),
         // ─────────────────────────────────────────────────────────────────────
-        // Falls meta.fbs jemals praxis.fbs referenziert (unwahrscheinlich)
+        // If meta.fbs ever references praxis.fbs (unlikely)
         // ─────────────────────────────────────────────────────────────────────
         (
             "super::super::de::gesundheit::",
@@ -180,86 +180,86 @@ fn fix_cross_namespace_pfade(out_dir: &str) {
         ),
     ];
 
-    // Finde alle generierten Dateien
-    let generierte_dateien = finde_generierte_dateien(out_dir);
+    // Find all generated files
+    let generated_files = find_generated_files(out_dir);
 
-    for datei_pfad in generierte_dateien {
-        if let Ok(inhalt) = fs::read_to_string(&datei_pfad) {
-            let mut gefixt = inhalt.clone();
-            let mut aenderungen = 0;
+    for file_path in generated_files {
+        if let Ok(content) = fs::read_to_string(&file_path) {
+            let mut fixed = content.clone();
+            let mut changes = 0;
 
-            for (alt, neu) in &mappings {
-                if gefixt.contains(*alt) {
-                    let anzahl = gefixt.matches(*alt).count();
-                    gefixt = gefixt.replace(*alt, neu);
-                    aenderungen += anzahl;
+            for (old, new) in &mappings {
+                if fixed.contains(*old) {
+                    let count = fixed.matches(*old).count();
+                    fixed = fixed.replace(*old, new);
+                    changes += count;
 
                     println!(
-                        "cargo:warning=GERMANIC: {} Ersetzungen in {}: {} → {}",
-                        anzahl,
-                        datei_pfad.file_name().unwrap_or_default().to_string_lossy(),
-                        alt,
-                        neu
+                        "cargo:warning=GERMANIC: {} replacements in {}: {} → {}",
+                        count,
+                        file_path.file_name().unwrap_or_default().to_string_lossy(),
+                        old,
+                        new
                     );
                 }
             }
 
-            // Nur schreiben wenn sich was geändert hat
-            if gefixt != inhalt {
-                fs::write(&datei_pfad, &gefixt).expect("Konnte gefixte Datei nicht schreiben");
+            // Only write if something changed
+            if fixed != content {
+                fs::write(&file_path, &fixed).expect("Could not write fixed file");
 
                 println!(
-                    "cargo:warning=GERMANIC: {} Cross-Namespace-Pfade in {} gefixt",
-                    aenderungen,
-                    datei_pfad.file_name().unwrap_or_default().to_string_lossy()
+                    "cargo:warning=GERMANIC: {} cross-namespace paths fixed in {}",
+                    changes,
+                    file_path.file_name().unwrap_or_default().to_string_lossy()
                 );
             }
         }
     }
 }
 
-/// Findet alle *_generated.rs Dateien im OUT_DIR (rekursiv).
-fn finde_generierte_dateien(out_dir: &str) -> Vec<std::path::PathBuf> {
-    let mut dateien = Vec::new();
+/// Finds all *_generated.rs files in OUT_DIR (recursively).
+fn find_generated_files(out_dir: &str) -> Vec<std::path::PathBuf> {
+    let mut files = Vec::new();
 
-    fn rekursiv(pfad: &Path, dateien: &mut Vec<std::path::PathBuf>) {
-        if let Ok(eintraege) = fs::read_dir(pfad) {
-            for eintrag in eintraege.flatten() {
-                let pfad = eintrag.path();
-                if pfad.is_dir() {
-                    rekursiv(&pfad, dateien);
-                } else if pfad
+    fn recursive(path: &Path, files: &mut Vec<std::path::PathBuf>) {
+        if let Ok(entries) = fs::read_dir(path) {
+            for entry in entries.flatten() {
+                let path = entry.path();
+                if path.is_dir() {
+                    recursive(&path, files);
+                } else if path
                     .file_name()
                     .is_some_and(|n| n.to_string_lossy().ends_with("_generated.rs"))
                 {
-                    dateien.push(pfad);
+                    files.push(path);
                 }
             }
         }
     }
 
-    rekursiv(Path::new(out_dir), &mut dateien);
-    dateien
+    recursive(Path::new(out_dir), &mut files);
+    files
 }
 
-/// Zeigt die generierten Dateien für Debug-Zwecke.
-fn zeige_generierte_dateien(out_dir: &str) {
-    let dateien = finde_generierte_dateien(out_dir);
+/// Shows the generated files for debugging purposes.
+fn show_generated_files(out_dir: &str) {
+    let files = find_generated_files(out_dir);
 
-    if dateien.is_empty() {
-        println!("cargo:warning=GERMANIC: Keine *_generated.rs Dateien gefunden!");
+    if files.is_empty() {
+        println!("cargo:warning=GERMANIC: No *_generated.rs files found!");
     } else {
         println!(
-            "cargo:warning=GERMANIC: {} generierte Dateien:",
-            dateien.len()
+            "cargo:warning=GERMANIC: {} generated files:",
+            files.len()
         );
-        for datei in &dateien {
-            // Relativer Pfad für bessere Lesbarkeit
-            let relativ = datei
+        for file in &files {
+            // Relative path for better readability
+            let relative = file
                 .strip_prefix(out_dir)
-                .unwrap_or(datei)
+                .unwrap_or(file)
                 .display();
-            println!("cargo:warning=GERMANIC:   - {}", relativ);
+            println!("cargo:warning=GERMANIC:   - {}", relative);
         }
     }
 }

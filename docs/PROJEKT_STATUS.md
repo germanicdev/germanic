@@ -24,8 +24,9 @@
 | 1.6 validator.rs | ✅ DONE | validate_grm(), validate_json() |
 | 1.7 main.rs (CLI) | ✅ DONE | Commands enum, English help text + output |
 | 1.8 lib.rs | ✅ DONE | English docs, ASCII diagrams, module declarations |
-| 1.9 germanic-macros | ✅ DONE | SchemaOptionen still has some internal German (non-public) |
-| 1.10 tests + build.rs + cleanup | ✅ DONE | beispiele/ → examples/, all tests English |
+| 1.9 germanic-macros | ✅ DONE | All identifiers translated to English |
+| 1.10 tests + build.rs + cleanup | ✅ DONE | All comments, identifiers, variables translated to English |
+| 1.11 Final cleanup (2026-02-11) | ✅ DONE | Translated remaining German comments and variables in practice.rs, macro_test.rs, build.rs, and schema.rs |
 
 ### Phase 2: Fictional Data
 | Task | Status | Notes |
@@ -76,6 +77,19 @@
 8. JSON Schema Draft 7 as second input format (adapter, not replacement)
 
 ## Completed Work Log
+
+### 2026-02-11: Final German → English Translation Cleanup
+- ✅ Translated all remaining German comments and identifiers in:
+  - `crates/germanic/src/schemas/practice.rs` (25 occurrences)
+  - `crates/germanic/tests/macro_test.rs` (34 occurrences)
+  - `crates/germanic/build.rs` (9 occurrences)
+  - `crates/germanic-macros/src/schema.rs` (all struct names, functions, variables)
+- ✅ Variable translations: `ergebnis` → `result`, `felder` → `fields`, `fehler` → `errors`
+- ✅ Function translations: `generiere_*` → `generate_*`, `typ_kategorie` → `type_category`
+- ✅ Type translations: `FeldOptionen` → `FieldOptions`, `SchemaOptionen` → `SchemaOptions`, `TypKategorie` → `TypeCategory`
+- ✅ Comment translations: `SCHRITT` → `STEP`, `WICHTIG` → `IMPORTANT`, etc.
+- ✅ All 83 tests passing
+- ✅ Verification: Zero German identifiers remaining in Rust code
 
 ### 2026-02-11: JSON Schema Draft 7 Adapter (AP-4.7)
 - ✅ New module `dynamic/json_schema.rs` (~230 lines code + ~220 lines tests)

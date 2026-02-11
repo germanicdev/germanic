@@ -1,20 +1,20 @@
-//! Integration-Tests für das GermanicSchema Macro
+//! Integration tests for the GermanicSchema macro
 //!
-//! Testet:
-//! - Validieren Trait (required-Felder)
-//! - Default Trait (Standardwerte)
-//! - SchemaMetadaten Trait (schema_id)
+//! Tests:
+//! - Validate trait (required fields)
+//! - Default trait (default values)
+//! - SchemaMetadata trait (schema_id)
 
 use germanic::GermanicSchema;
 use germanic::schema::{SchemaMetadata, Validate};
 
 // ============================================================================
-// TEST 1: Validierung von Pflichtfeldern
+// TEST 1: Validation of required fields
 // ============================================================================
 
 #[derive(GermanicSchema)]
-#[germanic(schema_id = "test.validierung.v1")]
-pub struct ValidierungTestSchema {
+#[germanic(schema_id = "test.validation.v1")]
+pub struct ValidationTestSchema {
     #[germanic(required)]
     pub name: String,
 
@@ -22,20 +22,20 @@ pub struct ValidierungTestSchema {
 }
 
 #[test]
-fn test_validierung_name_leer() {
-    let schema = ValidierungTestSchema {
+fn test_validation_name_empty() {
+    let schema = ValidationTestSchema {
         name: "".to_string(),
         optional: None,
     };
 
-    // Leerer required String sollte Fehler werfen
-    let ergebnis = schema.validate();
-    assert!(ergebnis.is_err());
+    // Empty required string should throw error
+    let result = schema.validate();
+    assert!(result.is_err());
 }
 
 #[test]
-fn test_validierung_ok() {
-    let schema = ValidierungTestSchema {
+fn test_validation_ok() {
+    let schema = ValidationTestSchema {
         name: "Test".to_string(),
         optional: None,
     };
@@ -56,11 +56,11 @@ pub struct DefaultTestSchema {
     #[germanic(default = "true")]
     pub aktiv: bool,
 
-    pub name: String, // Kein Default → String::new()
+    pub name: String, // No default → String::new()
 
-    pub optional: Option<String>, // Kein Default → None
+    pub optional: Option<String>, // No default → None
 
-    pub liste: Vec<String>, // Kein Default → Vec::new()
+    pub list: Vec<String>, // No default → Vec::new()
 }
 
 #[test]
@@ -71,7 +71,7 @@ fn test_default_trait() {
     assert_eq!(schema.aktiv, true);
     assert_eq!(schema.name, "");
     assert!(schema.optional.is_none());
-    assert!(schema.liste.is_empty());
+    assert!(schema.list.is_empty());
 }
 
 #[test]
@@ -80,71 +80,71 @@ fn test_default_bool_false() {
     #[germanic(schema_id = "test.bool.v1")]
     pub struct BoolTestSchema {
         #[germanic(default = "false")]
-        pub deaktiviert: bool,
+        pub deactivated: bool,
 
-        pub ohne_default: bool, // → false
+        pub without_default: bool, // → false
     }
 
     let schema = BoolTestSchema::default();
-    assert_eq!(schema.deaktiviert, false);
-    assert_eq!(schema.ohne_default, false);
+    assert_eq!(schema.deactivated, false);
+    assert_eq!(schema.without_default, false);
 }
 
 // ============================================================================
-// TEST 3: SchemaMetadaten Trait
+// TEST 3: SchemaMetadata Trait
 // ============================================================================
 
 #[test]
-fn test_schema_metadaten() {
-    let schema = ValidierungTestSchema {
+fn test_schema_metadata() {
+    let schema = ValidationTestSchema {
         name: "Test".to_string(),
         optional: None,
     };
 
-    assert_eq!(schema.schema_id(), "test.validierung.v1");
+    assert_eq!(schema.schema_id(), "test.validation.v1");
     assert_eq!(schema.schema_version(), 1);
 }
 
 // ============================================================================
-// TEST 4: Kombinierte Validierung und Default
+// TEST 4: Combined validation and default
 // ============================================================================
 
 #[derive(GermanicSchema)]
-#[germanic(schema_id = "test.kombiniert.v1")]
-pub struct KombiniertTestSchema {
+#[germanic(schema_id = "test.combined.v1")]
+pub struct CombinedTestSchema {
     #[germanic(required)]
-    pub pflicht: String,
+    pub required: String,
 
     #[germanic(default = "Standard")]
-    pub mit_default: String,
+    pub with_default: String,
 
     #[germanic(required)]
-    pub pflicht_vec: Vec<String>,
+    pub required_vec: Vec<String>,
 }
 
 #[test]
-fn test_default_erfuellt_nicht_required() {
-    // Default erzeugt leere Strings/Vecs, die bei required fehlschlagen sollten
-    let schema = KombiniertTestSchema::default();
+fn test_default_does_not_satisfy_required() {
+    // Default creates empty strings/vecs which should fail for required fields
+    let schema = CombinedTestSchema::default();
 
-    let ergebnis = schema.validate();
-    assert!(ergebnis.is_err());
+    let result = schema.validate();
+    assert!(result.is_err());
 
-    // Prüfe welche Felder fehlen
-    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
-        assert!(felder.contains(&"pflicht".to_string()));
-        assert!(felder.contains(&"pflicht_vec".to_string()));
-        // mit_default hat einen Wert, sollte NICHT in der Fehlerliste sein
-        assert!(!felder.contains(&"mit_default".to_string()));
+    // Check which fields are missing
+    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(fields)) = result {
+        assert!(fields.contains(&"required".to_string()));
+        assert!(fields.contains(&"required_vec".to_string()));
+        // with_default has a value, should NOT be in error list
+        assert!(!fields.contains(&"with_default".to_string()));
     }
 }
 
 #[test]
-fn test_kombiniert_valide() {
-    let schema = KombiniertTestSchema {
-        pflicht: "Ausgefüllt".to_string(),
-        mit_default: "Überschrieben".to_string(),
-        pflicht_vec: vec!["Eintrag".to_string()],
+fn test_combined_valid() {
+    let schema = CombinedTestSchema {
+        required: "Filled".to_string(),
+        with_default: "Overridden".to_string(),
+        required_vec: vec!["Entry".to_string()],
     };
 
     assert!(schema.validate().is_ok());
@@ -189,24 +189,24 @@ fn test_nested_default() {
 }
 
 #[test]
-fn test_nested_validierung_fehler() {
+fn test_nested_validation_error() {
     let schema = PraxisTestSchema::default();
 
-    let ergebnis = schema.validate();
-    assert!(ergebnis.is_err());
+    let result = schema.validate();
+    assert!(result.is_err());
 
-    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
-        // Hauptfeld
-        assert!(felder.contains(&"name".to_string()));
-        // Nested Felder mit Präfix
-        assert!(felder.contains(&"adresse.strasse".to_string()));
-        assert!(felder.contains(&"adresse.plz".to_string()));
-        assert!(felder.contains(&"adresse.ort".to_string()));
+    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(fields)) = result {
+        // Main field
+        assert!(fields.contains(&"name".to_string()));
+        // Nested fields with prefix
+        assert!(fields.contains(&"adresse.strasse".to_string()));
+        assert!(fields.contains(&"adresse.plz".to_string()));
+        assert!(fields.contains(&"adresse.ort".to_string()));
     }
 }
 
 #[test]
-fn test_nested_validierung_ok() {
+fn test_nested_validation_ok() {
     let schema = PraxisTestSchema {
         name: "Dr. Müller".to_string(),
         adresse: AdresseTestSchema {
@@ -221,23 +221,23 @@ fn test_nested_validierung_ok() {
 }
 
 #[test]
-fn test_nested_partial_fehler() {
-    // Nur das Nested Struct hat Fehler
+fn test_nested_partial_error() {
+    // Only the nested struct has errors
     let schema = PraxisTestSchema {
         name: "Dr. Müller".to_string(), // OK
         adresse: AdresseTestSchema {
-            strasse: "".to_string(), // FEHLER
+            strasse: "".to_string(), // ERROR
             plz: "12345".to_string(),
             ort: "Berlin".to_string(),
             land: "DE".to_string(),
         },
     };
 
-    let ergebnis = schema.validate();
-    assert!(ergebnis.is_err());
+    let result = schema.validate();
+    assert!(result.is_err());
 
-    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(felder)) = ergebnis {
-        assert_eq!(felder.len(), 1);
-        assert!(felder.contains(&"adresse.strasse".to_string()));
+    if let Err(germanic::error::ValidationError::RequiredFieldsMissing(fields)) = result {
+        assert_eq!(fields.len(), 1);
+        assert!(fields.contains(&"adresse.strasse".to_string()));
     }
 }
