@@ -1,86 +1,39 @@
 # GERMANIC
 
-Maschinenlesbare Schemas für Websites – damit KIs Praxis-Daten korrekt verstehen.
+**Structured AI feeds & schemas. Fast indexing. Rust-first.**
 
-## Quick Start
+GERMANIC is a protocol that makes websites machine-readable for AI systems.
+It uses FlatBuffers for zero-copy serialization and provides type-safe schemas
+for structured data.
 
+## Installation
 ```bash
-# 1. Entpacken
-tar -xzvf germanic-workspace.tar.gz
-cd germanic
-
-# 2. FlatBuffers-Compiler installieren (falls nicht vorhanden)
-brew install flatbuffers  # macOS
-
-# 3. Kompilieren
-cargo build
-
-# 4. Praxis kompilieren (nach Macro-Implementierung)
-./target/release/germanic compile \
-    --schema praxis \
-    --input examples/dr-sonnenschein.json
+cargo install germanic
 ```
 
-## Struktur
+## Usage
+```bash
+# List available schemas
+germanic schemas
 
-```
-germanic/
-├── Cargo.toml                 # Workspace
-├── LICENSE                    # Proprietär
-│
-├── crates/
-│   ├── germanic/              # CLI + Library
-│   │   ├── Cargo.toml
-│   │   ├── build.rs           # FlatBuffer-Kompilierung + Namespace-Fix
-│   │   └── src/
-│   │       ├── lib.rs         # Public API
-│   │       ├── main.rs        # CLI
-│   │       ├── generated.rs   # Re-export FlatBuffer-Bindings
-│   │       ├── schema.rs      # Traits
-│   │       ├── fehler.rs      # Fehlertypen
-│   │       ├── types.rs       # .grm Format
-│   │       ├── compiler.rs    # JSON → .grm
-│   │       └── validator.rs   # Validierung
-│   │
-│   └── germanic-macros/       # Proc-Macro Crate
-│       ├── Cargo.toml
-│       └── src/
-│           ├── lib.rs         # #[derive(GermanicSchema)]
-│           └── schema.rs      # darling-basiertes Parsing
-│
-├── schemas/
-│   ├── common/meta.fbs        # GermanicMeta, Signatur, Hinweis
-│   └── de/praxis.fbs          # Praxis, Adresse
-│
-└── examples/
-    ├── dr-sonnenschein.json         # Test-Daten (fictional)
-    └── heilpraxis-waldberg.json     # Test-Daten (fictional)
+# Compile JSON to .grm
+germanic compile --schema restaurant --input data.json
+
+# Inspect a .grm file
+germanic inspect output.grm
 ```
 
-## FlatBuffers Namespace-Bug (#5275)
+## License
 
-Das build.rs fixt automatisch den seit 2019 offenen Bug:
+Licensed under either of:
 
-```
-flatc generiert:    super::super::germanic::common::GermanicMeta
-Wir brauchen:       crate::generated::meta::germanic::common::GermanicMeta
-```
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
 
-Der Fix ist ein simpler String-Replace nach der Codegenerierung.
+at your option.
 
-## Nächste Schritte
+## Contribution
 
-```
-[x] A1: build.rs mit Namespace-Fix
-[x] A2: generated.rs Modul
-[ ] A3: Kompilierung testen (cargo build)
-[ ] B1: Macro-Kompilierung testen
-[ ] B2: Validieren Trait verifizieren
-[ ] C1: PraxisSchema mit Macro
-[ ] D2: CLI-Integration
-[ ] D4: End-to-End Test
-```
-
----
-
-*Proprietäre Software – Alle Rechte vorbehalten*
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+dual licensed as above, without any additional terms or conditions.
