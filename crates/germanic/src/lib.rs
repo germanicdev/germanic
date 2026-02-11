@@ -87,6 +87,10 @@ pub mod types;
 /// Compilation from JSON to .grm.
 pub mod compiler;
 
+/// Dynamic compilation mode (Weg 3).
+/// Compiles JSON to .grm using runtime schema definitions.
+pub mod dynamic;
+
 /// Validation of JSON against schema.
 pub mod validator;
 
