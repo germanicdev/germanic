@@ -1,0 +1,78 @@
+{
+  "schema_id": "en.education.tutoring.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "subjects": {
+      "type": "[string]",
+      "required": true
+    },
+    "grade_levels": {
+      "type": "[int]",
+      "required": true
+    },
+    "formate": {
+      "type": "[string]"
+    },
+    "price_per_hour": {
+      "type": "float",
+      "required": true
+    },
+    "trial_lesson_free": {
+      "type": "bool"
+    },
+    "lehrkraefte": {
+      "type": "int"
+    },
+    "abipruefungsvorbereitung": {
+      "type": "bool"
+    },
+    "languages": {
+      "type": "[string]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

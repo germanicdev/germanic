@@ -1,0 +1,30 @@
+{
+  "name": "Hofladen Sonnenhof",
+  "operator": "Familie Bauer",
+  "address": {
+    "street": "Dorfstraße",
+    "house_number": "42",
+    "postal_code": "88212",
+    "city": "Ravensburg",
+    "country": "DE"
+  },
+  "phone": "+49 751 3456789",
+  "email": "hofladen@sonnenhof.example",
+  "website": "https://sonnenhof-hofladen.example",
+  "products": [
+    "Eggs",
+    "Potatoes",
+    "Vegetables",
+    "Honig",
+    "Marmelade",
+    "Apfelsaft"
+  ],
+  "organic_certified": true,
+  "bio_verband": "Bioland",
+  "opening_hours": "Mi 14:00-18:00, Fr 10:00-18:00, Sa 8:00-13:00",
+  "selbstbedienung": true,
+  "delivery": false,
+  "hofbesichtigung": true,
+  "preis_eier_10": 4.5,
+  "short_description": "Bioland-Hofladen am Bodensee — frisch vom Feld auf den Tisch."
+}

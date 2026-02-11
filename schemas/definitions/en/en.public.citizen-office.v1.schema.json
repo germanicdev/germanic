@@ -1,0 +1,75 @@
+{
+  "schema_id": "en.public.citizen-office.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "operator": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "services": {
+      "type": "[string]",
+      "required": true
+    },
+    "opening_hours": {
+      "type": "string",
+      "required": true
+    },
+    "terminpflicht": {
+      "type": "bool",
+      "required": true
+    },
+    "termin_online": {
+      "type": "bool"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "languages": {
+      "type": "[string]"
+    },
+    "wartezeit_hinweis": {
+      "type": "string"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

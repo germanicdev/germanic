@@ -1,0 +1,47 @@
+{
+  "titel": "Senior Rust Developer — ML Infrastructure",
+  "unternehmen": "TechWerk Solutions GmbH",
+  "location": {
+    "street": "Innovationsring",
+    "house_number": "5",
+    "postal_code": "85748",
+    "city": "Garching bei München",
+    "country": "DE"
+  },
+  "remote_moeglich": true,
+  "remote_anteil": "Hybrid (3 Tage Office, 2 Tage Remote)",
+  "contract_type": "Vollzeit",
+  "befristet": false,
+  "salary": {
+    "min_eur": 75000,
+    "max_eur": 95000,
+    "waehrung": "EUR",
+    "intervall": "Jahr"
+  },
+  "requirements": [
+    "3+ Jahre Rust-Erfahrung",
+    "Erfahrung mit ML-Frameworks (Candle, Burn, PyTorch)",
+    "Kenntnisse in FlatBuffers oder Protocol Buffers",
+    "German und English fließend"
+  ],
+  "nice_to_have": [
+    "Erfahrung mit WASM",
+    "Beiträge zu Open-Source-Projekten",
+    "Apple Silicon Optimierung"
+  ],
+  "responsibilities": [
+    "Aufbau einer Inferenz-Engine für Small Language Models",
+    "Optimierung von Zero-Copy-Datenpipelines",
+    "Entwicklung von Schema-Validierungs-Tooling"
+  ],
+  "benefits": [
+    "30 Tage Urlaub",
+    "Weiterbildungsbudget",
+    "M4 Pro MacBook"
+  ],
+  "kontakt_email": "jobs@techwerk-solutions.example",
+  "bewerbung_url": "https://techwerk-solutions.example/jobs/senior-rust",
+  "veroeffentlicht_am": "2025-06-01",
+  "gueltig_bis": "2025-08-31",
+  "short_description": "Bau with uns die nächste Generation ML-Infrastruktur in Rust."
+}

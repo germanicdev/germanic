@@ -1,0 +1,70 @@
+{
+  "schema_id": "en.trades.it-service.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "managing_directors": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "competencies": {
+      "type": "[string]",
+      "required": true
+    },
+    "zertifizierungen": {
+      "type": "[string]"
+    },
+    "mitarbeiteranzahl": {
+      "type": "int"
+    },
+    "support_rund_um_die_uhr": {
+      "type": "bool"
+    },
+    "remote_support": {
+      "type": "bool"
+    },
+    "service_area": {
+      "type": "[string]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

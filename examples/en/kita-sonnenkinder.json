@@ -1,0 +1,32 @@
+{
+  "name": "Kita Sonnenkinder",
+  "operator": "AWO Kreisverband Mannheim",
+  "address": {
+    "street": "Blumenstraße",
+    "house_number": "12",
+    "postal_code": "68161",
+    "city": "Mannheim",
+    "country": "DE"
+  },
+  "phone": "+49 621 1234567",
+  "email": "sonnenkinder@awo-mannheim.example",
+  "website": "https://kita-sonnenkinder.example",
+  "aufnahme_alter_ab": 1,
+  "aufnahme_alter_bis": 6,
+  "plaetze_gesamt": 60,
+  "care_hours": "Mo-Fr 7:00-17:00",
+  "educational_concept": "Situationsansatz",
+  "specializations": [
+    "Sprachförderung",
+    "Bewegung",
+    "Musikerziehung"
+  ],
+  "meals": true,
+  "kosten_monatlich": 285.0,
+  "wheelchair_accessible": true,
+  "languages": [
+    "German",
+    "Turkish"
+  ],
+  "short_description": "AWO-Kita in Mannheim with liebevoller Betreuung ab 1 Jahr."
+}

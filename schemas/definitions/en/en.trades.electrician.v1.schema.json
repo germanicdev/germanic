@@ -1,0 +1,74 @@
+{
+  "schema_id": "en.trades.electrician.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "meister": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "services": {
+      "type": "[string]",
+      "required": true
+    },
+    "emergency_service": {
+      "type": "bool"
+    },
+    "master_certified": {
+      "type": "bool",
+      "required": true
+    },
+    "mitarbeiteranzahl": {
+      "type": "int"
+    },
+    "founded_year": {
+      "type": "int"
+    },
+    "service_area": {
+      "type": "[string]"
+    },
+    "handwerkskammer": {
+      "type": "string"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

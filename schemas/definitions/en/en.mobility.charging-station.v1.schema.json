@@ -1,0 +1,85 @@
+{
+  "schema_id": "en.mobility.charging-station.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "operator": {
+      "type": "string"
+    },
+    "location": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "koordinaten": {
+      "type": "table",
+      "fields": {
+        "breitengrad": {
+          "type": "float",
+          "required": true
+        },
+        "laengengrad": {
+          "type": "float",
+          "required": true
+        }
+      }
+    },
+    "charging_points": {
+      "type": "int",
+      "required": true
+    },
+    "stecker_typen": {
+      "type": "[string]",
+      "required": true
+    },
+    "ladeleistung_kw": {
+      "type": "[int]",
+      "required": true
+    },
+    "preis_pro_kwh": {
+      "type": "float",
+      "required": true
+    },
+    "rund_um_die_uhr": {
+      "type": "bool"
+    },
+    "oekostrom": {
+      "type": "bool"
+    },
+    "parking_fee": {
+      "type": "bool"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "payment": {
+      "type": "[string]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "schema_id": "en.employment.job-posting.v1",
+  "version": 1,
+  "fields": {
+    "titel": {
+      "type": "string",
+      "required": true
+    },
+    "unternehmen": {
+      "type": "string",
+      "required": true
+    },
+    "location": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": false
+        },
+        "house_number": {
+          "type": "string",
+          "required": false
+        },
+        "postal_code": {
+          "type": "string",
+          "required": false
+        },
+        "city": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "remote_moeglich": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "remote_anteil": {
+      "type": "string",
+      "required": false
+    },
+    "contract_type": {
+      "type": "string",
+      "required": true
+    },
+    "befristet": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "salary": {
+      "type": "table",
+      "required": false,
+      "fields": {
+        "min_eur": {
+          "type": "int",
+          "required": false
+        },
+        "max_eur": {
+          "type": "int",
+          "required": false
+        },
+        "waehrung": {
+          "type": "string",
+          "required": false
+        },
+        "intervall": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "requirements": {
+      "type": "[string]",
+      "required": true
+    },
+    "nice_to_have": {
+      "type": "[string]",
+      "required": false
+    },
+    "responsibilities": {
+      "type": "[string]",
+      "required": false
+    },
+    "benefits": {
+      "type": "[string]",
+      "required": false
+    },
+    "kontakt_email": {
+      "type": "string",
+      "required": true
+    },
+    "bewerbung_url": {
+      "type": "string",
+      "required": false
+    },
+    "veroeffentlicht_am": {
+      "type": "string",
+      "required": false
+    },
+    "gueltig_bis": {
+      "type": "string",
+      "required": false
+    },
+    "short_description": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

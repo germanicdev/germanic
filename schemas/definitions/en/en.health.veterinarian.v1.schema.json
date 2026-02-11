@@ -1,0 +1,73 @@
+{
+  "schema_id": "en.health.veterinarian.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "tieraerztin": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "animal_types": {
+      "type": "[string]",
+      "required": true
+    },
+    "services": {
+      "type": "[string]"
+    },
+    "emergency_service": {
+      "type": "bool",
+      "required": true
+    },
+    "home_visits": {
+      "type": "bool"
+    },
+    "opening_hours": {
+      "type": "string",
+      "required": true
+    },
+    "parking_spaces": {
+      "type": "int"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

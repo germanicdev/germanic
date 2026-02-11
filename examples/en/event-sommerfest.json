@@ -1,0 +1,29 @@
+{
+  "name": "Altstadtfest Würzburg",
+  "organizer": "Stadt Würzburg, Kulturreferat",
+  "veranstaltungsort": {
+    "name": "Marktplatz und Altstadt",
+    "street": "Marktplatz",
+    "postal_code": "97070",
+    "city": "Würzburg",
+    "country": "DE"
+  },
+  "kontakt": {
+    "phone": "+49 931 372398",
+    "email": "kultur@wuerzburg.example",
+    "website": "https://altstadtfest-wuerzburg.example"
+  },
+  "datum_beginn": "2025-07-11",
+  "datum_ende": "2025-07-13",
+  "eintritt_frei": true,
+  "kategorie": "Stadtfest",
+  "programm": [
+    "Live-Musik",
+    "Kunsthandwerk",
+    "Kulinarik",
+    "Kinderprogramm"
+  ],
+  "erwartete_besucher": 50000,
+  "wheelchair_accessible": true,
+  "short_description": "Drei Tage Kultur, Musik and Genuss in der Würzburger Altstadt."
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Dipl.-Psych. Thomas Lichtenberg",
+  "medical_license": "Psychologischer Psychotherapeut",
+  "verfahren": "Behavioral Therapy",
+  "address": {
+    "street": "Friedrichstraße",
+    "house_number": "88",
+    "postal_code": "10117",
+    "city": "Berlin",
+    "country": "DE"
+  },
+  "phone": "+49 30 55512345",
+  "email": "praxis@lichtenberg-therapie.example",
+  "website": "https://lichtenberg-therapie.example",
+  "insurance_approval": true,
+  "private_insurance": true,
+  "specializations": [
+    "Depression",
+    "Angststörungen",
+    "Burnout",
+    "Trauma"
+  ],
+  "altersgruppen": [
+    "Adults"
+  ],
+  "wartezeit_wochen": 12,
+  "languages": [
+    "German",
+    "English"
+  ],
+  "online_therapie": true,
+  "short_description": "Verhaltenstherapeutische Praxis in Berlin-Mitte."
+}

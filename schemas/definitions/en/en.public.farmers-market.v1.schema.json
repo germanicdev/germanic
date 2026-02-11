@@ -1,0 +1,70 @@
+{
+  "schema_id": "en.public.farmers-market.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "organizer": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "market_days": {
+      "type": "string",
+      "required": true
+    },
+    "uhrzeiten": {
+      "type": "string",
+      "required": true
+    },
+    "standbetreiber_anzahl": {
+      "type": "int"
+    },
+    "offering": {
+      "type": "[string]"
+    },
+    "bio_angebot": {
+      "type": "bool"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "parkplaetze_naehe": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

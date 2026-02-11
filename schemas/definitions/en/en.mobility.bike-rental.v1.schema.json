@@ -1,0 +1,78 @@
+{
+  "schema_id": "en.mobility.bike-rental.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "fahrradtypen": {
+      "type": "[string]",
+      "required": true
+    },
+    "preis_pro_tag": {
+      "type": "float",
+      "required": true
+    },
+    "preis_e_bike_tag": {
+      "type": "float"
+    },
+    "fahrraeder_gesamt": {
+      "type": "int"
+    },
+    "opening_hours": {
+      "type": "string",
+      "required": true
+    },
+    "helm_inklusive": {
+      "type": "bool"
+    },
+    "lock_included": {
+      "type": "bool"
+    },
+    "delivery": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

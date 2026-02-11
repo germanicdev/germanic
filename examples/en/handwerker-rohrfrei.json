@@ -1,0 +1,38 @@
+{
+  "name": "Mario Kupferstein",
+  "company": "Rohrfrei Kupferstein GmbH",
+  "trades": [
+    "Plumbing",
+    "Heating",
+    "HVAC"
+  ],
+  "master_certified": true,
+  "address": {
+    "street": "Werkstattgasse",
+    "house_number": "3a",
+    "postal_code": "50667",
+    "city": "Köln",
+    "country": "DE"
+  },
+  "phone": "+49 221 5559876",
+  "emergency_phone": "+49 221 5559877",
+  "notdienst_verfuegbar": true,
+  "email": "info@rohrfrei-kupferstein.example",
+  "website": "https://rohrfrei-kupferstein.example",
+  "service_area": [
+    "Köln",
+    "Leverkusen",
+    "Bergisch Gladbach",
+    "Hürth"
+  ],
+  "mitarbeiter_anzahl": 12,
+  "founded_year": 1998,
+  "qualifications": [
+    "SHK-Meisterbetrieb",
+    "Wärmepumpen-Zertifikat",
+    "Trinkwasser-Hygiene"
+  ],
+  "opening_hours": "Mo-Fr 7:00-17:00, Emergency Service 24/7",
+  "rating": 4.9,
+  "short_description": "Your SHK-Meisterbetrieb in Köln — Plumbing, Heating, HVAC. 24/7 Emergency Service."
+}

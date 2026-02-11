@@ -1,0 +1,29 @@
+{
+  "name": "Weingut Rebhügel",
+  "winery": "Familie Dr. Müller",
+  "address": {
+    "street": "Weinbergstraße",
+    "house_number": "7",
+    "postal_code": "55583",
+    "city": "Bad Kreuznach",
+    "country": "DE"
+  },
+  "phone": "+49 671 8765432",
+  "email": "info@weingut-rebhuegel.example",
+  "website": "https://weingut-rebhuegel.example",
+  "grape_varieties": [
+    "Riesling",
+    "Pinot Gris",
+    "Pinot Noir",
+    "Silvaner"
+  ],
+  "anbauflaeche_ha": 18,
+  "organic_certified": false,
+  "vdp_mitglied": true,
+  "weinprobe_preis": 22.5,
+  "voranmeldung_noetig": true,
+  "vinothek_oeffnungszeiten": "Mo-Sa 10:00-18:00",
+  "onlineshop": true,
+  "ferienwohnung": true,
+  "short_description": "Familienweingut an der Nahe — Riesling aus Leidenschaft since 1898."
+}

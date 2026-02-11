@@ -1,0 +1,74 @@
+{
+  "schema_id": "en.education.music-school.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "leitung": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "instruments": {
+      "type": "[string]",
+      "required": true
+    },
+    "offers": {
+      "type": "[string]"
+    },
+    "monatsbeitrag_ab": {
+      "type": "float",
+      "required": true
+    },
+    "aufnahme_alter_ab": {
+      "type": "int"
+    },
+    "lehrkraefte": {
+      "type": "int"
+    },
+    "trial_lesson_free": {
+      "type": "bool"
+    },
+    "leihinstrumente": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

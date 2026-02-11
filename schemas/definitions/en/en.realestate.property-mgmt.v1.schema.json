@@ -1,0 +1,70 @@
+{
+  "schema_id": "en.realestate.property-mgmt.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "managing_directors": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "management_types": {
+      "type": "[string]",
+      "required": true
+    },
+    "objekte_betreut": {
+      "type": "int"
+    },
+    "mitarbeiteranzahl": {
+      "type": "int"
+    },
+    "ihk_mitglied": {
+      "type": "bool"
+    },
+    "verbandsmiglied": {
+      "type": "bool"
+    },
+    "service_area": {
+      "type": "[string]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

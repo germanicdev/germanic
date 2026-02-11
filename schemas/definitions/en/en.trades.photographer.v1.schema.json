@@ -1,0 +1,81 @@
+{
+  "schema_id": "en.trades.photographer.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "fotografin": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "services": {
+      "type": "[string]",
+      "required": true
+    },
+    "preise": {
+      "type": "table",
+      "fields": {
+        "portrait_ab": {
+          "type": "float"
+        },
+        "hochzeit_ab": {
+          "type": "float"
+        },
+        "business_ab": {
+          "type": "float"
+        }
+      }
+    },
+    "languages": {
+      "type": "[string]"
+    },
+    "mobil": {
+      "type": "bool"
+    },
+    "studio_vorhanden": {
+      "type": "bool"
+    },
+    "online_galerie": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

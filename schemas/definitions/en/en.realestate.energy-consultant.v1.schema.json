@@ -1,0 +1,72 @@
+{
+  "schema_id": "en.realestate.energy-consultant.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "berater": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "services": {
+      "type": "[string]",
+      "required": true
+    },
+    "bafa_zugelassen": {
+      "type": "bool",
+      "required": true
+    },
+    "dena_zertifiziert": {
+      "type": "bool"
+    },
+    "service_area": {
+      "type": "[string]"
+    },
+    "erfahrung_jahre": {
+      "type": "int"
+    },
+    "gebaeudetypen": {
+      "type": "[string]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

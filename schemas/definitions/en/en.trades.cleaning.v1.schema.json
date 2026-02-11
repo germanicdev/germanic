@@ -1,0 +1,75 @@
+{
+  "schema_id": "en.trades.cleaning.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "services": {
+      "type": "[string]",
+      "required": true
+    },
+    "stundensatz": {
+      "type": "float",
+      "required": true
+    },
+    "anfahrtspauschale": {
+      "type": "float"
+    },
+    "service_area": {
+      "type": "[string]"
+    },
+    "mitarbeiteranzahl": {
+      "type": "int"
+    },
+    "insured": {
+      "type": "bool",
+      "required": true
+    },
+    "gewerbeerlaubnis": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

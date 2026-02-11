@@ -1,0 +1,36 @@
+{
+  "name": "Museum für Stadtgeschichte",
+  "operator": "Stadt Regensburg",
+  "address": {
+    "street": "Dachauplatz",
+    "house_number": "2-4",
+    "postal_code": "93047",
+    "city": "Regensburg",
+    "country": "DE"
+  },
+  "phone": "+49 941 5073442",
+  "email": "museum@regensburg.example",
+  "website": "https://museum-regensburg.example",
+  "admission": {
+    "adults": 7.5,
+    "ermaessigt": 4.0,
+    "kinder_frei_bis": 6
+  },
+  "sammlungen": [
+    "Stadtgeschichte",
+    "Römerzeit",
+    "Mittelalter",
+    "Industrialisierung"
+  ],
+  "opening_hours": "Di-So 10:00-17:00, Mo geschlossen",
+  "tours": true,
+  "wheelchair_accessible": true,
+  "audioguide": true,
+  "languages": [
+    "German",
+    "English",
+    "French"
+  ],
+  "rating": 4.1,
+  "short_description": "2000 Jahre Stadtgeschichte in Regensburg erleben."
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Optik Klarsicht",
+  "owner": "Augenoptikermeisterin Karin Weiß",
+  "address": {
+    "street": "Kaiserstraße",
+    "house_number": "55",
+    "postal_code": "76133",
+    "city": "Karlsruhe",
+    "country": "DE"
+  },
+  "phone": "+49 721 1234567",
+  "email": "info@optik-klarsicht.example",
+  "website": "https://optik-klarsicht.example",
+  "services": [
+    "Sehtest",
+    "Brillenanpassung",
+    "Kontaktlinsenanpassung",
+    "Reparaturservice"
+  ],
+  "brands": [
+    "Ray-Ban",
+    "Oakley",
+    "Tom Ford",
+    "Silhouette"
+  ],
+  "opening_hours": "Mo-Fr 9:30-18:00, Sa 10:00-14:00",
+  "kassenvertrag": true,
+  "onlineshop": false,
+  "wheelchair_accessible": true,
+  "short_description": "Meisterbetrieb for Brillen and Kontaktlinsen in Karlsruhe."
+}

@@ -1,0 +1,96 @@
+{
+  "schema_id": "en.dining.hotel.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "stars": {
+      "type": "int",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "preise": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "einzelzimmer_ab": {
+          "type": "float",
+          "required": true
+        },
+        "doppelzimmer_ab": {
+          "type": "float",
+          "required": true
+        },
+        "breakfast_included": {
+          "type": "float"
+        },
+        "parkplatz_tag": {
+          "type": "float"
+        }
+      }
+    },
+    "room_count": {
+      "type": "int"
+    },
+    "equipment": {
+      "type": "[string]"
+    },
+    "haustiere_erlaubt": {
+      "type": "bool"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "check_in": {
+      "type": "string"
+    },
+    "check_out": {
+      "type": "string"
+    },
+    "languages": {
+      "type": "[string]"
+    },
+    "rating": {
+      "type": "float"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "schema_id": "en.education.daycare.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "operator": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "aufnahme_alter_ab": {
+      "type": "int",
+      "required": true
+    },
+    "aufnahme_alter_bis": {
+      "type": "int"
+    },
+    "plaetze_gesamt": {
+      "type": "int"
+    },
+    "care_hours": {
+      "type": "string",
+      "required": true
+    },
+    "educational_concept": {
+      "type": "string"
+    },
+    "specializations": {
+      "type": "[string]"
+    },
+    "meals": {
+      "type": "bool"
+    },
+    "kosten_monatlich": {
+      "type": "float"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "languages": {
+      "type": "[string]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

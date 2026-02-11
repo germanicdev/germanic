@@ -41,6 +41,7 @@
 | Task | Status | Notes |
 |------|--------|-------|
 | 4.1-4.6 | ⬜ TODO | After Phase 3 |
+| 4.6b English schema translations | ✅ DONE | 47 schemas + 52 examples |
 
 ## Blockers
 - flatc must be installed for cargo test/build (`brew install flatbuffers`)
@@ -55,6 +56,29 @@
 7. Consolidate Phase 1+2 into single Claude Code session
 
 ## Recent Completions
+### 2025-02-11: English Schema Translations (AP-4.6b)
+- ✅ Reorganized folder structure: `examples/de/`, `examples/en/`, `schemas/definitions/de/`, `schemas/definitions/en/`
+- ✅ Translated all 47 German schemas to English with idiomatic English schema IDs:
+  - Health: pharmacy, practice, hospital, careservice, psychotherapist, veterinarian, midwife, optician
+  - Dining: restaurant, cafe, hotel, vacation-rental, campground, cinema, museum, pool
+  - Trades: electrician, photographer, it-service, cleaning, locksmith
+  - Real Estate: listing, rental-listing, energy-consultant, property-mgmt
+  - Education: daycare, music-school, community-college, tutoring
+  - Public: citizen-office, event, tourist-info, farmers-market
+  - Business/Employment: job-posting, company, trade-fair
+  - Mobility: charging-station, parking-garage, bike-rental
+  - Associations: sports-club, church
+  - Agriculture: farm-shop, winery
+  - Legal: law-firm, tax-advisor
+  - Services: craftsman
+  - Events: public-event
+- ✅ Translated all 52 example JSON files to English (field names + content)
+- ✅ Maintained German cities, addresses, names, phone numbers (fictional data in Germany)
+- ✅ Translated descriptions, array values (specializations, languages, etc.) to English
+- ✅ Tested compilation with `germanic compile` for multiple English examples
+- ✅ Verified schema IDs: `en.health.pharmacy.v1`, `en.dining.restaurant.v1`, `en.services.craftsman.v1`, etc.
+- ✅ All English examples compile successfully with correct schema IDs
+
 ### 2025-02-11: Universality Examples Integration
 - ✅ Extracted 42 domain schemas from GERMANIC_UNIVERSALITAETS_BEISPIELE.md
 - ✅ Created `/examples/schemas/` directory with all 42 .schema.json files

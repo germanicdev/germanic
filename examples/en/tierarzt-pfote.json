@@ -1,0 +1,32 @@
+{
+  "name": "Tierarztpraxis Goldene Pfote",
+  "tieraerztin": "Dr. med. vet. Claudia Fink",
+  "address": {
+    "street": "Am Tierpark",
+    "house_number": "12",
+    "postal_code": "04103",
+    "city": "Leipzig",
+    "country": "DE"
+  },
+  "phone": "+49 341 8765432",
+  "email": "praxis@goldene-pfote.example",
+  "website": "https://goldene-pfote.example",
+  "animal_types": [
+    "Dogs",
+    "Cats",
+    "Small Animals",
+    "Birds"
+  ],
+  "services": [
+    "Impfungen",
+    "Surgery",
+    "Zahnmedizin",
+    "Röntgen",
+    "Ultraschall"
+  ],
+  "emergency_service": false,
+  "home_visits": true,
+  "opening_hours": "Mo-Fr 9:00-18:00, Sa 10:00-13:00",
+  "parking_spaces": 5,
+  "short_description": "Tierärztliche Randumversorgung in Leipzig."
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Wochenmarkt am Rathausplatz",
+  "organizer": "Stadtverwaltung Freiburg",
+  "address": {
+    "street": "Rathausplatz",
+    "house_number": "",
+    "postal_code": "79098",
+    "city": "Freiburg",
+    "country": "DE"
+  },
+  "phone": "+49 761 2014567",
+  "website": "https://wochenmarkt-freiburg.example",
+  "market_days": "Dienstag und Samstag",
+  "uhrzeiten": "7:30-13:30",
+  "standbetreiber_anzahl": 42,
+  "offering": [
+    "Fruit",
+    "Vegetables",
+    "Cheese",
+    "Meat",
+    "Brot",
+    "Blumen",
+    "Honig"
+  ],
+  "bio_angebot": true,
+  "wheelchair_accessible": true,
+  "parkplaetze_naehe": true,
+  "short_description": "Traditioneller Wochenmarkt im Herzen Freiburgs — frisch and regional."
+}

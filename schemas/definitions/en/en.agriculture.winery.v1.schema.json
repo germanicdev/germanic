@@ -1,0 +1,80 @@
+{
+  "schema_id": "en.agriculture.winery.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "winery": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "grape_varieties": {
+      "type": "[string]",
+      "required": true
+    },
+    "anbauflaeche_ha": {
+      "type": "int"
+    },
+    "organic_certified": {
+      "type": "bool"
+    },
+    "vdp_mitglied": {
+      "type": "bool"
+    },
+    "weinprobe_preis": {
+      "type": "float"
+    },
+    "voranmeldung_noetig": {
+      "type": "bool",
+      "required": true
+    },
+    "vinothek_oeffnungszeiten": {
+      "type": "string"
+    },
+    "onlineshop": {
+      "type": "bool"
+    },
+    "ferienwohnung": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

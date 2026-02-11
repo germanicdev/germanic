@@ -1,0 +1,35 @@
+{
+  "name": "Steuerberatung Zahlenwerk",
+  "tax_advisor": "StB Dipl.-Kfm. Markus Lehmann",
+  "address": {
+    "street": "Finanzplatz",
+    "house_number": "3",
+    "postal_code": "20354",
+    "city": "Hamburg",
+    "country": "DE"
+  },
+  "phone": "+49 40 8765432",
+  "fax": "+49 40 8765433",
+  "email": "info@zahlenwerk-stb.example",
+  "website": "https://zahlenwerk-stb.example",
+  "spezialisierungen": [
+    "Existenzgründung",
+    "Freiberufler",
+    "GmbH-Beratung",
+    "Erbschaftsteuer"
+  ],
+  "services": [
+    "Finanzbuchhaltung",
+    "Jahresabschluss",
+    "Steuererklärungen",
+    "Lohnbuchhaltung",
+    "Betriebsprüfung"
+  ],
+  "datev_partner": true,
+  "initial_consultation_free": true,
+  "languages": [
+    "German",
+    "English"
+  ],
+  "short_description": "Steuerberatung for Gründer and Freiberufler in Hamburg."
+}

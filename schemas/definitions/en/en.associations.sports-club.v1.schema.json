@@ -1,0 +1,83 @@
+{
+  "schema_id": "en.associations.sports-club.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "vorsitzender": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "sports": {
+      "type": "[string]",
+      "required": true
+    },
+    "mitglieder": {
+      "type": "int"
+    },
+    "mitgliedsbeitrag_monat": {
+      "type": "float",
+      "required": true
+    },
+    "aufnahmegebuehr": {
+      "type": "float"
+    },
+    "jugendabteilung": {
+      "type": "bool"
+    },
+    "seniorensport": {
+      "type": "bool"
+    },
+    "training_times": {
+      "type": "string"
+    },
+    "founded_year": {
+      "type": "int"
+    },
+    "vereinsregister": {
+      "type": "string"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Bürgeramt Berlin-Mitte",
+  "operator": "Bezirksamt Berlin-Mitte",
+  "address": {
+    "street": "Karl-Marx-Allee",
+    "house_number": "31",
+    "postal_code": "10178",
+    "city": "Berlin",
+    "country": "DE"
+  },
+  "phone": "+49 30 115",
+  "email": "buergeramt@ba-mitte.berlin.example",
+  "website": "https://service.berlin.example/buergeramt-mitte",
+  "services": [
+    "Personalausweis",
+    "Reisepass",
+    "Meldebescheinigung",
+    "Führungszeugnis",
+    "Kfz-Zulassung"
+  ],
+  "opening_hours": "Mo 8:00-15:00, Di 10:00-18:00, Mi 8:00-13:00, Do 10:00-18:00, Fr 8:00-13:00",
+  "terminpflicht": true,
+  "termin_online": true,
+  "wheelchair_accessible": true,
+  "languages": [
+    "German",
+    "English",
+    "Arabic",
+    "Turkish"
+  ],
+  "wartezeit_hinweis": "Online-Termin empfohlen, Wartezeit ohne Termin ca. 2-3 Stunden",
+  "short_description": "Bürgeramt Berlin-Mitte — Your Anlaufpunkt for alle Bürgerangelegenheiten."
+}

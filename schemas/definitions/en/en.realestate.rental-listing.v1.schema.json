@@ -1,0 +1,98 @@
+{
+  "schema_id": "en.realestate.rental-listing.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "anbieter": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "kontakt": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "contact_person": {
+          "type": "string",
+          "required": true
+        },
+        "phone": {
+          "type": "string",
+          "required": true
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "living_area_sqm": {
+      "type": "float",
+      "required": true
+    },
+    "rooms": {
+      "type": "int",
+      "required": true
+    },
+    "floor": {
+      "type": "int"
+    },
+    "kaltmiete": {
+      "type": "float",
+      "required": true
+    },
+    "utilities": {
+      "type": "float",
+      "required": true
+    },
+    "kaution_monate": {
+      "type": "int"
+    },
+    "construction_year": {
+      "type": "int"
+    },
+    "energieausweis_kwh": {
+      "type": "float"
+    },
+    "equipment": {
+      "type": "[string]"
+    },
+    "haustiere_erlaubt": {
+      "type": "bool"
+    },
+    "available_from": {
+      "type": "string"
+    },
+    "wbs_erforderlich": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

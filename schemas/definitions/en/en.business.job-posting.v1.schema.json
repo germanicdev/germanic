@@ -1,0 +1,97 @@
+{
+  "schema_id": "en.business.job-posting.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "unternehmen": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string"
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "contact_person": {
+      "type": "table",
+      "fields": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "required": true
+        }
+      }
+    },
+    "salary": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "min": {
+          "type": "float",
+          "required": true
+        },
+        "max": {
+          "type": "float",
+          "required": true
+        },
+        "waehrung": {
+          "type": "string",
+          "default": "EUR"
+        }
+      }
+    },
+    "beschaeftigungsart": {
+      "type": "string",
+      "required": true
+    },
+    "remote_moeglich": {
+      "type": "bool"
+    },
+    "befristet": {
+      "type": "bool"
+    },
+    "requirements": {
+      "type": "[string]",
+      "required": true
+    },
+    "benefits": {
+      "type": "[string]"
+    },
+    "eintrittsdatum": {
+      "type": "string"
+    },
+    "application_deadline": {
+      "type": "string"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

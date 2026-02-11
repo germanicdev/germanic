@@ -1,0 +1,78 @@
+{
+  "schema_id": "en.agriculture.farm-shop.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "operator": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "products": {
+      "type": "[string]",
+      "required": true
+    },
+    "organic_certified": {
+      "type": "bool",
+      "required": true
+    },
+    "bio_verband": {
+      "type": "string"
+    },
+    "opening_hours": {
+      "type": "string",
+      "required": true
+    },
+    "selbstbedienung": {
+      "type": "bool"
+    },
+    "delivery": {
+      "type": "bool"
+    },
+    "hofbesichtigung": {
+      "type": "bool"
+    },
+    "preis_eier_10": {
+      "type": "float"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

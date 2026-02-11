@@ -1,0 +1,73 @@
+{
+  "schema_id": "en.education.community-college.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "operator": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "kursbereiche": {
+      "type": "[string]",
+      "required": true
+    },
+    "sprachen_angebot": {
+      "type": "[string]"
+    },
+    "semester_aktuell": {
+      "type": "string"
+    },
+    "kurse_anzahl": {
+      "type": "int"
+    },
+    "anmeldung_online": {
+      "type": "bool"
+    },
+    "ermaessigung_moeglich": {
+      "type": "bool"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

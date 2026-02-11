@@ -1,0 +1,29 @@
+{
+  "name": "StadtRad Verleih Münster",
+  "owner": "Katrin Wolff",
+  "address": {
+    "street": "Am Stadthafen",
+    "house_number": "18",
+    "postal_code": "48153",
+    "city": "Münster",
+    "country": "DE"
+  },
+  "phone": "+49 251 7654321",
+  "email": "info@stadtrad-muenster.example",
+  "website": "https://stadtrad-muenster.example",
+  "fahrradtypen": [
+    "Stadtrad",
+    "E-Bike",
+    "Lastenrad",
+    "Kinderrad",
+    "Tandem"
+  ],
+  "preis_pro_tag": 12.0,
+  "preis_e_bike_tag": 25.0,
+  "fahrraeder_gesamt": 80,
+  "opening_hours": "Mo-So 8:00-20:00 (April-Oktober)",
+  "helm_inklusive": true,
+  "lock_included": true,
+  "delivery": false,
+  "short_description": "Fahrradverleih in Münster — die Fahrradstadt Deutschlands."
+}

@@ -1,0 +1,71 @@
+{
+  "schema_id": "en.legal.tax-advisor.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "tax_advisor": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "fax": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "spezialisierungen": {
+      "type": "[string]",
+      "required": true
+    },
+    "services": {
+      "type": "[string]"
+    },
+    "datev_partner": {
+      "type": "bool"
+    },
+    "initial_consultation_free": {
+      "type": "bool"
+    },
+    "languages": {
+      "type": "[string]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

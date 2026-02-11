@@ -1,0 +1,87 @@
+{
+  "schema_id": "en.health.hospital.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "operator": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "notaufnahme": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "phone": {
+          "type": "string",
+          "required": true
+        },
+        "rund_um_die_uhr": {
+          "type": "bool",
+          "required": true
+        },
+        "hubschrauberlandeplatz": {
+          "type": "bool"
+        }
+      }
+    },
+    "bettenanzahl": {
+      "type": "int"
+    },
+    "fachabteilungen": {
+      "type": "[string]",
+      "required": true
+    },
+    "website": {
+      "type": "string"
+    },
+    "notfall_telefon": {
+      "type": "string"
+    },
+    "besuchszeiten": {
+      "type": "string"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "parking_spaces": {
+      "type": "int"
+    },
+    "floors": {
+      "type": "[int]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

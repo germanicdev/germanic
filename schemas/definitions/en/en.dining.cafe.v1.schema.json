@@ -1,0 +1,79 @@
+{
+  "schema_id": "en.dining.cafe.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "cuisine": {
+      "type": "[string]"
+    },
+    "features": {
+      "type": "[string]"
+    },
+    "sitzplaetze_innen": {
+      "type": "int"
+    },
+    "sitzplaetze_aussen": {
+      "type": "int"
+    },
+    "opening_hours": {
+      "type": "string",
+      "required": true
+    },
+    "wifi": {
+      "type": "bool"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "kartenzahlung": {
+      "type": "bool"
+    },
+    "rating": {
+      "type": "float"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

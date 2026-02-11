@@ -1,0 +1,35 @@
+{
+  "name": "Volkshochschule Augsburg",
+  "operator": "Stadt Augsburg",
+  "address": {
+    "street": "Willy-Brandt-Platz",
+    "house_number": "3a",
+    "postal_code": "86153",
+    "city": "Augsburg",
+    "country": "DE"
+  },
+  "phone": "+49 821 5024300",
+  "email": "info@vhs-augsburg.example",
+  "website": "https://vhs-augsburg.example",
+  "kursbereiche": [
+    "Sprachen",
+    "Beruf & EDV",
+    "Gesundheit",
+    "Kultur",
+    "Politik & Gesellschaft"
+  ],
+  "sprachen_angebot": [
+    "German als Fremdsprache",
+    "English",
+    "French",
+    "Spanish",
+    "Italian",
+    "Arabic"
+  ],
+  "semester_aktuell": "Frühjahr/Sommer 2025",
+  "kurse_anzahl": 850,
+  "anmeldung_online": true,
+  "ermaessigung_moeglich": true,
+  "wheelchair_accessible": true,
+  "short_description": "Volkshochschule Augsburg — Bildung for alle since 1947."
+}

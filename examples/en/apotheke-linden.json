@@ -1,0 +1,31 @@
+{
+  "name": "Linden-Apotheke",
+  "owner": "Dr. rer. nat. Petra Hoffmann",
+  "address": {
+    "street": "Lindenallee",
+    "house_number": "7",
+    "postal_code": "80331",
+    "city": "München",
+    "country": "DE"
+  },
+  "phone": "+49 89 2345678",
+  "fax": "+49 89 2345679",
+  "email": "info@linden-apotheke.example",
+  "website": "https://linden-apotheke.example",
+  "emergency_service": false,
+  "lieferdienst": true,
+  "opening_hours": "Mo-Fr 8:00-18:30, Sa 9:00-13:00",
+  "specializations": [
+    "Naturheilkunde",
+    "Compression Stockings",
+    "Travel Medicine"
+  ],
+  "languages": [
+    "German",
+    "English",
+    "Turkish"
+  ],
+  "wheelchair_accessible": true,
+  "parking_spaces": 3,
+  "short_description": "Your Apotheke im Herzen Münchens with personaler Beratung."
+}

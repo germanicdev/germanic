@@ -1,0 +1,33 @@
+{
+  "name": "Fotografie Lichtblick",
+  "fotografin": "Anna Berger",
+  "address": {
+    "street": "Künstlergasse",
+    "house_number": "4",
+    "postal_code": "01097",
+    "city": "Dresden",
+    "country": "DE"
+  },
+  "phone": "+49 351 2345678",
+  "email": "anna@lichtblick-foto.example",
+  "website": "https://lichtblick-foto.example",
+  "services": [
+    "Hochzeitsfotografie",
+    "Portraitfotografie",
+    "Businessfotografie",
+    "Eventfotografie"
+  ],
+  "preise": {
+    "portrait_ab": 150.0,
+    "hochzeit_ab": 1200.0,
+    "business_ab": 300.0
+  },
+  "languages": [
+    "German",
+    "English"
+  ],
+  "mobil": true,
+  "studio_vorhanden": true,
+  "online_galerie": true,
+  "short_description": "Professionelle Fotografie in Dresden — natürlich, emotional, authentisch."
+}

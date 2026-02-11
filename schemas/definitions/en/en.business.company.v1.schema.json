@@ -1,0 +1,104 @@
+{
+  "schema_id": "en.business.company.v1",
+  "version": 1,
+  "fields": {
+    "firmenname": {
+      "type": "string",
+      "required": true
+    },
+    "legal_form": {
+      "type": "string",
+      "required": true
+    },
+    "trade_register": {
+      "type": "string",
+      "required": false
+    },
+    "registergericht": {
+      "type": "string",
+      "required": false
+    },
+    "managing_directors": {
+      "type": "[string]",
+      "required": true
+    },
+    "founded_year": {
+      "type": "int",
+      "required": false
+    },
+    "industry": {
+      "type": "string",
+      "required": false
+    },
+    "branchencodes": {
+      "type": "[string]",
+      "required": false
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": false
+        },
+        "house_number": {
+          "type": "string",
+          "required": false
+        },
+        "postal_code": {
+          "type": "string",
+          "required": false
+        },
+        "city": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": false
+    },
+    "mitarbeiter_anzahl": {
+      "type": "int",
+      "required": false
+    },
+    "vat_id": {
+      "type": "string",
+      "required": false
+    },
+    "services": {
+      "type": "[string]",
+      "required": false
+    },
+    "zertifizierungen": {
+      "type": "[string]",
+      "required": false
+    },
+    "partnerschaft": {
+      "type": "[string]",
+      "required": false
+    },
+    "karriere_url": {
+      "type": "string",
+      "required": false
+    },
+    "short_description": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schema_id": "en.services.craftsman.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "company": {
+      "type": "string",
+      "required": true
+    },
+    "trades": {
+      "type": "[string]",
+      "required": true
+    },
+    "master_certified": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": false
+        },
+        "house_number": {
+          "type": "string",
+          "required": false
+        },
+        "postal_code": {
+          "type": "string",
+          "required": false
+        },
+        "city": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "emergency_phone": {
+      "type": "string",
+      "required": false
+    },
+    "notdienst_verfuegbar": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": false
+    },
+    "service_area": {
+      "type": "[string]",
+      "required": false
+    },
+    "mitarbeiter_anzahl": {
+      "type": "int",
+      "required": false
+    },
+    "founded_year": {
+      "type": "int",
+      "required": false
+    },
+    "qualifications": {
+      "type": "[string]",
+      "required": false
+    },
+    "opening_hours": {
+      "type": "string",
+      "required": false
+    },
+    "rating": {
+      "type": "float",
+      "required": false
+    },
+    "short_description": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

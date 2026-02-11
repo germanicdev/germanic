@@ -1,0 +1,31 @@
+{
+  "name": "Reinigung Blitzblank",
+  "owner": "Fatima Yilmaz",
+  "address": {
+    "street": "Gewerbestraße",
+    "house_number": "22",
+    "postal_code": "70174",
+    "city": "Stuttgart",
+    "country": "DE"
+  },
+  "phone": "+49 711 4567890",
+  "email": "info@blitzblank-stuttgart.example",
+  "website": "https://blitzblank-stuttgart.example",
+  "services": [
+    "Regular Cleaning",
+    "Deep Cleaning",
+    "Window Cleaning",
+    "Büroreinigung"
+  ],
+  "stundensatz": 28.5,
+  "anfahrtspauschale": 15.0,
+  "service_area": [
+    "Stuttgart",
+    "Esslingen",
+    "Ludwigsburg"
+  ],
+  "mitarbeiteranzahl": 15,
+  "insured": true,
+  "gewerbeerlaubnis": true,
+  "short_description": "Professionelle Gebäudereinigung in Stuttgart and Umgebung."
+}

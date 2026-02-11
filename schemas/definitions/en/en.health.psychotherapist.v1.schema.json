@@ -1,0 +1,79 @@
+{
+  "schema_id": "en.health.psychotherapist.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "medical_license": {
+      "type": "string",
+      "required": true
+    },
+    "verfahren": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "insurance_approval": {
+      "type": "bool",
+      "required": true
+    },
+    "private_insurance": {
+      "type": "bool"
+    },
+    "specializations": {
+      "type": "[string]"
+    },
+    "altersgruppen": {
+      "type": "[string]",
+      "required": true
+    },
+    "wartezeit_wochen": {
+      "type": "int"
+    },
+    "languages": {
+      "type": "[string]"
+    },
+    "online_therapie": {
+      "type": "bool"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

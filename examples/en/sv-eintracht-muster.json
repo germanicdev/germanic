@@ -1,0 +1,31 @@
+{
+  "name": "SV Eintracht Musterstadt 1920 e.V.",
+  "vorsitzender": "Wolfgang Bauer",
+  "address": {
+    "street": "Am Sportplatz",
+    "house_number": "1",
+    "postal_code": "35390",
+    "city": "Gießen",
+    "country": "DE"
+  },
+  "phone": "+49 641 3456789",
+  "email": "info@sv-eintracht-muster.example",
+  "website": "https://sv-eintracht-muster.example",
+  "sports": [
+    "Soccer",
+    "Track and Field",
+    "Tennis",
+    "Gymnastics",
+    "Swimming"
+  ],
+  "mitglieder": 1250,
+  "mitgliedsbeitrag_monat": 15.0,
+  "aufnahmegebuehr": 50.0,
+  "jugendabteilung": true,
+  "seniorensport": true,
+  "training_times": "Siehe Website — je nach Abteilung",
+  "founded_year": 1920,
+  "vereinsregister": "VR 1234, AG Gießen",
+  "wheelchair_accessible": false,
+  "short_description": "Traditionsverein in Gießen — Sport for alle Generationen since 1920."
+}

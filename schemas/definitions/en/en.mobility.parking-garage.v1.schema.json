@@ -1,0 +1,80 @@
+{
+  "schema_id": "en.mobility.parking-garage.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "operator": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "stellplaetze_gesamt": {
+      "type": "int",
+      "required": true
+    },
+    "durchfahrtshoehe_m": {
+      "type": "float",
+      "required": true
+    },
+    "floors": {
+      "type": "[int]"
+    },
+    "e_ladepunkte": {
+      "type": "int"
+    },
+    "tarife_pro_stunde": {
+      "type": "float",
+      "required": true
+    },
+    "tageshoechstsatz": {
+      "type": "float"
+    },
+    "rund_um_die_uhr": {
+      "type": "bool"
+    },
+    "wheelchair_accessible": {
+      "type": "bool"
+    },
+    "women_parking_spaces": {
+      "type": "bool"
+    },
+    "payment": {
+      "type": "[string]"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

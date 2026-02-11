@@ -1,0 +1,45 @@
+{
+  "titel": "Lichtdurchflutete 3-Zimmer-Wohnung mit Parkblick",
+  "objektart": "Wohnung",
+  "angebotsart": "Miete",
+  "address": {
+    "street": "Am Stadtpark",
+    "house_number": "17",
+    "postal_code": "81925",
+    "city": "München",
+    "country": "DE"
+  },
+  "living_area_sqm": 87.5,
+  "rooms": 3,
+  "construction_year": 2019,
+  "floor": 4,
+  "base_rent_eur": 1650.0,
+  "utilities_eur": 280.0,
+  "kaution_monate": 3,
+  "equipment": {
+    "balcony": true,
+    "elevator": true,
+    "einbaukueche": true,
+    "basement": true,
+    "garage": false,
+    "fussbodenheizung": true
+  },
+  "energy_certificate": {
+    "typ": "Verbrauchsausweis",
+    "kennwert_kwh": 68.5,
+    "effizienzklasse": "B",
+    "heizungsart": "Fernwärme"
+  },
+  "available_from": "2025-09-01",
+  "haustiere_erlaubt": false,
+  "ansprechpartner_name": "Karla Steinfeld",
+  "ansprechpartner_telefon": "+49 89 5557890",
+  "ansprechpartner_email": "steinfeld@parkblick-immobilien.example",
+  "expose_url": "https://parkblick-immobilien.example/obj/17",
+  "features": [
+    "Parkblick",
+    "Südbalkon",
+    "Parkett"
+  ],
+  "short_description": "Helle, moderne Wohnung with Blick auf den Englischen Garten. Erstbezug 2019."
+}

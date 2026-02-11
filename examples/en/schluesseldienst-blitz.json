@@ -1,0 +1,27 @@
+{
+  "name": "Schlüsseldienst Blitzschnell",
+  "owner": "Marco Petersen",
+  "address": {
+    "street": "Bahnhofstraße",
+    "house_number": "31",
+    "postal_code": "30159",
+    "city": "Hannover",
+    "country": "DE"
+  },
+  "phone": "+49 511 9876543",
+  "email": "info@schluessel-blitz.example",
+  "website": "https://schluessel-blitz.example",
+  "preis_tueroffnung_ab": 59.0,
+  "anfahrtspauschale": 19.5,
+  "nacht_zuschlag_prozent": 50.0,
+  "service_area": [
+    "Hannover",
+    "Langenhagen",
+    "Laatzen",
+    "Garbsen"
+  ],
+  "rund_um_die_uhr": true,
+  "handwerkskammer": "HWK Hannover",
+  "master_certified": true,
+  "short_description": "Seriöser Schlüsseldienst in Hannover — transparente Preise, keine Abzocke."
+}

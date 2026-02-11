@@ -1,0 +1,35 @@
+{
+  "name": "3-Zimmer-Altbauwohnung Kreuzberg",
+  "anbieter": "Real Estate Schmidt GmbH",
+  "address": {
+    "street": "Oranienstraße",
+    "house_number": "145",
+    "postal_code": "10969",
+    "city": "Berlin",
+    "country": "DE"
+  },
+  "kontakt": {
+    "contact_person": "Jürgen Schmidt",
+    "phone": "+49 30 6789012",
+    "email": "schmidt@immo-schmidt.example"
+  },
+  "living_area_sqm": 87.5,
+  "rooms": 3,
+  "floor": 3,
+  "kaltmiete": 950.0,
+  "utilities": 220.0,
+  "kaution_monate": 3,
+  "construction_year": 1907,
+  "energieausweis_kwh": 142.5,
+  "equipment": [
+    "Balkon",
+    "Dielen",
+    "Stuck",
+    "Einbauküche",
+    "Badewanne"
+  ],
+  "haustiere_erlaubt": false,
+  "available_from": "2025-04-01",
+  "wbs_erforderlich": false,
+  "short_description": "Lichtdurchfluteter Altbau in Bestlage Kreuzberg with Balkon zum Hinterhof."
+}

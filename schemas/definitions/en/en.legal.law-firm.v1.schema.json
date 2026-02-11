@@ -1,0 +1,74 @@
+{
+  "schema_id": "en.legal.law-firm.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "anwaelte": {
+      "type": "[string]",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "fax": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "legal_areas": {
+      "type": "[string]",
+      "required": true
+    },
+    "erstberatung_preis": {
+      "type": "float"
+    },
+    "rechtsschutzversicherung": {
+      "type": "bool"
+    },
+    "prozesskostenhilfe": {
+      "type": "bool"
+    },
+    "languages": {
+      "type": "[string]"
+    },
+    "parking_spaces": {
+      "type": "int"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

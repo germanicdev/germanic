@@ -1,0 +1,79 @@
+{
+  "schema_id": "en.dining.cinema.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "operator": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "saele": {
+      "type": "int"
+    },
+    "sitzplaetze_gesamt": {
+      "type": "int"
+    },
+    "equipment": {
+      "type": "[string]"
+    },
+    "opening_hours": {
+      "type": "string",
+      "required": true
+    },
+    "preise_ab": {
+      "type": "float"
+    },
+    "ermaessigung": {
+      "type": "bool"
+    },
+    "snackbar": {
+      "type": "bool"
+    },
+    "parking_spaces": {
+      "type": "int"
+    },
+    "rating": {
+      "type": "float"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

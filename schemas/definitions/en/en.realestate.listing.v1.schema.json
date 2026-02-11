@@ -1,0 +1,163 @@
+{
+  "schema_id": "en.realestate.listing.v1",
+  "version": 1,
+  "fields": {
+    "titel": {
+      "type": "string",
+      "required": true
+    },
+    "objektart": {
+      "type": "string",
+      "required": true
+    },
+    "angebotsart": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": false
+        },
+        "house_number": {
+          "type": "string",
+          "required": false
+        },
+        "postal_code": {
+          "type": "string",
+          "required": false
+        },
+        "city": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "living_area_sqm": {
+      "type": "float",
+      "required": true
+    },
+    "rooms": {
+      "type": "int",
+      "required": false
+    },
+    "construction_year": {
+      "type": "int",
+      "required": false
+    },
+    "floor": {
+      "type": "int",
+      "required": false
+    },
+    "base_rent_eur": {
+      "type": "float",
+      "required": true
+    },
+    "utilities_eur": {
+      "type": "float",
+      "required": false
+    },
+    "kaution_monate": {
+      "type": "int",
+      "required": false
+    },
+    "equipment": {
+      "type": "table",
+      "required": false,
+      "fields": {
+        "balcony": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "elevator": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "einbaukueche": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "basement": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "garage": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "fussbodenheizung": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        }
+      }
+    },
+    "energy_certificate": {
+      "type": "table",
+      "required": false,
+      "fields": {
+        "typ": {
+          "type": "string",
+          "required": false
+        },
+        "kennwert_kwh": {
+          "type": "float",
+          "required": false
+        },
+        "effizienzklasse": {
+          "type": "string",
+          "required": false
+        },
+        "heizungsart": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "available_from": {
+      "type": "string",
+      "required": false
+    },
+    "haustiere_erlaubt": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "ansprechpartner_name": {
+      "type": "string",
+      "required": false
+    },
+    "ansprechpartner_telefon": {
+      "type": "string",
+      "required": true
+    },
+    "ansprechpartner_email": {
+      "type": "string",
+      "required": false
+    },
+    "expose_url": {
+      "type": "string",
+      "required": false
+    },
+    "features": {
+      "type": "[string]",
+      "required": false
+    },
+    "short_description": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

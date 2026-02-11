@@ -1,0 +1,103 @@
+{
+  "schema_id": "en.health.pharmacy.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "string",
+      "required": false
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": false
+        },
+        "house_number": {
+          "type": "string",
+          "required": false
+        },
+        "postal_code": {
+          "type": "string",
+          "required": false
+        },
+        "city": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "fax": {
+      "type": "string",
+      "required": false
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": false
+    },
+    "emergency_service": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "emergency_service_from": {
+      "type": "string",
+      "required": false
+    },
+    "emergency_service_to": {
+      "type": "string",
+      "required": false
+    },
+    "delivery_service": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "delivery_area": {
+      "type": "[string]",
+      "required": false
+    },
+    "specializations": {
+      "type": "[string]",
+      "required": false
+    },
+    "languages": {
+      "type": "[string]",
+      "required": false
+    },
+    "opening_hours": {
+      "type": "string",
+      "required": true
+    },
+    "wheelchair_accessible": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "parking_spaces": {
+      "type": "int",
+      "required": false
+    },
+    "short_description": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Linden-Apotheke",
+  "owner": "Dr. rer. nat. Petra Lindgrün",
+  "address": {
+    "street": "Lindenstraße",
+    "house_number": "88",
+    "postal_code": "10969",
+    "city": "Berlin",
+    "country": "DE"
+  },
+  "phone": "+49 30 5556789",
+  "fax": "+49 30 5556780",
+  "email": "service@linden-apotheke.example",
+  "website": "https://linden-apotheke.example",
+  "emergency_service": true,
+  "emergency_service_from": "2025-03-15T20:00:00",
+  "emergency_service_to": "2025-03-16T08:00:00",
+  "delivery_service": true,
+  "delivery_area": [
+    "Kreuzberg",
+    "Neukölln",
+    "Friedrichshain"
+  ],
+  "specializations": [
+    "Homeopathy",
+    "Travel Medicine",
+    "Compression Stockings"
+  ],
+  "languages": [
+    "German",
+    "English",
+    "Turkish"
+  ],
+  "opening_hours": "Mo-Fr 8:00-20:00, Sa 9:00-16:00",
+  "wheelchair_accessible": true,
+  "parking_spaces": 3,
+  "short_description": "Your neighborhood pharmacy in Kreuzberg — personal, competent, including Emergency Service."
+}

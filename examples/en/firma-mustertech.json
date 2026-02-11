@@ -1,0 +1,31 @@
+{
+  "name": "MusterTech Solutions GmbH",
+  "legal_form": "GmbH",
+  "industry": "IT & Software",
+  "address": {
+    "street": "Innovationsstraße",
+    "house_number": "10",
+    "postal_code": "70563",
+    "city": "Stuttgart",
+    "country": "DE"
+  },
+  "phone": "+49 711 9998877",
+  "email": "info@mustertech.example",
+  "website": "https://mustertech.example",
+  "managing_directors": "Dr. Martin Schreiber",
+  "founded_year": 2012,
+  "mitarbeiteranzahl": 85,
+  "umsatz_kategorie": "5-10 Mio. EUR",
+  "products": [
+    "ERP-Software",
+    "Cloud-Hosting",
+    "IT-Beratung",
+    "Managed Services"
+  ],
+  "zertifizierungen": [
+    "ISO 9001",
+    "ISO 27001"
+  ],
+  "trade_register": "HRB 745123, AG Stuttgart",
+  "short_description": "Your Partner for maßgeschneiderte IT-Lösungen im Mittelstand."
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Lernprofis Nachhilfe",
+  "owner": "Dr. Sabine Koch",
+  "address": {
+    "street": "Schillerstraße",
+    "house_number": "19",
+    "postal_code": "55116",
+    "city": "Mainz",
+    "country": "DE"
+  },
+  "phone": "+49 6131 2345678",
+  "email": "info@lernprofis-mainz.example",
+  "website": "https://lernprofis-mainz.example",
+  "subjects": [
+    "Mathematics",
+    "German",
+    "English",
+    "Physics",
+    "Chemistry"
+  ],
+  "grade_levels": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "formate": [
+    "Einzelunterricht",
+    "Gruppenunterricht",
+    "Online-Nachhilfe"
+  ],
+  "price_per_hour": 25.0,
+  "trial_lesson_free": true,
+  "lehrkraefte": 14,
+  "abipruefungsvorbereitung": true,
+  "languages": [
+    "German"
+  ],
+  "short_description": "Nachhilfe in Mainz — von der 5. Klasse bis zum Abitur."
+}

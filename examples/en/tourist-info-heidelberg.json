@@ -1,0 +1,31 @@
+{
+  "name": "Tourist-Information Heidelberg",
+  "operator": "Heidelberg Marketing GmbH",
+  "address": {
+    "street": "Willy-Brandt-Platz",
+    "house_number": "1",
+    "postal_code": "69115",
+    "city": "Heidelberg",
+    "country": "DE"
+  },
+  "phone": "+49 6221 584444",
+  "email": "info@heidelberg-marketing.example",
+  "website": "https://tourism-heidelberg.example",
+  "offers": [
+    "Stadtführungen",
+    "Heidelberg-Card",
+    "Hotelreservierung",
+    "Souvenirshop"
+  ],
+  "languages": [
+    "German",
+    "English",
+    "French",
+    "Japanisch",
+    "Chinesisch"
+  ],
+  "opening_hours": "Mo-Sa 9:00-18:00, So 10:00-16:00 (April-Oktober)",
+  "wheelchair_accessible": true,
+  "wifi": true,
+  "short_description": "Zentrale Anlaufstelle for Besucher der Schlossstadt Heidelberg."
+}

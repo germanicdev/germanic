@@ -1,0 +1,35 @@
+{
+  "name": "Handwerk Süd 2025",
+  "organizer": "Messe München GmbH",
+  "veranstaltungsort": {
+    "name": "Messe München, Halle B2",
+    "street": "Am Messesee",
+    "house_number": "2",
+    "postal_code": "81823",
+    "city": "München",
+    "country": "DE"
+  },
+  "kontakt": {
+    "phone": "+49 89 94920720",
+    "email": "handwerk@messe-muenchen.example",
+    "website": "https://handwerk-sued.example"
+  },
+  "datum_beginn": "2025-10-15",
+  "datum_ende": "2025-10-18",
+  "aussteller_anzahl": 380,
+  "preise": {
+    "tageskarte": 18.5,
+    "season_ticket": 35.0,
+    "ermaessigt": 12.0
+  },
+  "categories": [
+    "Holzbau",
+    "Metallbau",
+    "Elektro",
+    "Plumbing",
+    "Digitalisierung"
+  ],
+  "wheelchair_accessible": true,
+  "online_tickets": true,
+  "short_description": "The größte Handwerksmesse Süddeutschlands."
+}

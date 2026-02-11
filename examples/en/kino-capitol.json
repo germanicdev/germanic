@@ -1,0 +1,29 @@
+{
+  "name": "Capitol Filmtheater",
+  "operator": "Kino Mayer GmbH",
+  "address": {
+    "street": "Marktplatz",
+    "house_number": "9",
+    "postal_code": "69117",
+    "city": "Heidelberg",
+    "country": "DE"
+  },
+  "phone": "+49 6221 234567",
+  "email": "info@capitol-heidelberg.example",
+  "website": "https://capitol-heidelberg.example",
+  "saele": 5,
+  "sitzplaetze_gesamt": 620,
+  "equipment": [
+    "Dolby Atmos",
+    "3D",
+    "Barrierefreie Plätze",
+    "Induktionsschleife"
+  ],
+  "opening_hours": "Täglich ab 14:00",
+  "preise_ab": 9.5,
+  "ermaessigung": true,
+  "snackbar": true,
+  "parking_spaces": 0,
+  "rating": 4.4,
+  "short_description": "Traditionsreiches Kino am Heidelberger Marktplatz since 1952."
+}

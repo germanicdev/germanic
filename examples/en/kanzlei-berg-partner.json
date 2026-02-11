@@ -1,0 +1,35 @@
+{
+  "name": "Kanzlei Berg & Partner",
+  "anwaelte": [
+    "RA Dr. Michael Berg",
+    "RAin Sabine Richter",
+    "RA Tobias Engel"
+  ],
+  "address": {
+    "street": "Königstraße",
+    "house_number": "72",
+    "postal_code": "70173",
+    "city": "Stuttgart",
+    "country": "DE"
+  },
+  "phone": "+49 711 2345678",
+  "fax": "+49 711 2345679",
+  "email": "kanzlei@berg-partner.example",
+  "website": "https://berg-partner.example",
+  "legal_areas": [
+    "Labor Law",
+    "Tenancy Law",
+    "Family Law",
+    "Erbrecht"
+  ],
+  "erstberatung_preis": 190.0,
+  "rechtsschutzversicherung": true,
+  "prozesskostenhilfe": true,
+  "languages": [
+    "German",
+    "English",
+    "French"
+  ],
+  "parking_spaces": 4,
+  "short_description": "Kanzlei for Privatrecht in Stuttgart — competent, personal, engagiert."
+}

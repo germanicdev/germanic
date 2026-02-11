@@ -1,77 +1,77 @@
 {
-  "schema_id": "de.wirtschaft.unternehmen.v1",
+  "schema_id": "en.public.event.v1",
   "version": 1,
   "fields": {
     "name": {
       "type": "string",
       "required": true
     },
-    "rechtsform": {
-      "type": "string",
-      "required": true
+    "organizer": {
+      "type": "string"
     },
-    "branche": {
-      "type": "string",
-      "required": true
-    },
-    "adresse": {
+    "veranstaltungsort": {
       "type": "table",
       "required": true,
       "fields": {
-        "strasse": {
+        "name": {
           "type": "string",
           "required": true
         },
-        "hausnummer": {
+        "street": {
           "type": "string"
         },
-        "plz": {
+        "postal_code": {
           "type": "string",
           "required": true
         },
-        "ort": {
+        "city": {
           "type": "string",
           "required": true
         },
-        "land": {
+        "country": {
           "type": "string",
           "default": "DE"
         }
       }
     },
-    "telefon": {
+    "kontakt": {
+      "type": "table",
+      "fields": {
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        }
+      }
+    },
+    "datum_beginn": {
       "type": "string",
       "required": true
     },
-    "email": {
+    "datum_ende": {
       "type": "string"
     },
-    "website": {
-      "type": "string"
-    },
-    "geschaeftsfuehrer": {
-      "type": "string"
-    },
-    "gruendungsjahr": {
-      "type": "int",
+    "eintritt_frei": {
+      "type": "bool",
       "required": true
     },
-    "mitarbeiteranzahl": {
+    "kategorie": {
+      "type": "string"
+    },
+    "programm": {
+      "type": "[string]"
+    },
+    "erwartete_besucher": {
       "type": "int"
     },
-    "umsatz_kategorie": {
-      "type": "string"
+    "wheelchair_accessible": {
+      "type": "bool"
     },
-    "produkte": {
-      "type": "[string]"
-    },
-    "zertifizierungen": {
-      "type": "[string]"
-    },
-    "handelsregister": {
-      "type": "string"
-    },
-    "kurzbeschreibung": {
+    "short_description": {
       "type": "string"
     }
   }

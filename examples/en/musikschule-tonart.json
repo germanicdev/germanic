@@ -1,0 +1,34 @@
+{
+  "name": "Musikschule TonArt",
+  "leitung": "Prof. Johannes Weber",
+  "address": {
+    "street": "Mozartstraße",
+    "house_number": "8",
+    "postal_code": "97070",
+    "city": "Würzburg",
+    "country": "DE"
+  },
+  "phone": "+49 931 7654321",
+  "email": "info@musikschule-tonart.example",
+  "website": "https://musikschule-tonart.example",
+  "instruments": [
+    "Piano",
+    "Guitar",
+    "Violin",
+    "Drums",
+    "Voice",
+    "Flöte"
+  ],
+  "offers": [
+    "Einzelunterricht",
+    "Gruppenunterricht",
+    "Musikalische Früherziehung",
+    "Ensembles"
+  ],
+  "monatsbeitrag_ab": 65.0,
+  "aufnahme_alter_ab": 4,
+  "lehrkraefte": 18,
+  "trial_lesson_free": true,
+  "leihinstrumente": true,
+  "short_description": "Städtische Musikschule Würzburg for alle Altersstufen."
+}

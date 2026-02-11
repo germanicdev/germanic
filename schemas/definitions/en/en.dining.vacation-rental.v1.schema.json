@@ -1,0 +1,81 @@
+{
+  "schema_id": "en.dining.vacation-rental.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "vermieter": {
+      "type": "string"
+    },
+    "address": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "street": {
+          "type": "string",
+          "required": true
+        },
+        "house_number": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string",
+          "required": true
+        },
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "max_personen": {
+      "type": "int",
+      "required": true
+    },
+    "schlafzimmer": {
+      "type": "int",
+      "required": true
+    },
+    "living_area_sqm": {
+      "type": "float"
+    },
+    "preis_pro_nacht": {
+      "type": "float",
+      "required": true
+    },
+    "mindestaufenthalt_naechte": {
+      "type": "int"
+    },
+    "equipment": {
+      "type": "[string]"
+    },
+    "haustiere_erlaubt": {
+      "type": "bool"
+    },
+    "rauchen_erlaubt": {
+      "type": "bool"
+    },
+    "rating": {
+      "type": "float"
+    },
+    "short_description": {
+      "type": "string"
+    }
+  }
+}

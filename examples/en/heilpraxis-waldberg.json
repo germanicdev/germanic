@@ -1,0 +1,39 @@
+{
+  "name": "Thomas Waldberg",
+  "bezeichnung": "Heilpraktiker",
+  "praxisname": "Heilpraxis Waldberg",
+  "address": {
+    "street": "Testweg",
+    "house_number": "7",
+    "postal_code": "54321",
+    "city": "Testdorf",
+    "country": "DE"
+  },
+  "phone": "+49 987 1234567",
+  "email": "kontakt@heilpraxis-waldberg.example",
+  "website": "https://heilpraxis-waldberg.example",
+  "specializations": [
+    "Biologische Zahnmedizin",
+    "Keramikimplantate",
+    "Amalgamsanierung"
+  ],
+  "therapy_methods": [
+    "Metallfreier Zahnersatz",
+    "Ozontherapie",
+    "Neuraltherapie"
+  ],
+  "qualifications": [
+    "Heilpraktiker",
+    "Master of Science Biologische Zahnmedizin",
+    "Umweltzahnmedizinerin"
+  ],
+  "terminbuchung_url": "https://doctolib.example/heilpraxis-waldberg",
+  "opening_hours": "Mo-Fr 8-18 Uhr",
+  "private_insurance": true,
+  "public_insurance": true,
+  "languages": [
+    "German",
+    "English"
+  ],
+  "short_description": "Ganzheitliche Zahnmedizin ohne Metalle and Gifte – for Your Gesandheit."
+}

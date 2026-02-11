@@ -1,0 +1,41 @@
+{
+  "name": "Dr. Maria Sonnenschein",
+  "bezeichnung": "Zahnärztin",
+  "praxisname": "Praxis Sonnenschein",
+  "address": {
+    "street": "Musterstraße",
+    "house_number": "42",
+    "postal_code": "12345",
+    "city": "Beispielstadt",
+    "country": "DE"
+  },
+  "phone": "+49 123 9876543",
+  "email": "info@praxis-sonnenschein.example",
+  "website": "https://praxis-sonnenschein.example",
+  "specializations": [
+    "Zahnerhaltung",
+    "Prophylaxe",
+    "Stress & Nervensystem"
+  ],
+  "therapy_methods": [
+    "Wurzelbehandlung",
+    "Bleaching",
+    "Infusionstherapie",
+    "Lasertherapie",
+    "Borreliose Therapie"
+  ],
+  "qualifications": [
+    "Zahnärztin",
+    "Implantologie-Zertifikat",
+    "Physiotherapeutin",
+    "Regulationstherapeutin IGAF"
+  ],
+  "terminbuchung_url": "https://praxis-sonnenschein.example/termin",
+  "opening_hours": "Nach Vereinbarung",
+  "private_insurance": true,
+  "public_insurance": false,
+  "languages": [
+    "German"
+  ],
+  "short_description": "Als Zahnärztin for moderne Zahnmedizin in Beispielstadt ist es mir wichtig, Sie in Yourer Gesamtheit zu betrachten."
+}
