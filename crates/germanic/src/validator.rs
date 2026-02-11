@@ -1,36 +1,36 @@
-//! # Schema-Validierung
+//! # Schema Validation
 //!
-//! Validiert .grm Dateien und JSON-Daten gegen Schemas.
+//! Validates .grm files and JSON data against schemas.
 //!
-//! ## Architektur
+//! ## Architecture
 //!
 //! ```text
 //! ┌─────────────────────────────────────────────────────────────────────────────┐
-//! │                    VALIDIERUNGS-EBENEN                                      │
+//! │                    VALIDATION LAYERS                                        │
 //! ├─────────────────────────────────────────────────────────────────────────────┤
 //! │                                                                             │
-//! │   Ebene 1: SYNTAX                                                           │
+//! │   Layer 1: SYNTAX                                                           │
 //! │   ┌─────────────────────────────────────────┐                               │
-//! │   │ • Ist das JSON syntaktisch korrekt?     │                               │
-//! │   │ • Hat die .grm Datei gültige Magic Bytes?│                               │
+//! │   │ • Is the JSON syntactically correct?    │                               │
+//! │   │ • Does the .grm file have valid magic bytes? │                          │
 //! │   └─────────────────────────────────────────┘                               │
 //! │                      │                                                      │
 //! │                      ▼                                                      │
-//! │   Ebene 2: STRUKTUR                                                         │
+//! │   Layer 2: STRUCTURE                                                        │
 //! │   ┌─────────────────────────────────────────┐                               │
-//! │   │ • Entspricht JSON dem Rust-Struct?      │                               │
-//! │   │ • Ist der .grm Header vollständig?       │                               │
+//! │   │ • Does JSON match the Rust struct?      │                               │
+//! │   │ • Is the .grm header complete?          │                               │
 //! │   └─────────────────────────────────────────┘                               │
 //! │                      │                                                      │
 //! │                      ▼                                                      │
-//! │   Ebene 3: SEMANTIK                                                         │
+//! │   Layer 3: SEMANTICS                                                        │
 //! │   ┌─────────────────────────────────────────┐                               │
-//! │   │ • Sind alle Pflichtfelder ausgefüllt?   │                               │
-//! │   │ • Erfüllen Werte Business-Constraints?  │                               │
+//! │   │ • Are all required fields filled?       │                               │
+//! │   │ • Do values meet business constraints?  │                               │
 //! │   └─────────────────────────────────────────┘                               │
 //! │                                                                             │
-//! │   FAIL-FAST: Jede Ebene bricht bei Fehler sofort ab.                        │
-//! │   Kein Sinn, semantische Prüfung bei Syntaxfehler zu machen.                │
+//! │   FAIL-FAST: Each layer aborts immediately on error.                        │
+//! │   No point in semantic checking if syntax is invalid.                       │
 //! │                                                                             │
 //! └─────────────────────────────────────────────────────────────────────────────┘
 //! ```
@@ -39,101 +39,101 @@ use crate::error::GermanicResult;
 use crate::types::{GrmHeader, GRM_MAGIC};
 
 // ============================================================================
-// .GRM VALIDIERUNG
+// .GRM VALIDATION
 // ============================================================================
 
-/// Validiert eine .grm Datei auf strukturelle Korrektheit.
+/// Validates a .grm file for structural correctness.
 ///
-/// ## Prüfungen
+/// ## Checks
 ///
-/// 1. Magic Bytes vorhanden und korrekt
-/// 2. Header vollständig und parsbar
-/// 3. Schema-ID ist gültiges UTF-8
-/// 4. Genug Daten für den angegebenen Payload
+/// 1. Magic bytes present and correct
+/// 2. Header complete and parsable
+/// 3. Schema-ID is valid UTF-8
+/// 4. Enough data for the specified payload
 ///
-/// ## Beispiel
+/// ## Example
 ///
 /// ```rust,ignore
-/// let bytes = std::fs::read("praxis.grm")?;
-/// let validierung = validiere_grm(&bytes)?;
-/// println!("Schema-ID: {}", validierung.schema_id);
+/// let bytes = std::fs::read("practice.grm")?;
+/// let validation = validate_grm(&bytes)?;
+/// println!("Schema-ID: {}", validation.schema_id);
 /// ```
-pub fn validiere_grm(daten: &[u8]) -> GermanicResult<GrmValidierung> {
-    // 1. Mindestgröße prüfen
-    if daten.len() < 4 {
-        return Ok(GrmValidierung {
-            gueltig: false,
+pub fn validate_grm(data: &[u8]) -> GermanicResult<GrmValidation> {
+    // 1. Check minimum size
+    if data.len() < 4 {
+        return Ok(GrmValidation {
+            valid: false,
             schema_id: None,
-            fehler: Some("Datei zu kurz für Magic Bytes".to_string()),
+            error: Some("File too short for magic bytes".to_string()),
         });
     }
 
-    // 2. Magic Bytes prüfen
-    if &daten[0..4] != &GRM_MAGIC {
-        return Ok(GrmValidierung {
-            gueltig: false,
+    // 2. Check magic bytes
+    if &data[0..4] != &GRM_MAGIC {
+        return Ok(GrmValidation {
+            valid: false,
             schema_id: None,
-            fehler: Some(format!(
-                "Ungültige Magic Bytes: {:02X?} (erwartet: {:02X?})",
-                &daten[0..4],
+            error: Some(format!(
+                "Invalid magic bytes: {:02X?} (expected: {:02X?})",
+                &data[0..4],
                 &GRM_MAGIC
             )),
         });
     }
 
-    // 3. Header parsen
-    match GrmHeader::from_bytes(daten) {
-        Ok((header, _laenge)) => Ok(GrmValidierung {
-            gueltig: true,
+    // 3. Parse header
+    match GrmHeader::from_bytes(data) {
+        Ok((header, _length)) => Ok(GrmValidation {
+            valid: true,
             schema_id: Some(header.schema_id),
-            fehler: None,
+            error: None,
         }),
-        Err(e) => Ok(GrmValidierung {
-            gueltig: false,
+        Err(e) => Ok(GrmValidation {
+            valid: false,
             schema_id: None,
-            fehler: Some(format!("Header-Fehler: {}", e)),
+            error: Some(format!("Header error: {}", e)),
         }),
     }
 }
 
-/// Ergebnis der .grm Validierung.
+/// Result of .grm validation.
 #[derive(Debug, Clone)]
-pub struct GrmValidierung {
-    /// Ist die Datei strukturell gültig?
-    pub gueltig: bool,
+pub struct GrmValidation {
+    /// Is the file structurally valid?
+    pub valid: bool,
 
-    /// Extrahierte Schema-ID (wenn Header parsbar)
+    /// Extracted schema ID (if header is parsable)
     pub schema_id: Option<String>,
 
-    /// Fehlermeldung (wenn ungültig)
-    pub fehler: Option<String>,
+    /// Error message (if invalid)
+    pub error: Option<String>,
 }
 
 // ============================================================================
-// JSON-SCHEMA VALIDIERUNG
+// JSON SCHEMA VALIDATION
 // ============================================================================
 
-/// Validiert JSON gegen ein bekanntes Schema.
+/// Validates JSON against a known schema.
 ///
-/// Diese Funktion ist ein Wrapper für die Schema-spezifische Validierung.
-/// Die eigentliche Validierungslogik wird vom `Validieren` Trait bereitgestellt,
-/// der durch das Macro generiert wird.
+/// This function is a wrapper for schema-specific validation.
+/// The actual validation logic is provided by the `Validate` trait,
+/// which is generated by the macro.
 ///
-/// ## Beispiel
+/// ## Example
 ///
 /// ```rust,ignore
 /// let json = r#"{"name": "", "bezeichnung": "Heilpraktiker"}"#;
-/// let result = validiere_json::<PraxisSchema>(json);
-/// // → Err: "name" ist leer aber required
+/// let result = validate_json::<PracticeSchema>(json);
+/// // → Err: "name" is empty but required
 /// ```
-pub fn validiere_json<S>(json: &str) -> GermanicResult<S>
+pub fn validate_json<S>(json: &str) -> GermanicResult<S>
 where
     S: serde::de::DeserializeOwned + crate::schema::Validate,
 {
-    // 1. Parse JSON zu Struct
+    // 1. Parse JSON to struct
     let schema: S = serde_json::from_str(json)?;
 
-    // 2. Validiere Pflichtfelder
+    // 2. Validate required fields
     schema.validate()?;
 
     Ok(schema)
@@ -148,30 +148,30 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_validiere_grm_zu_kurz() {
-        let daten = [0x47, 0x52, 0x4D]; // Nur 3 Bytes
-        let ergebnis = validiere_grm(&daten).unwrap();
+    fn test_validate_grm_too_short() {
+        let data = [0x47, 0x52, 0x4D]; // Only 3 bytes
+        let result = validate_grm(&data).unwrap();
 
-        assert!(!ergebnis.gueltig);
-        assert!(ergebnis.fehler.unwrap().contains("zu kurz"));
+        assert!(!result.valid);
+        assert!(result.error.unwrap().contains("too short"));
     }
 
     #[test]
-    fn test_validiere_grm_falsche_magic() {
-        let daten = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
-        let ergebnis = validiere_grm(&daten).unwrap();
+    fn test_validate_grm_invalid_magic() {
+        let data = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        let result = validate_grm(&data).unwrap();
 
-        assert!(!ergebnis.gueltig);
-        assert!(ergebnis.fehler.unwrap().contains("Magic"));
+        assert!(!result.valid);
+        assert!(result.error.unwrap().contains("magic"));
     }
 
     #[test]
-    fn test_validiere_grm_gueltig() {
+    fn test_validate_grm_valid() {
         let header = GrmHeader::new("test.v1");
         let bytes = header.to_bytes();
-        let ergebnis = validiere_grm(&bytes).unwrap();
+        let result = validate_grm(&bytes).unwrap();
 
-        assert!(ergebnis.gueltig);
-        assert_eq!(ergebnis.schema_id, Some("test.v1".to_string()));
+        assert!(result.valid);
+        assert_eq!(result.schema_id, Some("test.v1".to_string()));
     }
 }

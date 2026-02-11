@@ -199,22 +199,22 @@ fn cmd_schemas(name: Option<&str>) -> Result<()> {
 
 /// Validiert eine .grm Datei
 fn cmd_validate(datei: &PathBuf) -> Result<()> {
-    use germanic::validator::validiere_grm;
+    use germanic::validator::validate_grm;
 
     println!("Validiere {}...", datei.display());
 
     let daten = std::fs::read(datei).context("Datei konnte nicht gelesen werden")?;
 
-    let ergebnis = validiere_grm(&daten)?;
+    let ergebnis = validate_grm(&daten)?;
 
-    if ergebnis.gueltig {
+    if ergebnis.valid {
         println!("✓ Datei ist gültig");
         if let Some(id) = ergebnis.schema_id {
             println!("  Schema-ID: {}", id);
         }
     } else {
         println!("✗ Datei ist ungültig");
-        if let Some(fehler) = ergebnis.fehler {
+        if let Some(fehler) = ergebnis.error {
             println!("  Fehler: {}", fehler);
         }
     }
