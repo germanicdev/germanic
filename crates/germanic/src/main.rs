@@ -1,86 +1,86 @@
 //! # GERMANIC CLI
 //!
-//! Kommandozeilenwerkzeug für den Concierge MVP.
+//! Command-line tool for the Concierge MVP.
 //!
-//! ## Haupt-Workflow
+//! ## Main Workflow
 //!
 //! ```bash
-//! # Kompiliere Praxis-JSON zu .grm
-//! germanic compile --schema praxis --input praxis.json --output praxis.grm
+//! # Compile practice JSON to .grm
+//! germanic compile --schema practice --input practice.json --output practice.grm
 //!
-//! # Validiere eine .grm Datei
-//! germanic validate praxis.grm
+//! # Validate a .grm file
+//! germanic validate practice.grm
 //!
-//! # Inspiziere Header einer .grm Datei
-//! germanic inspect praxis.grm
+//! # Inspect header of a .grm file
+//! germanic inspect practice.grm
 //! ```
 
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
-/// GERMANIC - Maschinenlesbare Schemas für Websites
+/// GERMANIC - Machine-readable schemas for websites
 #[derive(Parser)]
 #[command(name = "germanic")]
 #[command(author = "GERMANIC Project")]
 #[command(version)]
-#[command(about = "Kompiliert und validiert GERMANIC-Schemas")]
+#[command(about = "Compiles and validates GERMANIC schemas")]
 #[command(long_about = r#"
-GERMANIC macht Websites maschinenlesbar für KI-Systeme.
+GERMANIC makes websites machine-readable for AI systems.
 
 Concierge Workflow:
-  1. Plugin exportiert JSON    → praxis.json
-  2. CLI kompiliert zu .grm    → germanic compile --schema praxis ...
-  3. .grm wird hochgeladen     → /germanic/data.grm
+  1. Plugin exports JSON       → practice.json
+  2. CLI compiles to .grm      → germanic compile --schema practice ...
+  3. .grm is uploaded          → /germanic/data.grm
 
-Beispiel:
-  germanic compile --schema praxis --input dr-sonnenschein.json
+Example:
+  germanic compile --schema practice --input dr-sonnenschein.json
 "#)]
 struct Cli {
     #[command(subcommand)]
-    kommando: Kommandos,
+    command: Commands,
 }
 
 #[derive(Subcommand)]
-enum Kommandos {
-    /// Kompiliert JSON zu .grm
+enum Commands {
+    /// Compiles JSON to .grm
     ///
-    /// Liest eine JSON-Datei, validiert sie gegen das Schema,
-    /// und erstellt eine .grm Binärdatei.
+    /// Reads a JSON file, validates it against the schema,
+    /// and creates a .grm binary file.
     Compile {
-        /// Name des Schemas (aktuell: "praxis")
+        /// Name of the schema (currently: "practice" or "praxis")
         #[arg(short, long)]
         schema: String,
 
-        /// Pfad zur JSON-Eingabedatei
+        /// Path to JSON input file
         #[arg(short, long)]
         input: PathBuf,
 
-        /// Pfad zur .grm Ausgabedatei
-        /// Standard: gleicher Name wie Input mit .grm Endung
+        /// Path to .grm output file
+        /// Default: same name as input with .grm extension
         #[arg(short, long)]
         output: Option<PathBuf>,
     },
 
-    /// Zeigt verfügbare Schemas
+    /// Shows available schemas
     Schemas {
-        /// Zeigt Details zu einem spezifischen Schema
+        /// Show details for a specific schema
         #[arg(short, long)]
         name: Option<String>,
     },
 
-    /// Validiert eine .grm Datei
+    /// Validates a .grm file
     Validate {
-        /// Pfad zur .grm Datei
-        datei: PathBuf,
+        /// Path to .grm file
+        file: PathBuf,
     },
 
-    /// Zeigt Header und Metadaten einer .grm Datei
+    /// Shows header and metadata of a .grm file
     Inspect {
-        /// Pfad zur .grm Datei
-        datei: PathBuf,
+        /// Path to .grm file
+        file: PathBuf,
 
-        /// Zeige auch Hex-Dump des Headers
+        /// Also show hex dump of header
         #[arg(long)]
         hex: bool,
     },
@@ -89,22 +89,22 @@ enum Kommandos {
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    match cli.kommando {
-        Kommandos::Compile {
+    match cli.command {
+        Commands::Compile {
             schema,
             input,
             output,
         } => cmd_compile(&schema, &input, output.as_deref()),
 
-        Kommandos::Schemas { name } => cmd_schemas(name.as_deref()),
+        Commands::Schemas { name } => cmd_schemas(name.as_deref()),
 
-        Kommandos::Validate { datei } => cmd_validate(&datei),
+        Commands::Validate { file } => cmd_validate(&file),
 
-        Kommandos::Inspect { datei, hex } => cmd_inspect(&datei, hex),
+        Commands::Inspect { file, hex } => cmd_inspect(&file, hex),
     }
 }
 
-/// Kompiliert JSON zu .grm
+/// Compiles JSON to .grm
 fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Path>) -> Result<()> {
     use germanic::compiler::{SchemaType, compile_json};
     use germanic::schemas::PraxisSchema;
@@ -115,64 +115,64 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
     println!("│ Schema: {}", schema_name);
     println!("│ Input:  {}", input.display());
 
-    // 1. Schema-Typ validieren
-    let schema_typ = SchemaType::from_str(schema_name).ok_or_else(|| {
+    // 1. Validate schema type
+    let schema_type = SchemaType::from_str(schema_name).ok_or_else(|| {
         anyhow::anyhow!(
-            "Unbekanntes Schema: '{}'\n\
-             Verfügbare Schemas: praxis",
+            "Unknown schema: '{}'\n\
+             Available schemas: practice, praxis",
             schema_name
         )
     })?;
 
-    // 2. JSON einlesen
-    let json = std::fs::read_to_string(input).context("JSON-Datei konnte nicht gelesen werden")?;
+    // 2. Read JSON
+    let json = std::fs::read_to_string(input).context("Could not read JSON file")?;
 
-    // 3. Schema-spezifisch kompilieren
-    let grm_bytes = match schema_typ {
+    // 3. Compile schema-specifically
+    let grm_bytes = match schema_type {
         SchemaType::Practice => {
-            compile_json::<PraxisSchema>(&json).context("Kompilierung fehlgeschlagen")?
+            compile_json::<PraxisSchema>(&json).context("Compilation failed")?
         }
     };
 
-    // 4. Ausgabepfad bestimmen
-    let ausgabe_pfad = output
+    // 4. Determine output path
+    let output_path = output
         .map(PathBuf::from)
         .unwrap_or_else(|| input.with_extension("grm"));
 
-    // 5. Schreiben
-    std::fs::write(&ausgabe_pfad, &grm_bytes).context("Schreiben fehlgeschlagen")?;
+    // 5. Write
+    std::fs::write(&output_path, &grm_bytes).context("Write failed")?;
 
-    println!("│ Output: {}", ausgabe_pfad.display());
-    println!("│ Größe:  {} Bytes", grm_bytes.len());
+    println!("│ Output: {}", output_path.display());
+    println!("│ Size:   {} bytes", grm_bytes.len());
     println!("├─────────────────────────────────────────");
-    println!("│ ✓ Kompilierung erfolgreich");
+    println!("│ ✓ Compilation successful");
     println!("└─────────────────────────────────────────");
 
     Ok(())
 }
 
-/// Zeigt verfügbare Schemas
+/// Shows available schemas
 fn cmd_schemas(name: Option<&str>) -> Result<()> {
     println!("┌─────────────────────────────────────────");
     println!("│ GERMANIC Schemas");
     println!("├─────────────────────────────────────────");
 
     match name {
-        Some("praxis") => {
+        Some("praxis") | Some("practice") => {
             println!("│");
-            println!("│ Schema: praxis");
+            println!("│ Schema: practice (praxis)");
             println!("│ ID:     de.gesundheit.praxis.v1");
-            println!("│ Typ:    Heilpraktiker, Ärzte, Therapeuten");
+            println!("│ Type:   Healthcare practitioners, doctors, therapists");
             println!("│");
-            println!("│ Pflichtfelder:");
+            println!("│ Required fields:");
             println!("│   - name         : String");
             println!("│   - bezeichnung  : String");
-            println!("│   - adresse      : Adresse");
+            println!("│   - adresse      : Address");
             println!("│     - strasse    : String");
             println!("│     - plz        : String");
             println!("│     - ort        : String");
             println!("│");
-            println!("│ Optionale Felder:");
+            println!("│ Optional fields:");
             println!("│   - praxisname, telefon, email, website");
             println!("│   - schwerpunkte, therapieformen, qualifikationen");
             println!("│   - terminbuchung_url, oeffnungszeiten");
@@ -180,16 +180,16 @@ fn cmd_schemas(name: Option<&str>) -> Result<()> {
             println!("│   - sprachen, kurzbeschreibung");
         }
         Some(unknown) => {
-            println!("│ ✗ Unbekanntes Schema: '{}'", unknown);
+            println!("│ ✗ Unknown schema: '{}'", unknown);
             println!("│");
-            println!("│ Verfügbar: praxis");
+            println!("│ Available: practice, praxis");
         }
         None => {
             println!("│");
-            println!("│ Verfügbare Schemas:");
+            println!("│ Available schemas:");
             println!("│");
-            println!("│   praxis    Heilpraktiker, Ärzte, Therapeuten");
-            println!("│             → germanic compile --schema praxis ...");
+            println!("│   practice   Healthcare practitioners, doctors, therapists");
+            println!("│   (praxis)   → germanic compile --schema practice ...");
         }
     }
 
@@ -197,66 +197,66 @@ fn cmd_schemas(name: Option<&str>) -> Result<()> {
     Ok(())
 }
 
-/// Validiert eine .grm Datei
-fn cmd_validate(datei: &PathBuf) -> Result<()> {
+/// Validates a .grm file
+fn cmd_validate(file: &PathBuf) -> Result<()> {
     use germanic::validator::validate_grm;
 
-    println!("Validiere {}...", datei.display());
+    println!("Validating {}...", file.display());
 
-    let daten = std::fs::read(datei).context("Datei konnte nicht gelesen werden")?;
+    let data = std::fs::read(file).context("Could not read file")?;
 
-    let ergebnis = validate_grm(&daten)?;
+    let result = validate_grm(&data)?;
 
-    if ergebnis.valid {
-        println!("✓ Datei ist gültig");
-        if let Some(id) = ergebnis.schema_id {
+    if result.valid {
+        println!("✓ File is valid");
+        if let Some(id) = result.schema_id {
             println!("  Schema-ID: {}", id);
         }
     } else {
-        println!("✗ Datei ist ungültig");
-        if let Some(fehler) = ergebnis.error {
-            println!("  Fehler: {}", fehler);
+        println!("✗ File is invalid");
+        if let Some(error) = result.error {
+            println!("  Error: {}", error);
         }
     }
 
     Ok(())
 }
 
-/// Zeigt Header und Metadaten einer .grm Datei
-fn cmd_inspect(datei: &PathBuf, hex: bool) -> Result<()> {
+/// Shows header and metadata of a .grm file
+fn cmd_inspect(file: &PathBuf, hex: bool) -> Result<()> {
     use germanic::types::GrmHeader;
 
     println!("┌─────────────────────────────────────────");
     println!("│ GERMANIC Inspector");
     println!("├─────────────────────────────────────────");
-    println!("│ Datei: {}", datei.display());
+    println!("│ File: {}", file.display());
 
-    let daten = std::fs::read(datei).context("Datei konnte nicht gelesen werden")?;
+    let data = std::fs::read(file).context("Could not read file")?;
 
-    println!("│ Größe: {} Bytes", daten.len());
+    println!("│ Size: {} bytes", data.len());
     println!("│");
 
-    // Header parsen
-    match GrmHeader::from_bytes(&daten) {
+    // Parse header
+    match GrmHeader::from_bytes(&data) {
         Ok((header, header_len)) => {
             println!("│ Header:");
             println!("│   Schema-ID: {}", header.schema_id);
             println!(
-                "│   Signiert:  {}",
+                "│   Signed:    {}",
                 if header.signature.is_some() {
-                    "Ja"
+                    "Yes"
                 } else {
-                    "Nein"
+                    "No"
                 }
             );
-            println!("│   Header-Länge: {} Bytes", header_len);
-            println!("│   Payload-Länge: {} Bytes", daten.len() - header_len);
+            println!("│   Header length:  {} bytes", header_len);
+            println!("│   Payload length: {} bytes", data.len() - header_len);
 
             if hex {
                 println!("│");
-                println!("│ Hex-Dump (erste 64 Bytes):");
-                let show_len = std::cmp::min(64, daten.len());
-                for (i, chunk) in daten[..show_len].chunks(16).enumerate() {
+                println!("│ Hex dump (first 64 bytes):");
+                let show_len = std::cmp::min(64, data.len());
+                for (i, chunk) in data[..show_len].chunks(16).enumerate() {
                     print!("│   {:04X}:  ", i * 16);
                     for byte in chunk {
                         print!("{:02X} ", byte);
@@ -266,7 +266,7 @@ fn cmd_inspect(datei: &PathBuf, hex: bool) -> Result<()> {
             }
         }
         Err(e) => {
-            println!("│ ✗ Header-Fehler: {}", e);
+            println!("│ ✗ Header error: {}", e);
         }
     }
 
