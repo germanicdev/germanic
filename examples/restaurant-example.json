@@ -1,0 +1,12 @@
+{
+  "name": "Wiener Schnitzelhaus",
+  "cuisine": "Österreichisch",
+  "rating": 4.7,
+  "tags": ["Schnitzel", "Traditionell", "Familienfreundlich"],
+  "address": {
+    "street": "Kärntner Straße",
+    "city": "Wien",
+    "zip": "1010",
+    "country": "AT"
+  }
+}
