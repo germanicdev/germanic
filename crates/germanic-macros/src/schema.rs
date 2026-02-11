@@ -96,20 +96,20 @@ pub struct FeldOptionen {
 
 /// Einstiegspunkt für die Macro-Expansion.
 ///
-/// Generiert drei Trait-Implementierungen:
-/// 1. `SchemaMetadaten` – Schema-ID und Version
-/// 2. `Validieren` – Pflichtfeld-Prüfung
-/// 3. `Default` – Standardwerte für alle Felder
-pub fn implementiere_germanic_schema(eingabe: DeriveInput) -> Result<TokenStream, darling::Error> {
-    // Parse Attribute mit darling
-    let optionen = SchemaOptionen::from_derive_input(&eingabe)?;
+/// Generates three trait implementations:
+/// 1. `SchemaMetadata` – Schema ID and version
+/// 2. `Validate` – Required field validation
+/// 3. `Default` – Default values for all fields
+pub fn implement_germanic_schema(input: DeriveInput) -> Result<TokenStream, darling::Error> {
+    // Parse attributes with darling
+    let optionen = SchemaOptionen::from_derive_input(&input)?;
 
-    // Extrahiere Informationen
+    // Extract information
     let struct_name = &optionen.ident;
     let (impl_generics, ty_generics, where_clause) = optionen.generics.split_for_impl();
     let schema_id = &optionen.schema_id;
 
-    // Extrahiere Felder
+    // Extract fields
     let felder = match &optionen.data {
         Data::Struct(felder) => felder,
         _ => {
@@ -119,11 +119,11 @@ pub fn implementiere_germanic_schema(eingabe: DeriveInput) -> Result<TokenStream
         }
     };
 
-    // Generiere Code für die drei Traits
+    // Generate code for the three traits
     let validierungen = generiere_validierungen(&felder.fields);
     let default_felder = generiere_default_felder(&felder.fields);
 
-    // Kombiniere alles
+    // Combine everything
     let expandiert = quote! {
         // ════════════════════════════════════════════════════════════════════
         // GENERIERTER CODE - NICHT MANUELL BEARBEITEN
@@ -173,11 +173,11 @@ pub fn implementiere_germanic_schema(eingabe: DeriveInput) -> Result<TokenStream
 // CODE-GENERIERUNG: VALIDIERUNG
 // ============================================================================
 
-/// Generiert Validierungscode für alle Felder.
+/// Generates validation code for all fields.
 ///
-/// Logik:
-/// - required String/Vec/Option → prüfe auf leer/None
-/// - Nested Structs (Andere) → rufe rekursiv validiere() auf
+/// Logic:
+/// - required String/Vec/Option → check for empty/None
+/// - Nested Structs (Other) → call validate() recursively
 fn generiere_validierungen(felder: &[FeldOptionen]) -> TokenStream2 {
     let mut validierungen = Vec::new();
 
@@ -188,7 +188,7 @@ fn generiere_validierungen(felder: &[FeldOptionen]) -> TokenStream2 {
         let feld_name_str = feld_name.to_string();
         let typ = typ_kategorie(&feld.ty);
 
-        // 1. Required-Validierung für primitive Typen
+        // 1. Required validation for primitive types
         if feld.required.is_present() {
             let validierung = match typ {
                 TypKategorie::String => Some(quote! {
@@ -206,9 +206,9 @@ fn generiere_validierungen(felder: &[FeldOptionen]) -> TokenStream2 {
                         fehler.push(#feld_name_str.to_string());
                     }
                 }),
-                // Bool hat immer einen Wert
+                // Bool always has a value
                 TypKategorie::Bool => None,
-                // Nested Structs werden separat behandelt
+                // Nested Structs are handled separately
                 TypKategorie::Andere => None,
             };
 
@@ -217,13 +217,13 @@ fn generiere_validierungen(felder: &[FeldOptionen]) -> TokenStream2 {
             }
         }
 
-        // 2. Rekursive Validierung für Nested Structs
-        //    (unabhängig von required - der Nested Struct hat eigene required-Felder)
+        // 2. Recursive validation for Nested Structs
+        //    (independent of required - the nested struct has its own required fields)
         if typ == TypKategorie::Andere {
             validierungen.push(quote! {
-                // Rekursive Validierung des Nested Structs
+                // Recursive validation of nested struct
                 if let Err(nested_fehler) = self.#feld_name.validate() {
-                    // Präfix hinzufügen für bessere Fehlermeldungen
+                    // Add prefix for better error messages
                     if let ::germanic::error::ValidationError::RequiredFieldsMissing(nested_felder) = nested_fehler {
                         for f in nested_felder {
                             fehler.push(format!("{}.{}", #feld_name_str, f));
@@ -241,7 +241,7 @@ fn generiere_validierungen(felder: &[FeldOptionen]) -> TokenStream2 {
 // CODE-GENERIERUNG: DEFAULT
 // ============================================================================
 
-/// Generiert Default-Werte für alle Felder.
+/// Generates default values for all fields.
 fn generiere_default_felder(felder: &[FeldOptionen]) -> TokenStream2 {
     let default_zuweisungen: Vec<TokenStream2> = felder
         .iter()
@@ -255,42 +255,42 @@ fn generiere_default_felder(felder: &[FeldOptionen]) -> TokenStream2 {
     quote! { #(#default_zuweisungen)* }
 }
 
-/// Generiert den Default-Wert für ein einzelnes Feld.
+/// Generates the default value for a single field.
 ///
-/// Logik:
-/// 1. Wenn `#[germanic(default = "...")]` gesetzt → parse und verwende
-/// 2. Sonst → typ-spezifischer Default
+/// Logic:
+/// 1. If `#[germanic(default = "...")]` is set → parse and use
+/// 2. Otherwise → type-specific default
 fn generiere_default_wert(feld: &FeldOptionen) -> TokenStream2 {
     let typ = typ_kategorie(&feld.ty);
 
     match (&feld.default, typ) {
-        // Expliziter Default für String: #[germanic(default = "DE")]
+        // Explicit default for String: #[germanic(default = "DE")]
         (Some(wert), TypKategorie::String) => {
             quote! { #wert.to_string() }
         }
 
-        // Expliziter Default für bool: #[germanic(default = "true")] oder "false"
+        // Explicit default for bool: #[germanic(default = "true")] or "false"
         (Some(wert), TypKategorie::Bool) => {
             let bool_wert: bool = wert.parse().unwrap_or(false);
             quote! { #bool_wert }
         }
 
-        // Expliziter Default für Option: #[germanic(default = "wert")]
+        // Explicit default for Option: #[germanic(default = "value")]
         (Some(wert), TypKategorie::Option) => {
             quote! { Some(#wert.to_string()) }
         }
 
-        // Expliziter Default für Vec: nicht unterstützt, verwende leer
+        // Explicit default for Vec: not supported, use empty
         (Some(_), TypKategorie::Vec) => {
             quote! { Vec::new() }
         }
 
-        // Expliziter Default für andere Typen: versuche Default::default()
+        // Explicit default for other types: try Default::default()
         (Some(_), TypKategorie::Andere) => {
             quote! { Default::default() }
         }
 
-        // Kein expliziter Default → typ-spezifische Defaults
+        // No explicit default → type-specific defaults
         (None, TypKategorie::String) => quote! { String::new() },
         (None, TypKategorie::Bool) => quote! { false },
         (None, TypKategorie::Option) => quote! { None },
@@ -303,7 +303,7 @@ fn generiere_default_wert(feld: &FeldOptionen) -> TokenStream2 {
 // TYP-KATEGORISIERUNG
 // ============================================================================
 
-/// Kategorien für Rust-Typen zur Validierungs- und Default-Logik.
+/// Categories for Rust types for validation and default logic.
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum TypKategorie {
     String,
@@ -313,7 +313,7 @@ enum TypKategorie {
     Andere,
 }
 
-/// Analysiert einen Typ und bestimmt seine Kategorie.
+/// Analyzes a type and determines its category.
 fn typ_kategorie(ty: &Type) -> TypKategorie {
     let ty_string = quote!(#ty).to_string();
 

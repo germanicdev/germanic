@@ -1,67 +1,67 @@
 //! # GERMANIC Macros
 //!
-//! Proc-Macro Crate für das GERMANIC Schema-System.
+//! Proc-macro crate for the GERMANIC schema system.
 //!
-//! ## Architektur
+//! ## Architecture
 //!
 //! ```text
 //! ┌─────────────────────────────────────────────────────────────────┐
-//! │                    MACRO-VERARBEITUNGSPIPELINE                  │
+//! │                    MACRO PROCESSING PIPELINE                    │
 //! ├─────────────────────────────────────────────────────────────────┤
 //! │                                                                 │
-//! │   Rust-Quellcode                                                │
+//! │   Rust Source Code                                              │
 //! │   ┌─────────────────────────────────────────┐                   │
 //! │   │ #[derive(GermanicSchema)]               │                   │
 //! │   │ #[germanic(schema_id = "...", ...)]     │                   │
-//! │   │ pub struct PraxisSchema { ... }         │                   │
+//! │   │ pub struct PracticeSchema { ... }       │                   │
 //! │   └─────────────────────────────────────────┘                   │
 //! │                      │                                          │
 //! │                      ▼                                          │
 //! │   ┌─────────────────────────────────────────┐                   │
 //! │   │           syn::parse()                  │                   │
-//! │   │   Token-Stream → DeriveInput (AST)      │                   │
+//! │   │   Token Stream → DeriveInput (AST)      │                   │
 //! │   └─────────────────────────────────────────┘                   │
 //! │                      │                                          │
 //! │                      ▼                                          │
 //! │   ┌─────────────────────────────────────────┐                   │
 //! │   │       darling::FromDeriveInput          │                   │
-//! │   │   AST → SchemaOpts (typisierte Daten)   │                   │
+//! │   │   AST → SchemaOpts (typed data)         │                   │
 //! │   └─────────────────────────────────────────┘                   │
 //! │                      │                                          │
 //! │                      ▼                                          │
 //! │   ┌─────────────────────────────────────────┐                   │
 //! │   │           quote::quote!()               │                   │
-//! │   │   Typisierte Daten → Rust-Code          │                   │
+//! │   │   Typed Data → Rust Code                │                   │
 //! │   └─────────────────────────────────────────┘                   │
 //! │                      │                                          │
 //! │                      ▼                                          │
-//! │   Generierter Rust-Code                                         │
+//! │   Generated Rust Code                                           │
 //! │   ┌─────────────────────────────────────────┐                   │
-//! │   │ impl GermanicSerialize for PraxisSchema │                   │
-//! │   │ impl SchemaMetadata for PraxisSchema    │                   │
-//! │   │ impl Validation for PraxisSchema        │                   │
+//! │   │ impl GermanicSerialize for PracticeSchema│                  │
+//! │   │ impl SchemaMetadata for PracticeSchema  │                   │
+//! │   │ impl Validate for PracticeSchema        │                   │
 //! │   └─────────────────────────────────────────┘                   │
 //! │                                                                 │
 //! └─────────────────────────────────────────────────────────────────┘
 //! ```
 //!
-//! ## Verwendung
+//! ## Usage
 //!
 //! ```rust,ignore
 //! use germanic_macros::GermanicSchema;
 //!
 //! #[derive(GermanicSchema)]
 //! #[germanic(schema_id = "de.gesundheit.praxis.v1")]
-//! pub struct PraxisSchema {
+//! pub struct PracticeSchema {
 //!     #[germanic(required)]
 //!     pub name: String,
-//!     
+//!
 //!     pub telefon: Option<String>,
 //! }
 //! ```
 
-// Proc-Macro Crates dürfen KEINE anderen Items außer Macros exportieren.
-// Daher: private Module für die Implementierung.
+// Proc-macro crates may ONLY export macros, no other items.
+// Therefore: private modules for implementation.
 mod schema;
 
 use proc_macro::TokenStream;
@@ -69,29 +69,29 @@ use syn::{parse_macro_input, DeriveInput};
 
 /// # `#[derive(GermanicSchema)]`
 ///
-/// Erzeugt automatisch die Implementierungen für GERMANIC-Schemas.
+/// Automatically generates implementations for GERMANIC schemas.
 ///
-/// ## Attribute auf Struct-Ebene
+/// ## Struct-level Attributes
 ///
-/// | Attribut | Typ | Beschreibung |
-/// |----------|-----|--------------|
-/// | `schema_id` | String | Eindeutige Schema-ID (z.B. `"de.gesundheit.praxis.v1"`) |
-/// | `flatbuffer` | String | Pfad zum FlatBuffer-Typ (z.B. `"de::praxis::Praxis"`) |
+/// | Attribute | Type | Description |
+/// |----------|------|-------------|
+/// | `schema_id` | String | Unique schema ID (e.g. `"de.gesundheit.praxis.v1"`) |
+/// | `flatbuffer` | String | Path to FlatBuffer type (e.g. `"de::praxis::Praxis"`) |
 ///
-/// ## Attribute auf Feld-Ebene
+/// ## Field-level Attributes
 ///
-/// | Attribut | Typ | Beschreibung |
-/// |----------|-----|--------------|
-/// | `required` | Flag | Feld darf nicht `None`/leer sein |
-/// | `default` | Wert | Standardwert wenn nicht angegeben |
+/// | Attribute | Type | Description |
+/// |----------|------|-------------|
+/// | `required` | Flag | Field must not be `None`/empty |
+/// | `default` | Value | Default value if not specified |
 ///
-/// ## Generierte Traits
+/// ## Generated Traits
 ///
-/// 1. **`GermanicSerialize`**: Serialisierung in FlatBuffer-Bytes
-/// 2. **`SchemaMetadata`**: Schema-ID und Version
-/// 3. **`Validate`**: Validierung der Pflichtfelder
+/// 1. **`GermanicSerialize`**: Serialization to FlatBuffer bytes
+/// 2. **`SchemaMetadata`**: Schema ID and version
+/// 3. **`Validate`**: Validation of required fields
 ///
-/// ## Beispiel
+/// ## Example
 ///
 /// ```rust,ignore
 /// #[derive(GermanicSchema, Deserialize)]
@@ -99,27 +99,27 @@ use syn::{parse_macro_input, DeriveInput};
 ///     schema_id = "de.gesundheit.praxis.v1",
 ///     flatbuffer = "de::praxis::Praxis"
 /// )]
-/// pub struct PraxisSchema {
+/// pub struct PracticeSchema {
 ///     #[germanic(required)]
 ///     pub name: String,
-///     
+///
 ///     #[germanic(required)]
 ///     pub bezeichnung: String,
-///     
+///
 ///     pub praxisname: Option<String>,
-///     
+///
 ///     #[germanic(default = false)]
 ///     pub privatpatienten: bool,
 /// }
 /// ```
 #[proc_macro_derive(GermanicSchema, attributes(germanic))]
-pub fn derive_germanic_schema(eingabe: TokenStream) -> TokenStream {
-    // 1. Parse den Token-Stream in einen AST
-    //    DeriveInput enthält: Name, Generics, Attribute, Data (Struct/Enum)
-    let ast = parse_macro_input!(eingabe as DeriveInput);
+pub fn derive_germanic_schema(input: TokenStream) -> TokenStream {
+    // 1. Parse the token stream into an AST
+    //    DeriveInput contains: Name, Generics, Attributes, Data (Struct/Enum)
+    let ast = parse_macro_input!(input as DeriveInput);
 
-    // 2. Delegiere an die Implementierung im schema-Modul
-    //    Bei Fehler: Compiler-Fehler mit aussagekräftiger Meldung
-    schema::implementiere_germanic_schema(ast)
-        .unwrap_or_else(|fehler| fehler.write_errors().into())
+    // 2. Delegate to implementation in schema module
+    //    On error: Compiler error with meaningful message
+    schema::implement_germanic_schema(ast)
+        .unwrap_or_else(|error| error.write_errors().into())
 }
