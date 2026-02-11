@@ -1,0 +1,163 @@
+{
+  "schema_id": "de.immobilien.expose.v1",
+  "version": 1,
+  "fields": {
+    "titel": {
+      "type": "string",
+      "required": true
+    },
+    "objektart": {
+      "type": "string",
+      "required": true
+    },
+    "angebotsart": {
+      "type": "string",
+      "required": true
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": false
+        },
+        "hausnummer": {
+          "type": "string",
+          "required": false
+        },
+        "plz": {
+          "type": "string",
+          "required": false
+        },
+        "ort": {
+          "type": "string",
+          "required": false
+        },
+        "land": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "wohnflaeche_qm": {
+      "type": "float",
+      "required": true
+    },
+    "zimmer": {
+      "type": "int",
+      "required": false
+    },
+    "baujahr": {
+      "type": "int",
+      "required": false
+    },
+    "etage": {
+      "type": "int",
+      "required": false
+    },
+    "kaltmiete_eur": {
+      "type": "float",
+      "required": true
+    },
+    "nebenkosten_eur": {
+      "type": "float",
+      "required": false
+    },
+    "kaution_monate": {
+      "type": "int",
+      "required": false
+    },
+    "ausstattung": {
+      "type": "table",
+      "required": false,
+      "fields": {
+        "balkon": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "aufzug": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "einbaukueche": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "keller": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "garage": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        },
+        "fussbodenheizung": {
+          "type": "bool",
+          "required": false,
+          "default": "false"
+        }
+      }
+    },
+    "energieausweis": {
+      "type": "table",
+      "required": false,
+      "fields": {
+        "typ": {
+          "type": "string",
+          "required": false
+        },
+        "kennwert_kwh": {
+          "type": "float",
+          "required": false
+        },
+        "effizienzklasse": {
+          "type": "string",
+          "required": false
+        },
+        "heizungsart": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "verfuegbar_ab": {
+      "type": "string",
+      "required": false
+    },
+    "haustiere_erlaubt": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "ansprechpartner_name": {
+      "type": "string",
+      "required": false
+    },
+    "ansprechpartner_telefon": {
+      "type": "string",
+      "required": true
+    },
+    "ansprechpartner_email": {
+      "type": "string",
+      "required": false
+    },
+    "expose_url": {
+      "type": "string",
+      "required": false
+    },
+    "besonderheiten": {
+      "type": "[string]",
+      "required": false
+    },
+    "kurzbeschreibung": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "Heimathafen",
+  "art": "Restaurant & Bar",
+  "kueche": ["Norddeutsch", "Fisch", "Saisonal"],
+  "adresse": {
+    "strasse": "Hafenstraße",
+    "hausnummer": "12",
+    "plz": "20457",
+    "ort": "Hamburg",
+    "land": "DE"
+  },
+  "telefon": "+49 40 5551234",
+  "email": "ahoi@heimathafen.example",
+  "website": "https://heimathafen.example",
+  "bewertung": 4.7,
+  "preisniveau": "gehoben",
+  "sitzplaetze": 85,
+  "aussengastronomie": true,
+  "barrierefreiheit": true,
+  "oeffnungszeiten": "Di-Sa 17:00-23:00, So 11:00-15:00 Brunch",
+  "reservierung_url": "https://heimathafen.example/tisch",
+  "besonderheiten": ["Hafenblick", "Fischmarkt-Brunch", "Weinbar"],
+  "sprachen": ["Deutsch", "Englisch"],
+  "kurzbeschreibung": "Frischer Fisch und norddeutsche Küche direkt am Hamburger Hafen."
+}

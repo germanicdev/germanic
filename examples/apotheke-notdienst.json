@@ -1,0 +1,26 @@
+{
+  "name": "Linden-Apotheke",
+  "inhaberin": "Dr. rer. nat. Petra Lindgrün",
+  "adresse": {
+    "strasse": "Lindenstraße",
+    "hausnummer": "88",
+    "plz": "10969",
+    "ort": "Berlin",
+    "land": "DE"
+  },
+  "telefon": "+49 30 5556789",
+  "fax": "+49 30 5556780",
+  "email": "service@linden-apotheke.example",
+  "website": "https://linden-apotheke.example",
+  "notdienst": true,
+  "notdienst_von": "2025-03-15T20:00:00",
+  "notdienst_bis": "2025-03-16T08:00:00",
+  "lieferservice": true,
+  "liefergebiet": ["Kreuzberg", "Neukölln", "Friedrichshain"],
+  "schwerpunkte": ["Homöopathie", "Reisemedizin", "Kompressionsstrümpfe"],
+  "sprachen": ["Deutsch", "Englisch", "Türkisch"],
+  "oeffnungszeiten": "Mo-Fr 8:00-20:00, Sa 9:00-16:00",
+  "barrierefrei": true,
+  "parkplaetze": 3,
+  "kurzbeschreibung": "Ihre Kiez-Apotheke in Kreuzberg — persönlich, kompetent, auch im Notdienst."
+}

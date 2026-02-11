@@ -1,0 +1,103 @@
+{
+  "schema_id": "de.gesundheit.apotheke.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "inhaberin": {
+      "type": "string",
+      "required": false
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": false
+        },
+        "hausnummer": {
+          "type": "string",
+          "required": false
+        },
+        "plz": {
+          "type": "string",
+          "required": false
+        },
+        "ort": {
+          "type": "string",
+          "required": false
+        },
+        "land": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "fax": {
+      "type": "string",
+      "required": false
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": false
+    },
+    "notdienst": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "notdienst_von": {
+      "type": "string",
+      "required": false
+    },
+    "notdienst_bis": {
+      "type": "string",
+      "required": false
+    },
+    "lieferservice": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "liefergebiet": {
+      "type": "[string]",
+      "required": false
+    },
+    "schwerpunkte": {
+      "type": "[string]",
+      "required": false
+    },
+    "sprachen": {
+      "type": "[string]",
+      "required": false
+    },
+    "oeffnungszeiten": {
+      "type": "string",
+      "required": true
+    },
+    "barrierefrei": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "parkplaetze": {
+      "type": "int",
+      "required": false
+    },
+    "kurzbeschreibung": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

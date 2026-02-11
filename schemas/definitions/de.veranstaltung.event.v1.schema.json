@@ -1,0 +1,102 @@
+{
+  "schema_id": "de.veranstaltung.event.v1",
+  "version": 1,
+  "fields": {
+    "titel": {
+      "type": "string",
+      "required": true
+    },
+    "art": {
+      "type": "string",
+      "required": false
+    },
+    "kategorien": {
+      "type": "[string]",
+      "required": false
+    },
+    "veranstalter": {
+      "type": "string",
+      "required": true
+    },
+    "datum_beginn": {
+      "type": "string",
+      "required": true
+    },
+    "datum_ende": {
+      "type": "string",
+      "required": false
+    },
+    "veranstaltungsort": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "name": {
+          "type": "string",
+          "required": false
+        },
+        "strasse": {
+          "type": "string",
+          "required": false
+        },
+        "hausnummer": {
+          "type": "string",
+          "required": false
+        },
+        "plz": {
+          "type": "string",
+          "required": false
+        },
+        "ort": {
+          "type": "string",
+          "required": false
+        },
+        "land": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "eintritt_frei": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "eintritt_preis": {
+      "type": "float",
+      "required": false
+    },
+    "max_besucher": {
+      "type": "int",
+      "required": false
+    },
+    "barrierefreiheit": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "kontakt_telefon": {
+      "type": "string",
+      "required": false
+    },
+    "kontakt_email": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": false
+    },
+    "programm_url": {
+      "type": "string",
+      "required": false
+    },
+    "sprachen": {
+      "type": "[string]",
+      "required": false
+    },
+    "kurzbeschreibung": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

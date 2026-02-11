@@ -1,0 +1,98 @@
+{
+  "schema_id": "de.dienstleistung.handwerker.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "betrieb": {
+      "type": "string",
+      "required": true
+    },
+    "gewerke": {
+      "type": "[string]",
+      "required": true
+    },
+    "meisterbetrieb": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": false
+        },
+        "hausnummer": {
+          "type": "string",
+          "required": false
+        },
+        "plz": {
+          "type": "string",
+          "required": false
+        },
+        "ort": {
+          "type": "string",
+          "required": false
+        },
+        "land": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "notdienst_telefon": {
+      "type": "string",
+      "required": false
+    },
+    "notdienst_verfuegbar": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": false
+    },
+    "einzugsgebiet": {
+      "type": "[string]",
+      "required": false
+    },
+    "mitarbeiter_anzahl": {
+      "type": "int",
+      "required": false
+    },
+    "gruendungsjahr": {
+      "type": "int",
+      "required": false
+    },
+    "qualifikationen": {
+      "type": "[string]",
+      "required": false
+    },
+    "oeffnungszeiten": {
+      "type": "string",
+      "required": false
+    },
+    "bewertung": {
+      "type": "float",
+      "required": false
+    },
+    "kurzbeschreibung": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

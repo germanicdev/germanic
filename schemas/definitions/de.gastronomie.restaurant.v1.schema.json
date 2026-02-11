@@ -1,0 +1,98 @@
+{
+  "schema_id": "de.gastronomie.restaurant.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "art": {
+      "type": "string",
+      "required": false
+    },
+    "kueche": {
+      "type": "[string]",
+      "required": true
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": false
+        },
+        "hausnummer": {
+          "type": "string",
+          "required": false
+        },
+        "plz": {
+          "type": "string",
+          "required": false
+        },
+        "ort": {
+          "type": "string",
+          "required": false
+        },
+        "land": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": false
+    },
+    "bewertung": {
+      "type": "float",
+      "required": false
+    },
+    "preisniveau": {
+      "type": "string",
+      "required": false
+    },
+    "sitzplaetze": {
+      "type": "int",
+      "required": false
+    },
+    "aussengastronomie": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "barrierefreiheit": {
+      "type": "bool",
+      "required": false,
+      "default": "false"
+    },
+    "oeffnungszeiten": {
+      "type": "string",
+      "required": false
+    },
+    "reservierung_url": {
+      "type": "string",
+      "required": false
+    },
+    "besonderheiten": {
+      "type": "[string]",
+      "required": false
+    },
+    "sprachen": {
+      "type": "[string]",
+      "required": false
+    },
+    "kurzbeschreibung": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

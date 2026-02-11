@@ -1,0 +1,104 @@
+{
+  "schema_id": "de.wirtschaft.unternehmen.v1",
+  "version": 1,
+  "fields": {
+    "firmenname": {
+      "type": "string",
+      "required": true
+    },
+    "rechtsform": {
+      "type": "string",
+      "required": true
+    },
+    "handelsregister": {
+      "type": "string",
+      "required": false
+    },
+    "registergericht": {
+      "type": "string",
+      "required": false
+    },
+    "geschaeftsfuehrer": {
+      "type": "[string]",
+      "required": true
+    },
+    "gruendungsjahr": {
+      "type": "int",
+      "required": false
+    },
+    "branche": {
+      "type": "string",
+      "required": false
+    },
+    "branchencodes": {
+      "type": "[string]",
+      "required": false
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": false
+        },
+        "hausnummer": {
+          "type": "string",
+          "required": false
+        },
+        "plz": {
+          "type": "string",
+          "required": false
+        },
+        "ort": {
+          "type": "string",
+          "required": false
+        },
+        "land": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": false
+    },
+    "mitarbeiter_anzahl": {
+      "type": "int",
+      "required": false
+    },
+    "umsatzsteuer_id": {
+      "type": "string",
+      "required": false
+    },
+    "leistungen": {
+      "type": "[string]",
+      "required": false
+    },
+    "zertifizierungen": {
+      "type": "[string]",
+      "required": false
+    },
+    "partnerschaft": {
+      "type": "[string]",
+      "required": false
+    },
+    "karriere_url": {
+      "type": "string",
+      "required": false
+    },
+    "kurzbeschreibung": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

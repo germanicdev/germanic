@@ -1,0 +1,25 @@
+{
+  "name": "Mario Kupferstein",
+  "betrieb": "Rohrfrei Kupferstein GmbH",
+  "gewerke": ["Sanitär", "Heizung", "Klima"],
+  "meisterbetrieb": true,
+  "adresse": {
+    "strasse": "Werkstattgasse",
+    "hausnummer": "3a",
+    "plz": "50667",
+    "ort": "Köln",
+    "land": "DE"
+  },
+  "telefon": "+49 221 5559876",
+  "notdienst_telefon": "+49 221 5559877",
+  "notdienst_verfuegbar": true,
+  "email": "info@rohrfrei-kupferstein.example",
+  "website": "https://rohrfrei-kupferstein.example",
+  "einzugsgebiet": ["Köln", "Leverkusen", "Bergisch Gladbach", "Hürth"],
+  "mitarbeiter_anzahl": 12,
+  "gruendungsjahr": 1998,
+  "qualifikationen": ["SHK-Meisterbetrieb", "Wärmepumpen-Zertifikat", "Trinkwasser-Hygiene"],
+  "oeffnungszeiten": "Mo-Fr 7:00-17:00, Notdienst 24/7",
+  "bewertung": 4.9,
+  "kurzbeschreibung": "Ihr SHK-Meisterbetrieb in Köln — Sanitär, Heizung, Klima. 24/7 Notdienst."
+}

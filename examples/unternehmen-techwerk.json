@@ -1,0 +1,27 @@
+{
+  "firmenname": "TechWerk Solutions GmbH",
+  "rechtsform": "GmbH",
+  "handelsregister": "HRB 123456",
+  "registergericht": "Amtsgericht München",
+  "geschaeftsfuehrer": ["Anna Berger", "Maximilian Fuchs"],
+  "gruendungsjahr": 2020,
+  "branche": "IT-Dienstleistungen",
+  "branchencodes": ["62.01", "62.02"],
+  "adresse": {
+    "strasse": "Innovationsring",
+    "hausnummer": "5",
+    "plz": "85748",
+    "ort": "Garching bei München",
+    "land": "DE"
+  },
+  "telefon": "+49 89 5551000",
+  "email": "kontakt@techwerk-solutions.example",
+  "website": "https://techwerk-solutions.example",
+  "mitarbeiter_anzahl": 45,
+  "umsatzsteuer_id": "DE123456789",
+  "leistungen": ["Cloud-Migration", "DevOps-Beratung", "KI-Integration", "Sicherheitsaudits"],
+  "zertifizierungen": ["ISO 27001", "ISO 9001"],
+  "partnerschaft": ["AWS Partner", "Google Cloud Partner"],
+  "karriere_url": "https://techwerk-solutions.example/karriere",
+  "kurzbeschreibung": "Ihr Partner für Cloud, KI und sichere IT-Infrastruktur in der Region München."
+}
