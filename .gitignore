@@ -1,7 +1,4 @@
-/target/
-/docs/
+/target
+/docs
 *.grm
-README.md
-LICENSE
-CLAUDE.md
-Cargo.lock
+.DS_Store
