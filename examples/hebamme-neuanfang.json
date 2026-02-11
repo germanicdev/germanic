@@ -1,0 +1,33 @@
+{
+  "name": "Hebammenpraxis Neuanfang",
+  "hebamme": "Maria Schuster",
+  "adresse": {
+    "strasse": "Goethestraße",
+    "hausnummer": "21",
+    "plz": "79098",
+    "ort": "Freiburg",
+    "land": "DE"
+  },
+  "telefon": "+49 761 4561234",
+  "email": "maria@hebamme-neuanfang.example",
+  "website": "https://hebamme-neuanfang.example",
+  "leistungen": [
+    "Schwangerenvorsorge",
+    "Geburtsvorbereitung",
+    "Wochenbettbetreuung",
+    "Rückbildung",
+    "Stillberatung"
+  ],
+  "kassenvertrag": true,
+  "kapazitaet_frei": true,
+  "einsatzgebiet": [
+    "Freiburg",
+    "Freiburg-Umland"
+  ],
+  "hausgeburten": false,
+  "sprachen": [
+    "Deutsch",
+    "Französisch"
+  ],
+  "kurzbeschreibung": "Einfühlsame Hebammenbetreuung in Freiburg."
+}

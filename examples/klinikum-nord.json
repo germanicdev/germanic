@@ -1,0 +1,41 @@
+{
+  "name": "Klinikum Nord",
+  "traeger": "Städtisches Klinikum GmbH",
+  "adresse": {
+    "strasse": "Nordring",
+    "hausnummer": "15",
+    "plz": "90419",
+    "ort": "Nürnberg",
+    "land": "DE"
+  },
+  "telefon": "+49 911 3980",
+  "notaufnahme": {
+    "telefon": "+49 911 398111",
+    "rund_um_die_uhr": true,
+    "hubschrauberlandeplatz": true
+  },
+  "bettenanzahl": 842,
+  "fachabteilungen": [
+    "Innere Medizin",
+    "Chirurgie",
+    "Neurologie",
+    "Pädiatrie",
+    "Gynäkologie",
+    "Radiologie"
+  ],
+  "website": "https://klinikum-nord.example",
+  "notfall_telefon": "+49 911 398112",
+  "besuchszeiten": "14:00-19:00 täglich",
+  "barrierefreiheit": true,
+  "parkplaetze": 450,
+  "stockwerke": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "kurzbeschreibung": "Schwerpunktkrankenhaus der Region Nürnberg-Nord mit 24h-Notaufnahme."
+}

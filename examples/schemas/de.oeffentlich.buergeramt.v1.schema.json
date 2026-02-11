@@ -1,0 +1,75 @@
+{
+  "schema_id": "de.oeffentlich.buergeramt.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "traeger": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "dienstleistungen": {
+      "type": "[string]",
+      "required": true
+    },
+    "oeffnungszeiten": {
+      "type": "string",
+      "required": true
+    },
+    "terminpflicht": {
+      "type": "bool",
+      "required": true
+    },
+    "termin_online": {
+      "type": "bool"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "sprachen": {
+      "type": "[string]"
+    },
+    "wartezeit_hinweis": {
+      "type": "string"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Parkhaus am Rathaus",
+  "betreiber": "ParkRaum GmbH",
+  "adresse": {
+    "strasse": "Rathausgasse",
+    "hausnummer": "5",
+    "plz": "89073",
+    "ort": "Ulm",
+    "land": "DE"
+  },
+  "telefon": "+49 731 6543210",
+  "website": "https://parkhaus-rathaus-ulm.example",
+  "stellplaetze_gesamt": 380,
+  "durchfahrtshoehe_m": 1.95,
+  "stockwerke": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "e_ladepunkte": 8,
+  "tarife_pro_stunde": 2.5,
+  "tageshöchstsatz": 18.0,
+  "rund_um_die_uhr": true,
+  "barrierefreiheit": true,
+  "frauenparkplaetze": true,
+  "bezahlung": [
+    "Münze",
+    "Karte",
+    "App"
+  ],
+  "kurzbeschreibung": "Zentrales Parkhaus direkt am Ulmer Rathaus."
+}

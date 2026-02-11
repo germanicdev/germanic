@@ -1,0 +1,71 @@
+{
+  "schema_id": "de.recht.steuerberater.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "steuerberater": {
+      "type": "string",
+      "required": true
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "fax": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "spezialisierungen": {
+      "type": "[string]",
+      "required": true
+    },
+    "leistungen": {
+      "type": "[string]"
+    },
+    "datev_partner": {
+      "type": "bool"
+    },
+    "erstgespraech_kostenlos": {
+      "type": "bool"
+    },
+    "sprachen": {
+      "type": "[string]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

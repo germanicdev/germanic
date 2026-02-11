@@ -1,0 +1,85 @@
+{
+  "schema_id": "de.mobilitaet.ladesaeule.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "betreiber": {
+      "type": "string"
+    },
+    "standort": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "koordinaten": {
+      "type": "table",
+      "fields": {
+        "breitengrad": {
+          "type": "float",
+          "required": true
+        },
+        "laengengrad": {
+          "type": "float",
+          "required": true
+        }
+      }
+    },
+    "ladepunkte": {
+      "type": "int",
+      "required": true
+    },
+    "stecker_typen": {
+      "type": "[string]",
+      "required": true
+    },
+    "ladeleistung_kw": {
+      "type": "[int]",
+      "required": true
+    },
+    "preis_pro_kwh": {
+      "type": "float",
+      "required": true
+    },
+    "rund_um_die_uhr": {
+      "type": "bool"
+    },
+    "oekostrom": {
+      "type": "bool"
+    },
+    "parkgebuehr": {
+      "type": "bool"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "bezahlung": {
+      "type": "[string]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

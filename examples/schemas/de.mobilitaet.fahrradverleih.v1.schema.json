@@ -1,0 +1,78 @@
+{
+  "schema_id": "de.mobilitaet.fahrradverleih.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "inhaberin": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "fahrradtypen": {
+      "type": "[string]",
+      "required": true
+    },
+    "preis_pro_tag": {
+      "type": "float",
+      "required": true
+    },
+    "preis_e_bike_tag": {
+      "type": "float"
+    },
+    "fahrraeder_gesamt": {
+      "type": "int"
+    },
+    "oeffnungszeiten": {
+      "type": "string",
+      "required": true
+    },
+    "helm_inklusive": {
+      "type": "bool"
+    },
+    "schloss_inklusive": {
+      "type": "bool"
+    },
+    "lieferung": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

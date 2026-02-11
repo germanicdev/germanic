@@ -1,0 +1,84 @@
+{
+  "schema_id": "de.bildung.kita.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "traeger": {
+      "type": "string",
+      "required": true
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "aufnahme_alter_ab": {
+      "type": "int",
+      "required": true
+    },
+    "aufnahme_alter_bis": {
+      "type": "int"
+    },
+    "plaetze_gesamt": {
+      "type": "int"
+    },
+    "betreuungszeiten": {
+      "type": "string",
+      "required": true
+    },
+    "paedagogisches_konzept": {
+      "type": "string"
+    },
+    "schwerpunkte": {
+      "type": "[string]"
+    },
+    "verpflegung": {
+      "type": "bool"
+    },
+    "kosten_monatlich": {
+      "type": "float"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "sprachen": {
+      "type": "[string]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

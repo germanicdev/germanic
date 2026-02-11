@@ -1,0 +1,30 @@
+{
+  "name": "Hausverwaltung Steinberg",
+  "geschaeftsfuehrer": "Dr. Andrea Steinberg",
+  "adresse": {
+    "strasse": "Rathausstraße",
+    "hausnummer": "10",
+    "plz": "40213",
+    "ort": "Düsseldorf",
+    "land": "DE"
+  },
+  "telefon": "+49 211 5678901",
+  "email": "info@hv-steinberg.example",
+  "website": "https://hv-steinberg.example",
+  "verwaltungsarten": [
+    "WEG-Verwaltung",
+    "Mietverwaltung",
+    "Sondereigentumsverwaltung"
+  ],
+  "objekte_betreut": 145,
+  "mitarbeiteranzahl": 8,
+  "ihk_mitglied": true,
+  "verbandsmiglied": true,
+  "einsatzgebiet": [
+    "Düsseldorf",
+    "Meerbusch",
+    "Neuss",
+    "Ratingen"
+  ],
+  "kurzbeschreibung": "Professionelle Immobilienverwaltung in Düsseldorf seit 1995."
+}

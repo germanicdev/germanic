@@ -1,0 +1,75 @@
+{
+  "schema_id": "de.handwerk.schluesseldienst.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "inhaber": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "preis_tueroffnung_ab": {
+      "type": "float",
+      "required": true
+    },
+    "anfahrtspauschale": {
+      "type": "float",
+      "required": true
+    },
+    "nacht_zuschlag_prozent": {
+      "type": "float"
+    },
+    "einsatzgebiet": {
+      "type": "[string]",
+      "required": true
+    },
+    "rund_um_die_uhr": {
+      "type": "bool"
+    },
+    "handwerkskammer": {
+      "type": "string"
+    },
+    "meisterbetrieb": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

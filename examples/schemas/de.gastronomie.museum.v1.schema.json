@@ -1,0 +1,89 @@
+{
+  "schema_id": "de.gastronomie.museum.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "traeger": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "eintritt": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "erwachsene": {
+          "type": "float",
+          "required": true
+        },
+        "ermaessigt": {
+          "type": "float"
+        },
+        "kinder_frei_bis": {
+          "type": "int"
+        }
+      }
+    },
+    "sammlungen": {
+      "type": "[string]"
+    },
+    "oeffnungszeiten": {
+      "type": "string",
+      "required": true
+    },
+    "fuehrungen": {
+      "type": "bool"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "audioguide": {
+      "type": "bool"
+    },
+    "sprachen": {
+      "type": "[string]"
+    },
+    "bewertung": {
+      "type": "float"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

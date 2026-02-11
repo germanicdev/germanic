@@ -1,0 +1,72 @@
+{
+  "schema_id": "de.immobilien.energieberater.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "berater": {
+      "type": "string",
+      "required": true
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "leistungen": {
+      "type": "[string]",
+      "required": true
+    },
+    "bafa_zugelassen": {
+      "type": "bool",
+      "required": true
+    },
+    "dena_zertifiziert": {
+      "type": "bool"
+    },
+    "einsatzgebiet": {
+      "type": "[string]"
+    },
+    "erfahrung_jahre": {
+      "type": "int"
+    },
+    "gebaeudetypen": {
+      "type": "[string]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Café Bohnenglück",
+  "inhaberin": "Lisa Kramer",
+  "adresse": {
+    "strasse": "Schulstraße",
+    "hausnummer": "14",
+    "plz": "20354",
+    "ort": "Hamburg",
+    "land": "DE"
+  },
+  "telefon": "+49 40 3456789",
+  "email": "hallo@bohnenglück.example",
+  "website": "https://bohnenglück.example",
+  "kueche": [
+    "Frühstück",
+    "Kuchen",
+    "Snacks"
+  ],
+  "besonderheiten": [
+    "Vegane Optionen",
+    "Glutenfreie Optionen",
+    "Haustierfreundlich"
+  ],
+  "sitzplaetze_innen": 35,
+  "sitzplaetze_aussen": 20,
+  "oeffnungszeiten": "Mo-Sa 8:00-18:00, So 9:00-17:00",
+  "wlan": true,
+  "barrierefreiheit": true,
+  "kartenzahlung": true,
+  "bewertung": 4.6,
+  "kurzbeschreibung": "Gemütliches Café in der Hamburger Innenstadt."
+}

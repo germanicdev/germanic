@@ -1,0 +1,83 @@
+{
+  "schema_id": "de.vereine.sportverein.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "vorsitzender": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "sportarten": {
+      "type": "[string]",
+      "required": true
+    },
+    "mitglieder": {
+      "type": "int"
+    },
+    "mitgliedsbeitrag_monat": {
+      "type": "float",
+      "required": true
+    },
+    "aufnahmegebuehr": {
+      "type": "float"
+    },
+    "jugendabteilung": {
+      "type": "bool"
+    },
+    "seniorensport": {
+      "type": "bool"
+    },
+    "trainingszeiten": {
+      "type": "string"
+    },
+    "gruendungsjahr": {
+      "type": "int"
+    },
+    "vereinsregister": {
+      "type": "string"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

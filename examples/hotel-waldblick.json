@@ -1,0 +1,38 @@
+{
+  "name": "Hotel Waldblick",
+  "sterne": 3,
+  "adresse": {
+    "strasse": "Am Waldrand",
+    "hausnummer": "1",
+    "plz": "83700",
+    "ort": "Rottach-Egern",
+    "land": "DE"
+  },
+  "telefon": "+49 8022 98765",
+  "email": "rezeption@waldblick.example",
+  "website": "https://hotel-waldblick.example",
+  "preise": {
+    "einzelzimmer_ab": 89.0,
+    "doppelzimmer_ab": 129.0,
+    "fruehstueck": 16.5,
+    "parkplatz_tag": 0.0
+  },
+  "zimmeranzahl": 42,
+  "ausstattung": [
+    "WLAN",
+    "Sauna",
+    "Terrasse",
+    "Fahrradverleih"
+  ],
+  "haustiere_erlaubt": true,
+  "barrierefreiheit": true,
+  "check_in": "15:00",
+  "check_out": "11:00",
+  "sprachen": [
+    "Deutsch",
+    "Englisch",
+    "Italienisch"
+  ],
+  "bewertung": 4.3,
+  "kurzbeschreibung": "Idyllisches 3-Sterne-Hotel am Tegernsee."
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Ev. Kirchengemeinde St. Martin",
+  "pfarrer": "Pfarrerin Elisabeth Neumann",
+  "adresse": {
+    "strasse": "Kirchplatz",
+    "hausnummer": "1",
+    "plz": "72072",
+    "ort": "Tübingen",
+    "land": "DE"
+  },
+  "telefon": "+49 7071 234567",
+  "email": "pfarramt@st-martin-tuebingen.example",
+  "website": "https://st-martin-tuebingen.example",
+  "konfession": "Evangelisch",
+  "gottesdienstzeiten": {
+    "sonntag": "10:00",
+    "mittwoch": "18:30"
+  },
+  "angebote": [
+    "Kindergottesdienst",
+    "Konfirmandenunterricht",
+    "Seniorenkreis",
+    "Kirchenchor",
+    "Flüchtlingshilfe"
+  ],
+  "seelsorge_telefon": "+49 7071 234568",
+  "buero_oeffnungszeiten": "Di-Fr 9:00-12:00",
+  "barrierefreiheit": true,
+  "gemeindebrief_online": true,
+  "kurzbeschreibung": "Evangelische Gemeinde im Herzen Tübingens — offen für alle."
+}

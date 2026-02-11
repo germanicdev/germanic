@@ -1,0 +1,78 @@
+{
+  "schema_id": "de.bildung.nachhilfe.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "inhaberin": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "faecher": {
+      "type": "[string]",
+      "required": true
+    },
+    "klassenstufen": {
+      "type": "[int]",
+      "required": true
+    },
+    "formate": {
+      "type": "[string]"
+    },
+    "preis_pro_stunde": {
+      "type": "float",
+      "required": true
+    },
+    "probestunde_kostenlos": {
+      "type": "bool"
+    },
+    "lehrkraefte": {
+      "type": "int"
+    },
+    "abipruefungsvorbereitung": {
+      "type": "bool"
+    },
+    "sprachen": {
+      "type": "[string]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Pflegedienst Herzenssache",
+  "leitung": "Sandra Bergmann",
+  "adresse": {
+    "strasse": "Blumenweg",
+    "hausnummer": "3a",
+    "plz": "50667",
+    "ort": "Köln",
+    "land": "DE"
+  },
+  "telefon": "+49 221 7654321",
+  "email": "info@pflegedienst-herz.example",
+  "website": "https://pflegedienst-herz.example",
+  "leistungen": [
+    "Grundpflege",
+    "Behandlungspflege",
+    "Verhinderungspflege",
+    "Beratungsbesuche"
+  ],
+  "kassenvertrag": true,
+  "einsatzgebiet": [
+    "Köln-Innenstadt",
+    "Köln-Ehrenfeld",
+    "Köln-Lindenthal"
+  ],
+  "sprachen": [
+    "Deutsch",
+    "Polnisch",
+    "Russisch"
+  ],
+  "rund_um_die_uhr": false,
+  "mitarbeiteranzahl": 28,
+  "qualitaetsnote": 1.3,
+  "kurzbeschreibung": "Ambulante Pflege mit Herz in Köln — seit 2008."
+}

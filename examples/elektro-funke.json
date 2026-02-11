@@ -1,0 +1,31 @@
+{
+  "name": "Elektro Funke GmbH",
+  "meister": "Thomas Funke",
+  "adresse": {
+    "strasse": "Industriestraße",
+    "hausnummer": "17",
+    "plz": "44137",
+    "ort": "Dortmund",
+    "land": "DE"
+  },
+  "telefon": "+49 231 5551234",
+  "email": "info@elektro-funke.example",
+  "website": "https://elektro-funke.example",
+  "leistungen": [
+    "Elektroinstallation",
+    "Smart Home",
+    "E-Check",
+    "Beleuchtungsplanung"
+  ],
+  "notdienst": true,
+  "meisterbetrieb": true,
+  "mitarbeiteranzahl": 12,
+  "gruendungsjahr": 1998,
+  "einsatzgebiet": [
+    "Dortmund",
+    "Bochum",
+    "Hagen"
+  ],
+  "handwerkskammer": "HWK Dortmund",
+  "kurzbeschreibung": "Ihr Elektriker-Meisterbetrieb im Ruhrgebiet."
+}

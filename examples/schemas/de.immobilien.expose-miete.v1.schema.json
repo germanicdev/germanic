@@ -1,0 +1,98 @@
+{
+  "schema_id": "de.immobilien.expose-miete.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "anbieter": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "kontakt": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "ansprechpartner": {
+          "type": "string",
+          "required": true
+        },
+        "telefon": {
+          "type": "string",
+          "required": true
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "wohnflaeche_qm": {
+      "type": "float",
+      "required": true
+    },
+    "zimmer": {
+      "type": "int",
+      "required": true
+    },
+    "etage": {
+      "type": "int"
+    },
+    "kaltmiete": {
+      "type": "float",
+      "required": true
+    },
+    "nebenkosten": {
+      "type": "float",
+      "required": true
+    },
+    "kaution_monate": {
+      "type": "int"
+    },
+    "baujahr": {
+      "type": "int"
+    },
+    "energieausweis_kwh": {
+      "type": "float"
+    },
+    "ausstattung": {
+      "type": "[string]"
+    },
+    "haustiere_erlaubt": {
+      "type": "bool"
+    },
+    "verfuegbar_ab": {
+      "type": "string"
+    },
+    "wbs_erforderlich": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

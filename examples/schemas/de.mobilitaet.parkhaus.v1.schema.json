@@ -1,0 +1,80 @@
+{
+  "schema_id": "de.mobilitaet.parkhaus.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "betreiber": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "stellplaetze_gesamt": {
+      "type": "int",
+      "required": true
+    },
+    "durchfahrtshoehe_m": {
+      "type": "float",
+      "required": true
+    },
+    "stockwerke": {
+      "type": "[int]"
+    },
+    "e_ladepunkte": {
+      "type": "int"
+    },
+    "tarife_pro_stunde": {
+      "type": "float",
+      "required": true
+    },
+    "tageshoechstsatz": {
+      "type": "float"
+    },
+    "rund_um_die_uhr": {
+      "type": "bool"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "frauenparkplaetze": {
+      "type": "bool"
+    },
+    "bezahlung": {
+      "type": "[string]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

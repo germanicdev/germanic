@@ -1,0 +1,80 @@
+{
+  "schema_id": "de.landwirtschaft.winzer.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "winzer": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "rebsorten": {
+      "type": "[string]",
+      "required": true
+    },
+    "anbauflaeche_ha": {
+      "type": "int"
+    },
+    "bio_zertifiziert": {
+      "type": "bool"
+    },
+    "vdp_mitglied": {
+      "type": "bool"
+    },
+    "weinprobe_preis": {
+      "type": "float"
+    },
+    "voranmeldung_noetig": {
+      "type": "bool",
+      "required": true
+    },
+    "vinothek_oeffnungszeiten": {
+      "type": "string"
+    },
+    "onlineshop": {
+      "type": "bool"
+    },
+    "ferienwohnung": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

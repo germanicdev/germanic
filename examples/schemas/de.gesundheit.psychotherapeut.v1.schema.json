@@ -1,0 +1,79 @@
+{
+  "schema_id": "de.gesundheit.psychotherapeut.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "approbation": {
+      "type": "string",
+      "required": true
+    },
+    "verfahren": {
+      "type": "string",
+      "required": true
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "kassenzulassung": {
+      "type": "bool",
+      "required": true
+    },
+    "privatpatienten": {
+      "type": "bool"
+    },
+    "schwerpunkte": {
+      "type": "[string]"
+    },
+    "altersgruppen": {
+      "type": "[string]",
+      "required": true
+    },
+    "wartezeit_wochen": {
+      "type": "int"
+    },
+    "sprachen": {
+      "type": "[string]"
+    },
+    "online_therapie": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Ferienwohnung Seeblick",
+  "vermieter": "Familie Braun",
+  "adresse": {
+    "strasse": "Seestraße",
+    "hausnummer": "8b",
+    "plz": "78464",
+    "ort": "Konstanz",
+    "land": "DE"
+  },
+  "telefon": "+49 7531 654321",
+  "email": "buchung@seeblick-konstanz.example",
+  "website": "https://seeblick-konstanz.example",
+  "max_personen": 4,
+  "schlafzimmer": 2,
+  "wohnflaeche_qm": 68.5,
+  "preis_pro_nacht": 95.0,
+  "mindestaufenthalt_naechte": 3,
+  "ausstattung": [
+    "WLAN",
+    "Küche",
+    "Waschmaschine",
+    "Balkon",
+    "Seeblick",
+    "Parkplatz"
+  ],
+  "haustiere_erlaubt": false,
+  "rauchen_erlaubt": false,
+  "bewertung": 4.8,
+  "kurzbeschreibung": "Helle Ferienwohnung mit direktem Blick auf den Bodensee."
+}

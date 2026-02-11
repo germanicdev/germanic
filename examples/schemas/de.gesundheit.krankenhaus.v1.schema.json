@@ -1,0 +1,87 @@
+{
+  "schema_id": "de.gesundheit.krankenhaus.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "traeger": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "notaufnahme": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "telefon": {
+          "type": "string",
+          "required": true
+        },
+        "rund_um_die_uhr": {
+          "type": "bool",
+          "required": true
+        },
+        "hubschrauberlandeplatz": {
+          "type": "bool"
+        }
+      }
+    },
+    "bettenanzahl": {
+      "type": "int"
+    },
+    "fachabteilungen": {
+      "type": "[string]",
+      "required": true
+    },
+    "website": {
+      "type": "string"
+    },
+    "notfall_telefon": {
+      "type": "string"
+    },
+    "besuchszeiten": {
+      "type": "string"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "parkplaetze": {
+      "type": "int"
+    },
+    "stockwerke": {
+      "type": "[int]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

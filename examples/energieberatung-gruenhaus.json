@@ -1,0 +1,34 @@
+{
+  "name": "Energieberatung GrünHaus",
+  "berater": "Dipl.-Ing. Klaus Hartmann",
+  "adresse": {
+    "strasse": "Ökoplatz",
+    "hausnummer": "3",
+    "plz": "53111",
+    "ort": "Bonn",
+    "land": "DE"
+  },
+  "telefon": "+49 228 3456789",
+  "email": "info@gruenhaus-energie.example",
+  "website": "https://gruenhaus-energie.example",
+  "leistungen": [
+    "Energieausweis",
+    "BAFA-Vor-Ort-Beratung",
+    "KfW-Sanierungsfahrplan",
+    "Thermografie"
+  ],
+  "bafa_zugelassen": true,
+  "dena_zertifiziert": true,
+  "einsatzgebiet": [
+    "Bonn",
+    "Köln",
+    "Rhein-Sieg-Kreis"
+  ],
+  "erfahrung_jahre": 18,
+  "gebaeudetypen": [
+    "Einfamilienhaus",
+    "Mehrfamilienhaus",
+    "Gewerbe"
+  ],
+  "kurzbeschreibung": "Unabhängige Energieberatung in Bonn — BAFA-zugelassen und dena-zertifiziert."
+}

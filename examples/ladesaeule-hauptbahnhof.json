@@ -1,0 +1,35 @@
+{
+  "name": "Ladesäule Hauptbahnhof Süd",
+  "betreiber": "StadtStrom GmbH",
+  "standort": {
+    "strasse": "Bahnhofsvorplatz",
+    "hausnummer": "1",
+    "plz": "60329",
+    "ort": "Frankfurt am Main",
+    "land": "DE"
+  },
+  "koordinaten": {
+    "breitengrad": 50.1068,
+    "laengengrad": 8.6631
+  },
+  "ladepunkte": 4,
+  "stecker_typen": [
+    "CCS",
+    "Typ 2"
+  ],
+  "ladeleistung_kw": [
+    50,
+    150
+  ],
+  "preis_pro_kwh": 0.49,
+  "rund_um_die_uhr": true,
+  "oekostrom": true,
+  "parkgebuehr": false,
+  "barrierefreiheit": true,
+  "bezahlung": [
+    "App",
+    "RFID",
+    "Girokarte"
+  ],
+  "kurzbeschreibung": "Schnellladestation am Frankfurter Hauptbahnhof — CCS und Typ 2."
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Senior Softwareentwickler (m/w/d) — Rust/Backend",
+  "unternehmen": "TechVentures GmbH",
+  "adresse": {
+    "strasse": "Startup-Allee",
+    "hausnummer": "42",
+    "plz": "80339",
+    "ort": "München",
+    "land": "DE"
+  },
+  "ansprechpartner": {
+    "name": "Laura Meier",
+    "telefon": "+49 89 9876543",
+    "email": "jobs@techventures.example"
+  },
+  "gehalt": {
+    "min": 65000.0,
+    "max": 80000.0,
+    "waehrung": "EUR"
+  },
+  "beschaeftigungsart": "Vollzeit",
+  "remote_moeglich": true,
+  "befristet": false,
+  "anforderungen": [
+    "Rust",
+    "PostgreSQL",
+    "Docker",
+    "CI/CD",
+    "REST APIs"
+  ],
+  "benefits": [
+    "30 Tage Urlaub",
+    "Homeoffice",
+    "Weiterbildungsbudget",
+    "Jobrad"
+  ],
+  "eintrittsdatum": "Ab sofort",
+  "bewerbungsfrist": "2025-03-31",
+  "kurzbeschreibung": "Wir suchen einen erfahrenen Rust-Entwickler für unser Backend-Team."
+}

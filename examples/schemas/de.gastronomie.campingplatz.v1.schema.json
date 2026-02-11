@@ -1,0 +1,80 @@
+{
+  "schema_id": "de.gastronomie.campingplatz.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "betreiber": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "stellplaetze_gesamt": {
+      "type": "int",
+      "required": true
+    },
+    "stellplatz_laengen_m": {
+      "type": "[int]"
+    },
+    "preis_pro_nacht": {
+      "type": "float",
+      "required": true
+    },
+    "saison": {
+      "type": "string"
+    },
+    "ausstattung": {
+      "type": "[string]"
+    },
+    "hunde_erlaubt": {
+      "type": "bool"
+    },
+    "strom_vorhanden": {
+      "type": "bool"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "bewertung": {
+      "type": "float"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

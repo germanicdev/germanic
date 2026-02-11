@@ -1,0 +1,70 @@
+{
+  "schema_id": "de.handwerk.it-dienstleister.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "geschaeftsfuehrer": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "kompetenzen": {
+      "type": "[string]",
+      "required": true
+    },
+    "zertifizierungen": {
+      "type": "[string]"
+    },
+    "mitarbeiteranzahl": {
+      "type": "int"
+    },
+    "support_rund_um_die_uhr": {
+      "type": "bool"
+    },
+    "remote_support": {
+      "type": "bool"
+    },
+    "einsatzgebiet": {
+      "type": "[string]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

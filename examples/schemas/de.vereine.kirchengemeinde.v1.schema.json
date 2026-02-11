@@ -1,0 +1,83 @@
+{
+  "schema_id": "de.vereine.kirchengemeinde.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "pfarrer": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "konfession": {
+      "type": "string",
+      "required": true
+    },
+    "gottesdienstzeiten": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "sonntag": {
+          "type": "string",
+          "required": true
+        },
+        "mittwoch": {
+          "type": "string"
+        }
+      }
+    },
+    "angebote": {
+      "type": "[string]"
+    },
+    "seelsorge_telefon": {
+      "type": "string"
+    },
+    "buero_oeffnungszeiten": {
+      "type": "string"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "gemeindebrief_online": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

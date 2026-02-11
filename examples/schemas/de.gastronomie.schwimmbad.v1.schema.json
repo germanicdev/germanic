@@ -1,0 +1,87 @@
+{
+  "schema_id": "de.gastronomie.schwimmbad.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "betreiber": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "becken_laengen_m": {
+      "type": "[int]",
+      "required": true
+    },
+    "sprungturm_hoehen_m": {
+      "type": "[int]"
+    },
+    "eintritt_erwachsene": {
+      "type": "float",
+      "required": true
+    },
+    "eintritt_kinder": {
+      "type": "float"
+    },
+    "oeffnungszeiten": {
+      "type": "string",
+      "required": true
+    },
+    "saison": {
+      "type": "bool"
+    },
+    "rutsche": {
+      "type": "bool"
+    },
+    "gastronomie": {
+      "type": "bool"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "parkplaetze": {
+      "type": "int"
+    },
+    "bewertung": {
+      "type": "float"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

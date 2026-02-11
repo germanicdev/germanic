@@ -1,0 +1,94 @@
+{
+  "schema_id": "de.wirtschaft.messe.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "veranstalter": {
+      "type": "string"
+    },
+    "veranstaltungsort": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "strasse": {
+          "type": "string"
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "kontakt": {
+      "type": "table",
+      "fields": {
+        "telefon": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        }
+      }
+    },
+    "datum_beginn": {
+      "type": "string",
+      "required": true
+    },
+    "datum_ende": {
+      "type": "string"
+    },
+    "aussteller_anzahl": {
+      "type": "int",
+      "required": true
+    },
+    "preise": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "tageskarte": {
+          "type": "float",
+          "required": true
+        },
+        "dauerkarte": {
+          "type": "float"
+        },
+        "ermaessigt": {
+          "type": "float"
+        }
+      }
+    },
+    "kategorien": {
+      "type": "[string]"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "online_tickets": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

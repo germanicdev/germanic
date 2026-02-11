@@ -1,0 +1,70 @@
+{
+  "schema_id": "de.oeffentlich.wochenmarkt.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "veranstalter": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "markttage": {
+      "type": "string",
+      "required": true
+    },
+    "uhrzeiten": {
+      "type": "string",
+      "required": true
+    },
+    "standbetreiber_anzahl": {
+      "type": "int"
+    },
+    "angebot": {
+      "type": "[string]"
+    },
+    "bio_angebot": {
+      "type": "bool"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "parkplaetze_naehe": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

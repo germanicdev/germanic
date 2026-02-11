@@ -1,0 +1,35 @@
+{
+  "name": "Campingplatz Grüne Tanne",
+  "betreiber": "Heinz und Margit Waldner",
+  "adresse": {
+    "strasse": "Waldweg",
+    "hausnummer": "2",
+    "plz": "87561",
+    "ort": "Oberstdorf",
+    "land": "DE"
+  },
+  "telefon": "+49 8322 654321",
+  "email": "info@gruene-tanne-camping.example",
+  "website": "https://gruene-tanne-camping.example",
+  "stellplaetze_gesamt": 85,
+  "stellplatz_laengen_m": [
+    6,
+    8,
+    10,
+    12
+  ],
+  "preis_pro_nacht": 22.5,
+  "saison": "April bis Oktober",
+  "ausstattung": [
+    "Sanitärgebäude",
+    "Waschmaschine",
+    "Brötchenservice",
+    "Spielplatz",
+    "WLAN"
+  ],
+  "hunde_erlaubt": true,
+  "strom_vorhanden": true,
+  "barrierefreiheit": false,
+  "bewertung": 4.2,
+  "kurzbeschreibung": "Naturnaher Campingplatz am Fuße der Allgäuer Alpen."
+}

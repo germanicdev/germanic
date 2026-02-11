@@ -1,0 +1,97 @@
+{
+  "schema_id": "de.wirtschaft.stellenanzeige.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "unternehmen": {
+      "type": "string",
+      "required": true
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string"
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "ansprechpartner": {
+      "type": "table",
+      "fields": {
+        "name": {
+          "type": "string"
+        },
+        "telefon": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "required": true
+        }
+      }
+    },
+    "gehalt": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "min": {
+          "type": "float",
+          "required": true
+        },
+        "max": {
+          "type": "float",
+          "required": true
+        },
+        "waehrung": {
+          "type": "string",
+          "default": "EUR"
+        }
+      }
+    },
+    "beschaeftigungsart": {
+      "type": "string",
+      "required": true
+    },
+    "remote_moeglich": {
+      "type": "bool"
+    },
+    "befristet": {
+      "type": "bool"
+    },
+    "anforderungen": {
+      "type": "[string]",
+      "required": true
+    },
+    "benefits": {
+      "type": "[string]"
+    },
+    "eintrittsdatum": {
+      "type": "string"
+    },
+    "bewerbungsfrist": {
+      "type": "string"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Linden-Apotheke",
+  "inhaberin": "Dr. rer. nat. Petra Hoffmann",
+  "adresse": {
+    "strasse": "Lindenallee",
+    "hausnummer": "7",
+    "plz": "80331",
+    "ort": "München",
+    "land": "DE"
+  },
+  "telefon": "+49 89 2345678",
+  "fax": "+49 89 2345679",
+  "email": "info@linden-apotheke.example",
+  "website": "https://linden-apotheke.example",
+  "notdienst": false,
+  "lieferdienst": true,
+  "oeffnungszeiten": "Mo-Fr 8:00-18:30, Sa 9:00-13:00",
+  "schwerpunkte": [
+    "Naturheilkunde",
+    "Kompressionsstrümpfe",
+    "Reisemedizin"
+  ],
+  "sprachen": [
+    "Deutsch",
+    "Englisch",
+    "Türkisch"
+  ],
+  "barrierefreiheit": true,
+  "parkplaetze": 3,
+  "kurzbeschreibung": "Ihre Apotheke im Herzen Münchens mit persönlicher Beratung."
+}

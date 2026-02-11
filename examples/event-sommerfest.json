@@ -1,26 +1,29 @@
 {
-  "titel": "Sommerfest der Kulturen",
-  "art": "Straßenfest",
-  "kategorien": ["Musik", "Kulinarik", "Kultur", "Kinder"],
-  "veranstalter": "Kulturverein Vielfalt e.V.",
-  "datum_beginn": "2025-07-12T14:00:00",
-  "datum_ende": "2025-07-12T23:00:00",
+  "name": "Altstadtfest Würzburg",
+  "veranstalter": "Stadt Würzburg, Kulturreferat",
   "veranstaltungsort": {
-    "name": "Rathausplatz",
+    "name": "Marktplatz und Altstadt",
     "strasse": "Marktplatz",
-    "hausnummer": "1",
-    "plz": "70173",
-    "ort": "Stuttgart",
+    "plz": "97070",
+    "ort": "Würzburg",
     "land": "DE"
   },
+  "kontakt": {
+    "telefon": "+49 931 372398",
+    "email": "kultur@wuerzburg.example",
+    "website": "https://altstadtfest-wuerzburg.example"
+  },
+  "datum_beginn": "2025-07-11",
+  "datum_ende": "2025-07-13",
   "eintritt_frei": true,
-  "eintritt_preis": 0.0,
-  "max_besucher": 5000,
+  "kategorie": "Stadtfest",
+  "programm": [
+    "Live-Musik",
+    "Kunsthandwerk",
+    "Kulinarik",
+    "Kinderprogramm"
+  ],
+  "erwartete_besucher": 50000,
   "barrierefreiheit": true,
-  "kontakt_telefon": "+49 711 5554321",
-  "kontakt_email": "info@sommerfest-kulturen.example",
-  "website": "https://sommerfest-kulturen.example",
-  "programm_url": "https://sommerfest-kulturen.example/programm",
-  "sprachen": ["Deutsch", "Englisch", "Türkisch", "Arabisch"],
-  "kurzbeschreibung": "Musik, Essen und Kultur aus aller Welt — ein Fest für die ganze Stadt."
+  "kurzbeschreibung": "Drei Tage Kultur, Musik und Genuss in der Würzburger Altstadt."
 }

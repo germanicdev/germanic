@@ -1,0 +1,33 @@
+{
+  "name": "Freibad Sonnental",
+  "betreiber": "Stadtwerke Esslingen",
+  "adresse": {
+    "strasse": "Badstraße",
+    "hausnummer": "10",
+    "plz": "73728",
+    "ort": "Esslingen",
+    "land": "DE"
+  },
+  "telefon": "+49 711 3512345",
+  "email": "freibad@stadtwerke-esslingen.example",
+  "website": "https://freibad-sonnental.example",
+  "becken_laengen_m": [
+    50,
+    25
+  ],
+  "sprungturm_hoehen_m": [
+    1,
+    3,
+    5
+  ],
+  "eintritt_erwachsene": 5.5,
+  "eintritt_kinder": 3.0,
+  "oeffnungszeiten": "Mai-September, täglich 7:00-20:00",
+  "saison": true,
+  "rutsche": true,
+  "gastronomie": true,
+  "barrierefreiheit": true,
+  "parkplaetze": 120,
+  "bewertung": 4.0,
+  "kurzbeschreibung": "Das große Freibad in Esslingen mit Olympia-Becken."
+}

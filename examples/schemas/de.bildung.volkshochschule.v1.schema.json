@@ -1,0 +1,73 @@
+{
+  "schema_id": "de.bildung.volkshochschule.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "traeger": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "kursbereiche": {
+      "type": "[string]",
+      "required": true
+    },
+    "sprachen_angebot": {
+      "type": "[string]"
+    },
+    "semester_aktuell": {
+      "type": "string"
+    },
+    "kurse_anzahl": {
+      "type": "int"
+    },
+    "anmeldung_online": {
+      "type": "bool"
+    },
+    "ermaessigung_moeglich": {
+      "type": "bool"
+    },
+    "barrierefreiheit": {
+      "type": "bool"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

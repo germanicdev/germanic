@@ -1,0 +1,70 @@
+{
+  "schema_id": "de.immobilien.hausverwaltung.v1",
+  "version": 1,
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "geschaeftsfuehrer": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "table",
+      "required": true,
+      "fields": {
+        "strasse": {
+          "type": "string",
+          "required": true
+        },
+        "hausnummer": {
+          "type": "string"
+        },
+        "plz": {
+          "type": "string",
+          "required": true
+        },
+        "ort": {
+          "type": "string",
+          "required": true
+        },
+        "land": {
+          "type": "string",
+          "default": "DE"
+        }
+      }
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "verwaltungsarten": {
+      "type": "[string]",
+      "required": true
+    },
+    "objekte_betreut": {
+      "type": "int"
+    },
+    "mitarbeiteranzahl": {
+      "type": "int"
+    },
+    "ihk_mitglied": {
+      "type": "bool"
+    },
+    "verbandsmiglied": {
+      "type": "bool"
+    },
+    "einsatzgebiet": {
+      "type": "[string]"
+    },
+    "kurzbeschreibung": {
+      "type": "string"
+    }
+  }
+}

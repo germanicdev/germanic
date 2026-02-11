@@ -1,0 +1,34 @@
+{
+  "name": "DigitalWerk IT-Lösungen",
+  "geschaeftsfuehrer": "Stefan Krause",
+  "adresse": {
+    "strasse": "Technologiepark",
+    "hausnummer": "5",
+    "plz": "64283",
+    "ort": "Darmstadt",
+    "land": "DE"
+  },
+  "telefon": "+49 6151 8765432",
+  "email": "info@digitalwerk-it.example",
+  "website": "https://digitalwerk-it.example",
+  "kompetenzen": [
+    "Netzwerkadministration",
+    "IT-Sicherheit",
+    "Cloud-Lösungen",
+    "VoIP"
+  ],
+  "zertifizierungen": [
+    "ISO 27001",
+    "Microsoft Partner",
+    "Cisco Partner"
+  ],
+  "mitarbeiteranzahl": 22,
+  "support_rund_um_die_uhr": true,
+  "remote_support": true,
+  "einsatzgebiet": [
+    "Darmstadt",
+    "Frankfurt",
+    "Rhein-Main-Gebiet"
+  ],
+  "kurzbeschreibung": "IT-Systemhaus für den Mittelstand in der Rhein-Main-Region."
+}
