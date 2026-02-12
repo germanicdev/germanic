@@ -376,15 +376,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "flatc-rust"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "57e61227926ef5b237af48bee74394cc4a5a221ebd10c5147a98e612f207851d"
-dependencies = [
- "log",
-]
-
-[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -497,7 +488,6 @@ dependencies = [
  "clap",
  "ed25519-dalek",
  "flatbuffers",
- "flatc-rust",
  "germanic-macros",
  "indexmap",
  "rand",

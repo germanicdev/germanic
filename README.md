@@ -197,3 +197,16 @@ at your option.
 Contribute schemas, report bugs, discuss ideas — all welcome. Schema definitions are JSON, no Rust required. And if you do write Rust: the compiler is happy about pull requests.
 
 If you have a domain that's missing — a flower shop, a coworking space, a dog groomer — open an issue or submit a PR. The schema format is simple, and the more domains we cover, the more useful the contract becomes.
+
+### Development: FlatBuffer Schema Changes
+
+`cargo install germanic` works out of the box — no external tools required. The FlatBuffer bindings are pre-generated and checked into the repository.
+
+If you modify `.fbs` schema files, regenerate the Rust bindings:
+
+```bash
+# Requires flatc: brew install flatbuffers (macOS) / apt install flatbuffers-compiler (Linux)
+./scripts/regenerate-flatbuffers.sh
+```
+
+This updates `crates/germanic/src/generated/` and should be committed alongside your `.fbs` changes.

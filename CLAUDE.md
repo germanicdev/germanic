@@ -63,7 +63,7 @@ cargo check --workspace
 # 2. No German identifiers left? (except schema fields)
 grep -rn "fehler\|validiere\|kompiliere\|Pflicht\|Fehler\|Validierung" crates/ --include="*.rs" | grep -v "// KEEP_GERMAN" | grep -v ".fbs"
 
-# 3. Tests pass? (only if flatc available)
+# 3. Tests pass?
 cargo test --workspace
 
 # 4. No warnings?
@@ -74,7 +74,7 @@ cargo check --workspace 2>&1 | grep "warning"
 - Do NOT refactor architecture while translating. Rename only.
 - Do NOT add features during translation phase.
 - Do NOT change .fbs schema files (those stay German).
-- Do NOT change the build.rs namespace fix logic (only translate comments/variable names).
+- Do NOT change the namespace fix logic in scripts/regenerate-flatbuffers.sh.
 - Do NOT make decisions about Weg 3 implementation — Opus plans that.
 - Do NOT remove the `extern crate self as germanic;` line in lib.rs.
 
