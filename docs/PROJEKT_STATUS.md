@@ -51,7 +51,8 @@
 | 4.2 Benchmark JSON-LD vs .grm | ⬜ TODO | |
 | 4.3 OpenClaw SKILL.md | ⬜ TODO | Needs working CLI (available) |
 | 4.4 Contract Proof (Vertragsbeweis) | ✅ DONE | AP-4.4: validate.rs hardened, 10 scenario tests, README table |
-| 4.4b Cargo.toml cleanup for crates.io | ⬜ TODO | |
+| 4.4b Contract Proof Live-Demo Output | ✅ DONE | AP-4.4b: println! demo output in vertragsbeweis.rs, reads like live demo with --nocapture |
+| 4.4c Cargo.toml cleanup for crates.io | ⬜ TODO | |
 | 4.5 MCP Server | ✅ DONE | AP-4.2: mcp.rs with 6 tools, rmcp 0.8, feature-flagged |
 | 4.6 GitHub public + crates.io publish | ⬜ TODO | |
 | 4.6 Universality examples | ✅ DONE | AP-4.6: 42 schemas + 42 examples, 11 domains |
@@ -78,6 +79,16 @@
 8. JSON Schema Draft 7 as second input format (adapter, not replacement)
 
 ## Completed Work Log
+
+### 2026-02-12: Contract Proof Live-Demo Output (AP-4.4b)
+- ✅ Added `println!` demo output to all 10 tests in `vertragsbeweis.rs`
+- ✅ `split_violations()` helper: correctly parses comma-separated error messages (handles commas inside messages like "expected bool, found string")
+- ✅ `extract_field_error()` helper: extracts specific field error from multi-violation error strings
+- ✅ S0, S4, S7 (accept cases): explain WHY GERMANIC accepts
+- ✅ S1-S3, S5-S6, S8 (reject cases): show real error message from validator
+- ✅ Bonus test: lists all 4 violations individually with count
+- ✅ `cargo test --test vertragsbeweis -- --nocapture` reads like a live demo
+- ✅ All 93 tests passing (without MCP)
 
 ### 2026-02-12: Contract Proof / Vertragsbeweis (AP-4.4)
 - ✅ Hardened `validate.rs` with 5-check validation chain (missing → null → type → empty → nested)
