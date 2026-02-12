@@ -68,7 +68,7 @@ fn test_default_trait() {
     let schema = DefaultTestSchema::default();
 
     assert_eq!(schema.land, "Deutschland");
-    assert_eq!(schema.aktiv, true);
+    assert!(schema.aktiv);
     assert_eq!(schema.name, "");
     assert!(schema.optional.is_none());
     assert!(schema.list.is_empty());
@@ -86,8 +86,8 @@ fn test_default_bool_false() {
     }
 
     let schema = BoolTestSchema::default();
-    assert_eq!(schema.deactivated, false);
-    assert_eq!(schema.without_default, false);
+    assert!(!schema.deactivated);
+    assert!(!schema.without_default);
 }
 
 // ============================================================================

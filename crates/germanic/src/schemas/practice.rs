@@ -47,7 +47,7 @@ use crate::generated::praxis::de::gesundheit::{
 /// | Field       | Type           | Required | Default |
 /// |-------------|----------------|----------|---------|
 /// | strasse     | String         | ✅       | -       |
-/// | hausnummer  | Option<String> | ❌       | None    |
+/// | hausnummer  | `Option<String>` | ❌       | None    |
 /// | plz         | String         | ✅       | -       |
 /// | ort         | String         | ✅       | -       |
 /// | land        | String         | ❌       | "DE"    |
@@ -128,8 +128,8 @@ impl GermanicSerialize for AdresseSchema {
 /// | name              | String         | ✅       | Name of practitioner             |
 /// | bezeichnung       | String         | ✅       | "Heilpraktikerin", "Arzt", etc.  |
 /// | adresse           | AdresseSchema  | ✅       | Complete address                 |
-/// | praxisname        | Option<String> | ❌       | Name of practice                 |
-/// | telefon           | Option<String> | ❌       | Phone number                     |
+/// | praxisname        | `Option<String>` | ❌       | Name of practice                 |
+/// | telefon           | `Option<String>` | ❌       | Phone number                     |
 /// | ...               | ...            | ...      | additional optional fields       |
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, GermanicSchema)]
 #[germanic(schema_id = "de.gesundheit.praxis.v1")]
