@@ -185,6 +185,39 @@ All 42 domains ship in both German and English (`examples/de` and `examples/en`)
 
 ---
 
+## Agent Integration
+
+### OpenClaw
+
+Install as a skill: copy `skills/germanic/` to your workspace.
+
+```bash
+mkdir -p ~/.openclaw/workspace/skills
+cp -r skills/germanic ~/.openclaw/workspace/skills/
+```
+
+Or install from [ClawHub](https://clawhub.ai). Pure CLI skill — no scripts, no npm, no secrets.
+
+### MCP Server
+
+```bash
+germanic serve-mcp
+```
+
+Works with any MCP client (Claude Desktop, Cursor, Windsurf, etc.). Configure:
+
+```json
+{
+  "germanic": {
+    "command": "germanic",
+    "args": ["serve-mcp"],
+    "transport": "stdio"
+  }
+}
+```
+
+---
+
 ## Limitations
 
 GERMANIC validates structure, presence, and type — not content. A schema can guarantee that `telefon` is a non-empty string, but not that it's a valid phone number. Content validation (regex patterns, format checks, range constraints) is planned for a future version.
