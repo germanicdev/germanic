@@ -125,7 +125,7 @@ fn main() {
     show_generated_files(&out_dir);
 
     println!(
-        "cargo:warning=GERMANIC: FlatBuffer-Code generiert in {}",
+        "cargo:warning=GERMANIC: FlatBuffer code generated in {}",
         out_dir
     );
 }
