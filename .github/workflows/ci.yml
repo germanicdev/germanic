@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  check:
+    name: Check & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      # 1. Formatierung
+      - name: Format check
+        run: cargo fmt --all -- --check
+
+      # 2. Clippy (streng)
+      - name: Clippy (workspace)
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      # 3. Clippy mit MCP-Feature
+      - name: Clippy (with MCP)
+        run: cargo clippy --workspace --all-targets --features mcp -- -D warnings
+
+      # 4. Tests ohne MCP
+      - name: Tests (workspace)
+        run: cargo test --workspace
+
+      # 5. Tests mit MCP
+      - name: Tests (with MCP)
+        run: cargo test --workspace --features mcp
+
+      # 6. Vertragsbeweis separat (mit Output für Logs)
+      - name: Contract Proof
+        run: cargo test --test vertragsbeweis -- --nocapture
+
+      # 7. Doc-Tests
+      - name: Doc tests
+        run: cargo doc --workspace --no-deps
+
+  # Separater Job: MSRV-Check
+  msrv:
+    name: MSRV (1.85)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.85"
+      - run: cargo check --workspace
+
+  # Separater Job: Publish Dry-Run
+  publish-check:
+    name: Publish Dry-Run
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo publish -p germanic-macros --dry-run
+      - run: cargo publish -p germanic --dry-run
