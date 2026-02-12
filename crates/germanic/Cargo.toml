@@ -25,6 +25,10 @@ path = "src/main.rs"
 name = "germanic"
 path = "src/lib.rs"
 
+[features]
+default = []
+mcp = ["dep:rmcp", "dep:tokio", "dep:schemars", "dep:tracing", "dep:tracing-subscriber"]
+
 [dependencies]
 # Re-export unserer Macros, damit Nutzer nur `use germanic::GermanicSchema` brauchen
 germanic-macros = { path = "../germanic-macros" }
@@ -49,6 +53,13 @@ anyhow.workspace = true
 # Kryptografie
 ed25519-dalek.workspace = true
 rand.workspace = true
+
+# MCP Server (optional, behind feature flag)
+rmcp = { workspace = true, optional = true }
+tokio = { workspace = true, optional = true }
+schemars = { workspace = true, optional = true }
+tracing = { workspace = true, optional = true }
+tracing-subscriber = { workspace = true, optional = true }
 
 [build-dependencies]
 # Für FlatBuffer-Schema-Kompilierung

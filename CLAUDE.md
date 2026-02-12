@@ -82,3 +82,36 @@ cargo check --workspace 2>&1 | grep "warning"
 - After each task: update PROJEKT_STATUS.md (mark ✅, note issues)
 - If something is unclear: STOP and ask. Do not guess.
 - If cargo check fails after translation: report the exact errors. Do not attempt creative fixes.
+
+## MCP Feature Flag
+
+The MCP server is behind a feature flag. When working on MCP code:
+
+```bash
+# Build with MCP
+cargo build --features mcp
+cargo test --features mcp
+
+# Build WITHOUT MCP (must still work!)
+cargo build
+cargo test
+```
+
+- ALL MCP code must be behind `#[cfg(feature = "mcp")]`
+- ALL MCP tests must be behind `#[cfg(feature = "mcp")]`
+- ALL MCP dependencies in Cargo.toml must be `optional = true`
+- The `ServeMcp` command variant must be behind `#[cfg(feature = "mcp")]`
+- NEVER add `mcp` to `default` features
+- After ANY change: verify both `cargo check` AND `cargo check --features mcp` pass
+
+## MCP Dependencies (workspace)
+
+```toml
+rmcp = { version = "0.8", features = ["server", "transport-io", "macros"] }
+tokio = { version = "1", features = ["full"] }
+schemars = "1.0.0-alpha.17"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+```
+
+All are optional in the germanic crate, gated behind `mcp` feature.

@@ -115,6 +115,10 @@ enum Commands {
         #[arg(long)]
         hex: bool,
     },
+
+    #[cfg(feature = "mcp")]
+    /// Start MCP server (JSON-RPC over stdio)
+    ServeMcp,
 }
 
 fn main() -> Result<()> {
@@ -147,6 +151,14 @@ fn main() -> Result<()> {
         Commands::Validate { file } => cmd_validate(&file),
 
         Commands::Inspect { file, hex } => cmd_inspect(&file, hex),
+
+        #[cfg(feature = "mcp")]
+        Commands::ServeMcp => {
+            tokio::runtime::Runtime::new()
+                .expect("Failed to create tokio runtime")
+                .block_on(germanic::mcp::serve())
+                .map_err(|e| anyhow::anyhow!("MCP server error: {e}"))
+        }
     }
 }
 

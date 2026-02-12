@@ -2,7 +2,7 @@
 
 ## Current Phase: Phase 4 — Release Preparation
 **Started:** 2025-02-11
-**Last updated:** 2026-02-11
+**Last updated:** 2026-02-12
 **State:** Phases 1-3 complete. Phase 4 partially complete. Core framework production-ready.
 
 ## Progress
@@ -51,15 +51,15 @@
 | 4.2 Benchmark JSON-LD vs .grm | ⬜ TODO | |
 | 4.3 OpenClaw SKILL.md | ⬜ TODO | Needs working CLI (available) |
 | 4.4 Cargo.toml cleanup for crates.io | ⬜ TODO | |
-| 4.5 MCP Server | ⬜ TODO | |
+| 4.5 MCP Server | ✅ DONE | AP-4.2: mcp.rs with 6 tools, rmcp 0.8, feature-flagged |
 | 4.6 GitHub public + crates.io publish | ⬜ TODO | |
 | 4.6 Universality examples | ✅ DONE | AP-4.6: 42 schemas + 42 examples, 11 domains |
 | 4.6b English schema translations | ✅ DONE | AP-4.6b: 47 schemas + 52 examples, en.* IDs |
 | 4.7 JSON Schema Draft 7 Adapter | ✅ DONE | AP-4.7: json_schema.rs + CLI auto-detect, 23 tests |
 
 ## Test Summary
-- **Total tests:** 83 (65 unit + 11 macro + 5 proc-macro + 2 integration)
-- **All passing:** ✅
+- **Total tests:** 91 (73 unit w/ MCP + 11 macro + 5 proc-macro + 2 integration)
+- **All passing:** ✅ (both `cargo test` and `cargo test --features mcp`)
 - **No compiler errors:** ✅
 - **No warnings in project code:** ✅ (only pre-existing unused field in germanic-macros)
 
@@ -77,6 +77,24 @@
 8. JSON Schema Draft 7 as second input format (adapter, not replacement)
 
 ## Completed Work Log
+
+### 2026-02-12: MCP Server (AP-4.2)
+- ✅ New module `crates/germanic/src/mcp.rs` (~490 lines, behind `#[cfg(feature = "mcp")]`)
+- ✅ 6 MCP tools: germanic_compile, germanic_validate, germanic_inspect, germanic_schemas, germanic_init, germanic_convert
+- ✅ Each tool delegates to existing library code — no new logic
+- ✅ Parameter structs with `schemars::JsonSchema` for auto-discovery
+- ✅ Server handler with `ServerInfo` including instructions and tool capabilities
+- ✅ `serve()` entry point: tracing to stderr, JSON-RPC over stdio
+- ✅ Feature flag: `mcp` in Cargo.toml, all deps optional (rmcp, tokio, schemars, tracing, tracing-subscriber)
+- ✅ CLI: `germanic serve-mcp` subcommand behind `#[cfg(feature = "mcp")]`
+- ✅ Workspace Cargo.toml updated with MCP workspace dependencies
+- ✅ CLAUDE.md updated with MCP Feature Flag and Dependencies sections
+- ✅ 8 unit tests (param deserialization, server info, tool count, tool names)
+- ✅ `cargo check --workspace` passes (without MCP feature)
+- ✅ `cargo check --features mcp` passes
+- ✅ `cargo test --workspace` — 65 tests green
+- ✅ `cargo test --features mcp` — 73 tests green (8 new MCP tests)
+- ✅ rmcp 0.8 API adaptation: `Parameters<T>` wrapper, `ErrorData`, `#[tool_router(router = tool_router)]`
 
 ### 2026-02-11: Final German → English Translation Cleanup
 - ✅ Translated all remaining German comments and identifiers in:
@@ -136,4 +154,4 @@
 - ✅ beispiele/ → examples/
 
 ## Next Action
-→ Phase 4 remaining: README, Benchmark, OpenClaw SKILL.md, Cargo.toml, MCP Server, publish
+→ Phase 4 remaining: README, Benchmark, OpenClaw SKILL.md, Cargo.toml, publish

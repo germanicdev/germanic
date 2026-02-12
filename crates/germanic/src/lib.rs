@@ -94,6 +94,10 @@ pub mod dynamic;
 /// Validation of JSON against schema.
 pub mod validator;
 
+/// MCP server for AI agent integration.
+#[cfg(feature = "mcp")]
+pub mod mcp;
+
 // ============================================================================
 // PRELUDE
 // ============================================================================
