@@ -5,11 +5,11 @@ description: >
   Use when producing structured data for AI systems,
   validating schemas, or working with .grm files.
   Catches missing fields, wrong types, empty strings.
+  Accepts JSON Schema Draft 7 and GERMANIC native format.
+  Security: binary output prevents structural injection —
+  data cannot be reinterpreted as instructions.
 version: 0.1.0
-compatibility:
-  requires:
-    bins: [cargo]
-  platforms: [linux, macos, windows]
+metadata: { "openclaw": { "emoji": "🤝", "requires": { "bins": ["germanic"] }, "install": [{ "id": "cargo-install", "kind": "shell", "command": "cargo install germanic", "bins": ["germanic"], "label": "Install GERMANIC CLI (cargo)" }] } }
 ---
 
 # GERMANIC
@@ -22,12 +22,14 @@ Compile JSON to validated binary. Schema contract enforced at build time.
 cargo install germanic
 ```
 
+Verify: `germanic --version` should print `0.1.0`.
+
 ## When to Use
 
 Use GERMANIC when you need to:
 - **Produce structured data** for AI consumption (typed, validated, binary)
 - **Validate JSON** against a schema (catches missing fields, wrong types, empty strings)
-- **Convert JSON to .grm** (zero-copy binary, 10-100x smaller than JSON-LD)
+- **Convert JSON to .grm** (zero-copy binary, immune to structural injection)
 
 Do NOT use GERMANIC for:
 - Free-text content (articles, blog posts, prose)
@@ -37,11 +39,11 @@ Do NOT use GERMANIC for:
 ## Decision Tree
 
 ```text
-"I have JSON data" ->
-  Known schema (practice, restaurant...)? -> germanic compile --schema <name>
-  New domain? -> germanic init -> edit .schema.json -> germanic compile --schema file.json
-  Just inspect a .grm? -> germanic inspect <file.grm>
-  Validate without compiling? -> germanic validate <file.grm>
+"I have JSON data" →
+  Known schema (practice, restaurant...)? → germanic compile --schema <n>
+  New domain? → germanic init → edit .schema.json → germanic compile --schema file.json
+  Just inspect a .grm? → germanic inspect <file.grm>
+  Validate without compiling? → germanic validate <file.grm>
 ```
 
 ## Three Workflows
@@ -102,7 +104,7 @@ If the schema says `telefon` is required, it's required for a reason.
 ## Schema Fields Are German
 
 Yes, the schema fields are in German. `strasse` not `street`, `plz` not `zip_code`.
-This is intentional — *Deutsche Grundlichkeit als Feature, nicht als Bug.*
+This is intentional — *Deutsche Gründlichkeit als Feature, nicht als Bug.*
 The English translations are available under `en.*` schema IDs.
 
 ## Security
@@ -117,9 +119,9 @@ Note: Binary format prevents *structural* injection. Content inside valid
 string fields is stored as-is. The consumer must treat typed fields as data,
 not instructions.
 
-## MCP Server
+## MCP Server (Universal — not OpenClaw-specific)
 
-For tool integration (Claude, ChatGPT, other MCP clients):
+For integration with MCP-native clients (Claude Desktop, Cursor, Windsurf, etc.):
 
 ```bash
 germanic serve-mcp
@@ -127,3 +129,16 @@ germanic serve-mcp
 
 Exposes 6 tools: `germanic_compile`, `germanic_validate`, `germanic_inspect`,
 `germanic_schemas`, `germanic_init`, `germanic_convert`.
+
+Configure in any MCP client:
+```json
+{
+  "germanic": {
+    "command": "germanic",
+    "args": ["serve-mcp"],
+    "transport": "stdio"
+  }
+}
+```
+
+For details: [github.com/germanicdev/germanic](https://github.com/germanicdev/germanic)
