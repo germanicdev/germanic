@@ -1,0 +1,83 @@
+# germanic-validate.yml
+# Reusable GitHub Action for GERMANIC schema validation.
+#
+# Copy this into your repository's .github/workflows/ directory.
+# Customize the matrix to match your schemas and data files.
+#
+# Prerequisites: The repository must contain JSON data files
+# that conform to GERMANIC schemas.
+
+name: GERMANIC Validate
+
+on:
+  push:
+    paths:
+      - '**.json'
+      - '**.schema.json'
+  pull_request:
+    paths:
+      - '**.json'
+      - '**.schema.json'
+
+# Customize: Set to false to skip .grm generation
+env:
+  GENERATE_GRM: "true"
+
+jobs:
+  validate:
+    name: Validate Schemas
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # ────────────────────────────────────────────
+          # Customize: Add your schemas and data here.
+          #
+          # schema: Schema name or path to .schema.json
+          # input:  Path to JSON data file
+          # output: Path for .grm output
+          # ────────────────────────────────────────────
+          - schema: practice
+            input: examples/de/dr-sonnenschein.json
+            output: output/dr-sonnenschein.grm
+          # - schema: schemas/restaurant.schema.json
+          #   input: data/restaurant.json
+          #   output: output/restaurant.grm
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache germanic binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/germanic
+          key: germanic-${{ runner.os }}-v0.1.0
+
+      - name: Install GERMANIC
+        run: |
+          if ! command -v germanic &> /dev/null; then
+            cargo install germanic
+          fi
+
+      - name: Validate & Compile
+        run: |
+          mkdir -p $(dirname "${{ matrix.output }}")
+          germanic compile \
+            --schema "${{ matrix.schema }}" \
+            --input "${{ matrix.input }}" \
+            --output "${{ matrix.output }}"
+
+      - name: Inspect .grm
+        if: env.GENERATE_GRM == 'true'
+        run: germanic inspect "${{ matrix.output }}"
+
+      - name: Upload .grm artifact
+        if: env.GENERATE_GRM == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: grm-${{ matrix.schema }}
+          path: ${{ matrix.output }}
+          retention-days: 30
