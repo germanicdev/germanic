@@ -1,13 +1,13 @@
 // GERMANIC Praxis-Schema
 // ======================
-// Schema für Heilpraktiker, Ärzte und Therapeuten
+// Schema for practitioners, doctors and therapists
 //
 // Namespace: de.gesundheit
 // Version: 1
 //
-// Verwendung:
+// Usage:
 //   flatc --rust praxis.fbs
-//   → Generiert Rust-Code für Zero-Copy Deserialisierung
+//   -> Generates Rust code for zero-copy deserialization
 
 namespace de.gesundheit;
 
@@ -15,22 +15,22 @@ namespace de.gesundheit;
 // ADRESSE
 // ============================================================================
 
-/// Vollständige Adresse einer Praxis.
+/// Full address of a practice.
 table Adresse {
-    /// Straßenname (ohne Hausnummer)
+    /// Street name (without house number)
     strasse: string (required);
-    
-    /// Hausnummer (optional, da manche Praxen keine haben)
+
+    /// House number (optional, as some practices don't have one)
     hausnummer: string;
-    
-    /// Postleitzahl
+
+    /// Postal code
     plz: string (required);
-    
-    /// Stadt/Ort
+
+    /// City/town
     ort: string (required);
-    
-    /// ISO 3166-1 alpha-2 Ländercode
-    /// Standard: "DE" für Deutschland
+
+    /// ISO 3166-1 alpha-2 country code
+    /// Default: "DE" for Germany
     land: string = "DE";
 }
 
@@ -38,85 +38,85 @@ table Adresse {
 // PRAXIS
 // ============================================================================
 
-/// Haupttabelle für eine Gesundheitspraxis.
+/// Main table for a health practice.
 ///
-/// Pflichtfelder:
-///   - name: Name der behandelnden Person
-///   - bezeichnung: Berufsbezeichnung
-///   - adresse: Vollständige Adresse
+/// Required fields:
+///   - name: Name of the practitioner
+///   - bezeichnung: Professional title
+///   - adresse: Full address
 ///
-/// Beispiel:
+/// Example:
 ///   name = "Dr. Anna Schmidt"
 ///   bezeichnung = "Zahnärztin"
 ///   praxisname = "Praxis Schmidt"
 table Praxis {
-    // ── Identifikation ──
+    // -- Identification --
 
-    /// Name der Person (z.B. "Dr. Anna Schmidt")
+    /// Name of the person (e.g. "Dr. Anna Schmidt")
     name: string (required);
-    
-    /// Berufsbezeichnung (z.B. "Heilpraktikerin", "Zahnärztin")
+
+    /// Professional title (e.g. "Heilpraktikerin", "Zahnärztin")
     bezeichnung: string (required);
-    
-    /// Name der Praxis (falls anders als Personenname)
+
+    /// Name of the practice (if different from person name)
     praxisname: string;
-    
-    // ── Kontakt ──
-    
-    /// Vollständige Adresse
+
+    // -- Contact --
+
+    /// Full address
     adresse: Adresse (required);
-    
-    /// Telefonnummer im internationalen Format (+49 ...)
+
+    /// Phone number in international format (+49 ...)
     telefon: string;
-    
-    /// E-Mail-Adresse
+
+    /// Email address
     email: string;
-    
-    /// Website-URL
+
+    /// Website URL
     website: string;
-    
-    // ── Leistungen ──
-    
-    /// Medizinische Schwerpunkte
-    /// z.B. ["Funktionelle Medizin", "Darm & Mikrobiom"]
+
+    // -- Services --
+
+    /// Medical specializations
+    /// e.g. ["Funktionelle Medizin", "Darm & Mikrobiom"]
     schwerpunkte: [string];
-    
-    /// Angebotene Therapieformen
-    /// z.B. ["IHHT Training", "Osteopathie", "Infusionstherapie"]
+
+    /// Offered therapy forms
+    /// e.g. ["IHHT Training", "Osteopathie", "Infusionstherapie"]
     therapieformen: [string];
-    
-    /// Qualifikationen und Zertifizierungen
-    /// z.B. ["Heilpraktikerin", "Osteopathin", "Physiotherapeutin"]
+
+    /// Qualifications and certifications
+    /// e.g. ["Heilpraktikerin", "Osteopathin", "Physiotherapeutin"]
     qualifikationen: [string];
-    
-    // ── Terminbuchung ──
-    
-    /// URL oder Telefonnummer für Terminbuchung
-    /// z.B. "https://doctolib.de/..." oder "tel:+49123456"
+
+    // -- Appointment booking --
+
+    /// URL or phone number for appointment booking
+    /// e.g. "https://doctolib.de/..." or "tel:+49123456"
     terminbuchung_url: string;
-    
-    /// Öffnungszeiten als Freitext
-    /// z.B. "Mo-Fr 9-17 Uhr" oder "Nach Vereinbarung"
+
+    /// Opening hours as free text
+    /// e.g. "Mo-Fr 9-17 Uhr" or "Nach Vereinbarung"
     oeffnungszeiten: string;
-    
-    // ── Abrechnung ──
-    
-    /// Behandelt Privatpatienten?
+
+    // -- Billing --
+
+    /// Accepts private patients?
     privatpatienten: bool = false;
-    
-    /// Behandelt Kassenpatienten?
+
+    /// Accepts public health insurance patients?
     kassenpatienten: bool = false;
-    
-    // ── Weitere Infos ──
-    
-    /// Gesprochene Sprachen
-    /// z.B. ["Deutsch", "Englisch"]
+
+    // -- Additional info --
+
+    /// Spoken languages
+    /// e.g. ["Deutsch", "Englisch"]
     sprachen: [string];
-    
-    /// Kurzbeschreibung für KI-Zusammenfassungen
-    /// Max. 500 Zeichen empfohlen
+
+    /// Short description for AI summaries
+    /// Max. 500 characters recommended
     kurzbeschreibung: string;
 }
 
-// Root-Typ für die .grm Payload
+// Root type for the .grm payload
 root_type Praxis;

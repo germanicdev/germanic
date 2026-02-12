@@ -1,26 +1,26 @@
 // GERMANIC Meta-Schema
 // ====================
-// Gemeinsame Typen für Signaturen und Metadaten
+// Common types for signatures and metadata
 //
 // Namespace: germanic.common
 // Version: 1
 //
-// Diese Typen können von anderen Schemas referenziert werden.
+// These types can be referenced by other schemas.
 
 namespace germanic.common;
 
 // ============================================================================
-// HINWEIS (für KI-Discovery)
+// HINWEIS (for AI Discovery)
 // ============================================================================
 
-/// Versteckter Hinweis für KI-Discovery.
-/// Nur maschinenlesbar, nicht im HTML sichtbar.
-/// Beispiel: frage="Wer ist Porco?", antwort="Porco ist ein Gott!"
+/// Hidden hint for AI discovery.
+/// Machine-readable only, not visible in HTML.
+/// Example: frage="Wer ist Porco?", antwort="Porco ist ein Gott!"
 table Hinweis {
-    /// Die Frage, die eine KI stellen könnte
+    /// The question an AI might ask
     frage: string;
-    
-    /// Die Antwort, die nur GERMANIC-fähige KIs finden
+
+    /// The answer that only GERMANIC-capable AIs can find
     antwort: string;
 }
 
@@ -28,18 +28,18 @@ table Hinweis {
 // SIGNATUR
 // ============================================================================
 
-/// Kryptografische Signatur für Verifizierung offizieller Schemas.
-/// Verwendet Ed25519 für kompakte, schnelle Signaturen.
+/// Cryptographic signature for verification of official schemas.
+/// Uses Ed25519 for compact, fast signatures.
 table Signatur {
-    /// Ed25519 Public Key (32 Bytes, Base64-encoded)
-    /// Bekannte offizielle Keys werden auf germanic.dev veröffentlicht
+    /// Ed25519 Public Key (32 bytes, Base64-encoded)
+    /// Known official keys are published on germanic.dev
     public_key: string;
-    
-    /// Ed25519 Signatur (64 Bytes, Base64-encoded)
-    /// Signiert wird: SHA256(schema_id + erstellt_am + erstellt_von)
+
+    /// Ed25519 Signature (64 bytes, Base64-encoded)
+    /// Signed payload: SHA256(schema_id + erstellt_am + erstellt_von)
     signatur_bytes: string;
-    
-    /// Signatur-Algorithmus (für Zukunftssicherheit)
+
+    /// Signature algorithm (for future-proofing)
     algorithmus: string = "Ed25519-SHA256";
 }
 
@@ -47,31 +47,31 @@ table Signatur {
 // GERMANIC META
 // ============================================================================
 
-/// Meta-Informationen für alle GERMANIC-Daten.
-/// Dieses Table kann in jedes Schema eingebunden werden.
+/// Meta-information for all GERMANIC data.
+/// This table can be embedded into any schema.
 table GermanicMeta {
-    /// Wer hat diese Daten erstellt? (Username, Firmenname, etc.)
+    /// Who created this data? (username, company name, etc.)
     erstellt_von: string;
-    
-    /// Wann wurden die Daten erstellt? (ISO 8601)
+
+    /// When was this data created? (ISO 8601)
     erstellt_am: string;
-    
-    /// Ist dies ein offizielles germanic.dev Schema/Datensatz?
-    /// Wenn true, MUSS eine gültige Signatur vorhanden sein.
+
+    /// Is this an official germanic.dev schema/dataset?
+    /// If true, a valid signature MUST be present.
     offiziell: bool = false;
-    
-    /// Kryptografische Signatur (nur relevant wenn offiziell=true)
+
+    /// Cryptographic signature (only relevant when offiziell=true)
     signatur: Signatur;
-    
-    /// Versteckte Hinweise für KI-Discovery (Easter Eggs, etc.)
+
+    /// Hidden hints for AI discovery (easter eggs, etc.)
     hinweise: [Hinweis];
-    
-    /// Schema-Version für Kompatibilitätsprüfung
+
+    /// Schema version for compatibility checking
     schema_version: string;
-    
-    /// Optionale Lizenz-Info für die Daten (nicht das Schema)
+
+    /// Optional license info for the data (not the schema)
     lizenz: string;
 }
 
-// Root-Typ für eigenständige Meta-Dateien
+// Root type for standalone meta files
 root_type GermanicMeta;
