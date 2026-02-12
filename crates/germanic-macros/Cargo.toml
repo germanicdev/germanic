@@ -1,11 +1,11 @@
 # GERMANIC Macros
 # ================
-# Proc-Macro Crate für #[derive(GermanicSchema)]
+# Proc-Macro Crate for #[derive(GermanicSchema)]
 #
-# WICHTIG: proc-macro = true bedeutet:
-#   1. Dieses Crate wird zur Kompilierzeit ausgeführt
-#   2. Es kann NUR proc-macro Items exportieren
-#   3. Es wird als dynamische Bibliothek (.dylib) kompiliert
+# IMPORTANT: proc-macro = true means:
+#   1. This crate is executed at compile time
+#   2. It can ONLY export proc-macro items
+#   3. It is compiled as a dynamic library (.dylib)
 
 [package]
 name = "germanic-macros"
@@ -15,37 +15,43 @@ rust-version.workspace = true
 license.workspace = true
 authors.workspace = true
 
-description = "Proc-Macros für das GERMANIC Schema-System"
+description = "Proc-macros for the GERMANIC schema system"
+repository = "https://github.com/germanicdev/germanic"
+homepage = "https://github.com/germanicdev/germanic"
+documentation = "https://docs.rs/germanic-macros"
+readme = "../../README.md"
+keywords = ["schema", "flatbuffers", "proc-macro", "derive", "germanic"]
+categories = ["encoding", "development-tools::procedural-macro-helpers"]
 
 [lib]
-# KRITISCH: Diese Zeile macht das Crate zu einem Proc-Macro Crate
-# Ohne sie: normale Library
-# Mit ihr: Compiler-Plugin
+# CRITICAL: This line makes this crate a proc-macro crate
+# Without it: normal library
+# With it: compiler plugin
 proc-macro = true
 
 [dependencies]
-# syn: Parst Rust-Quellcode in einen AST (Abstract Syntax Tree)
-# - "full": Alle Rust-Syntax-Konstrukte
-# - "parsing": Parser-Funktionalität
-# - "extra-traits": Debug, Eq, Hash für AST-Knoten (hilfreich beim Debuggen)
+# syn: Parses Rust source code into an AST (Abstract Syntax Tree)
+# - "full": All Rust syntax constructs
+# - "parsing": Parser functionality
+# - "extra-traits": Debug, Eq, Hash for AST nodes (helpful for debugging)
 syn.workspace = true
 
-# quote: Erzeugt Rust-Code aus einem Template
-# - quote! { ... } Macro für Code-Generierung
-# - Interpolation mit #variable
+# quote: Generates Rust code from a template
+# - quote! { ... } macro for code generation
+# - Interpolation with #variable
 quote.workspace = true
 
-# proc-macro2: Wrapper um proc_macro mit besserer Ergonomie
-# - Ermöglicht Unit-Tests für Macros
-# - Gleiche API wie proc_macro, aber außerhalb von Macro-Kontext nutzbar
+# proc-macro2: Wrapper around proc_macro with better ergonomics
+# - Enables unit tests for macros
+# - Same API as proc_macro, but usable outside macro context
 proc-macro2.workspace = true
 
-# darling: "Serde für Macros"
-# - Deklaratives Parsing von Attributen
-# - Automatische Fehlerbehandlung
-# - Stark typisierte Attribut-Definitionen
+# darling: "Serde for Macros"
+# - Declarative parsing of attributes
+# - Automatic error handling
+# - Strongly typed attribute definitions
 darling.workspace = true
 
 [dev-dependencies]
-# Für Tests der Macro-Ausgabe
+# For testing macro output
 trybuild = "1.0"

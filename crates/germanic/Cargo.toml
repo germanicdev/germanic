@@ -1,10 +1,10 @@
 # GERMANIC
 # ========
-# CLI + Library für maschinenlesbare Schema-Feeds
+# CLI + Library for machine-readable schema feeds
 #
-# Verwendung:
-#   Als Library: use germanic::PraxisSchema;
-#   Als CLI:     germanic compile --schema praxis --input praxis.json
+# Usage:
+#   As Library: use germanic::PraxisSchema;
+#   As CLI:     germanic compile --schema praxis --input praxis.json
 
 [package]
 name = "germanic"
@@ -14,9 +14,15 @@ rust-version.workspace = true
 license.workspace = true
 authors.workspace = true
 
-description = "GERMANIC - Maschinenlesbare Schemas für Websites"
+description = "GERMANIC - Machine-readable schemas for websites"
+repository = "https://github.com/germanicdev/germanic"
+homepage = "https://github.com/germanicdev/germanic"
+documentation = "https://docs.rs/germanic"
+readme = "../../README.md"
+keywords = ["schema", "flatbuffers", "binary", "ai", "structured-data"]
+categories = ["encoding", "web-programming", "command-line-utilities"]
 
-# Binary und Library im selben Crate
+# Binary and library in the same crate
 [[bin]]
 name = "germanic"
 path = "src/main.rs"
@@ -30,27 +36,27 @@ default = []
 mcp = ["dep:rmcp", "dep:tokio", "dep:schemars", "dep:tracing", "dep:tracing-subscriber"]
 
 [dependencies]
-# Re-export unserer Macros, damit Nutzer nur `use germanic::GermanicSchema` brauchen
-germanic-macros = { path = "../germanic-macros" }
+# Re-export our macros so users only need `use germanic::GermanicSchema`
+germanic-macros = { path = "../germanic-macros", version = "0.1.0" }
 
-# Serialisierung
+# Serialization
 serde.workspace = true
 serde_json.workspace = true
 
 # Ordered maps for dynamic schema field ordering
 indexmap.workspace = true
 
-# FlatBuffers für Zero-Copy
+# FlatBuffers for zero-copy
 flatbuffers.workspace = true
 
 # CLI
 clap.workspace = true
 
-# Fehlerbehandlung
+# Error handling
 thiserror.workspace = true
 anyhow.workspace = true
 
-# Kryptografie
+# Cryptography
 ed25519-dalek.workspace = true
 rand.workspace = true
 
@@ -62,9 +68,9 @@ tracing = { workspace = true, optional = true }
 tracing-subscriber = { workspace = true, optional = true }
 
 [build-dependencies]
-# Für FlatBuffer-Schema-Kompilierung
+# For FlatBuffer schema compilation
 flatc-rust = "0.2"
 
 [dev-dependencies]
-# Für Integration-Tests
-tempfile = "3.10"
+# For integration tests
+tempfile = "3"

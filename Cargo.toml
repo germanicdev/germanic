@@ -1,52 +1,52 @@
 # GERMANIC Workspace
 # ==================
 
-# Struktur:
-#   crates/germanic        → CLI + Library (Hauptcrate)
-#   crates/germanic-macros → Proc-Macro für #[derive(GermanicSchema)]
+# Structure:
+#   crates/germanic        → CLI + Library (main crate)
+#   crates/germanic-macros → Proc-Macro for #[derive(GermanicSchema)]
 
 [workspace]
-resolver = "2"  # Rust 2021+ Resolver für bessere Feature-Unifikation
+resolver = "3"  # Rust 2024 MSRV-aware dependency resolver
 
 members = [
     "crates/germanic",
     "crates/germanic-macros",
 ]
 
-# Gemeinsame Abhängigkeiten für alle Workspace-Mitglieder
-# Definiere hier Versionen zentral, nutze sie mit { workspace = true }
+# Shared dependencies for all workspace members
+# Define versions centrally here, use them with { workspace = true }
 [workspace.dependencies]
-# Serialisierung
+# Serialization
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["preserve_order"] }
 
 # Ordered maps for deterministic vtable slot assignment
-indexmap = { version = "2.7", features = ["serde"] }
+indexmap = { version = "2.13", features = ["serde"] }
 
-# FlatBuffers für Zero-Copy Serialisierung
-flatbuffers = "24.3"
+# FlatBuffers for zero-copy serialization
+flatbuffers = "25.12"
 
 # CLI
 clap = { version = "4.5", features = ["derive"] }
 
-# Fehlerbehandlung
+# Error handling
 thiserror = "2.0"
 anyhow = "1.0"
 
-# Proc-Macro Infrastruktur (nur für germanic-macros)
+# Proc-macro infrastructure (for germanic-macros only)
 syn = { version = "2.0", features = ["full", "parsing", "extra-traits"] }
 quote = "1.0"
 proc-macro2 = "1.0"
-darling = "0.20"
+darling = "0.21"
 
-# Kryptografie für Signaturen
-ed25519-dalek = { version = "2.1", features = ["std"] }
+# Cryptography for signatures
+ed25519-dalek = { version = "2.2", features = ["std"] }
 rand = "0.8"
 
 # MCP Server (optional, behind feature flag)
 rmcp = { version = "0.8", features = ["server", "transport-io", "macros"] }
 tokio = { version = "1", features = ["full"] }
-schemars = "1.0"
+schemars = "1.1"
 tracing = "0.1"
 tracing-subscriber = "0.3"
 
