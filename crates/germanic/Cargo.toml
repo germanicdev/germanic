@@ -14,7 +14,7 @@ rust-version.workspace = true
 license.workspace = true
 authors.workspace = true
 
-description = "GERMANIC - Machine-readable schemas for websites"
+description = "Schema-validated binary data for AI agents. JSON to .grm compiler with zero-copy FlatBuffers."
 repository = "https://github.com/germanicdev/germanic"
 homepage = "https://github.com/germanicdev/germanic"
 documentation = "https://docs.rs/germanic"
