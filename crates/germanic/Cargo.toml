@@ -21,6 +21,7 @@ documentation = "https://docs.rs/germanic"
 readme = "../../README.md"
 keywords = ["schema", "flatbuffers", "binary", "ai", "structured-data"]
 categories = ["encoding", "web-programming", "command-line-utilities"]
+exclude = [".DS_Store"]
 
 # Binary and library in the same crate
 [[bin]]
@@ -56,9 +57,10 @@ clap.workspace = true
 thiserror.workspace = true
 anyhow.workspace = true
 
-# Cryptography
-ed25519-dalek.workspace = true
-rand.workspace = true
+# Cryptography (reserved for future use — signature slot in .grm header exists but
+# sign/verify are not yet implemented. Dependencies removed to reduce compile footprint.)
+# ed25519-dalek.workspace = true
+# rand.workspace = true
 
 # MCP Server (optional, behind feature flag)
 rmcp = { workspace = true, optional = true }
