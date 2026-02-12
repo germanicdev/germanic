@@ -39,9 +39,9 @@ quote = "1.0"
 proc-macro2 = "1.0"
 darling = "0.21"
 
-# Cryptography for signatures
-ed25519-dalek = { version = "2.2", features = ["std"] }
-rand = "0.8"
+# Cryptography for signatures (reserved for future use, not yet implemented)
+# ed25519-dalek = { version = "2.2", features = ["std"] }
+# rand = "0.8"
 
 # MCP Server (optional, behind feature flag)
 rmcp = { version = "0.8", features = ["server", "transport-io", "macros"] }

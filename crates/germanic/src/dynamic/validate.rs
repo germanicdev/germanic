@@ -13,6 +13,15 @@
 use crate::dynamic::schema_def::{FieldDefinition, FieldType, SchemaDefinition};
 use crate::error::ValidationError;
 
+/// Maximum nesting depth for nested tables (prevents stack overflow via recursion).
+const MAX_NESTING_DEPTH: usize = 32;
+
+/// Maximum allowed length for a single string value in bytes.
+const MAX_STRING_LENGTH: usize = 1_048_576; // 1 MB
+
+/// Maximum allowed number of elements in an array.
+const MAX_ARRAY_ELEMENTS: usize = 10_000;
+
 /// Validates JSON data against a schema definition.
 ///
 /// Returns Ok(()) if all required fields are present and types match.
@@ -28,7 +37,7 @@ pub fn validate_against_schema(
     })?;
 
     let mut missing = Vec::new();
-    validate_fields(&schema.fields, obj, "", &mut missing);
+    validate_fields(&schema.fields, obj, "", &mut missing, 0);
 
     if missing.is_empty() {
         Ok(())
@@ -44,13 +53,23 @@ pub fn validate_against_schema(
 /// 2. Value == null? → if null and required → error
 /// 3. Type correct?  → if mismatch → error
 /// 4. Empty check    → "" or [] for required → error
-/// 5. Nested table?  → recurse
+/// 5. Size limits    → string length, array size
+/// 6. Nested table?  → recurse (with depth limit)
 fn validate_fields(
     fields: &indexmap::IndexMap<String, FieldDefinition>,
     data: &serde_json::Map<String, serde_json::Value>,
     prefix: &str,
     errors: &mut Vec<String>,
+    depth: usize,
 ) {
+    if depth > MAX_NESTING_DEPTH {
+        errors.push(format!(
+            "{}(depth): nesting depth exceeds maximum of {}",
+            if prefix.is_empty() { "" } else { prefix },
+            MAX_NESTING_DEPTH
+        ));
+        return;
+    }
     for (name, def) in fields {
         let path = if prefix.is_empty() {
             name.clone()
@@ -98,11 +117,32 @@ fn validate_fields(
                     }
                 }
 
-                // Check 5: Recurse into nested tables
+                // Check 5: Size limits
+                match value {
+                    serde_json::Value::String(s) if s.len() > MAX_STRING_LENGTH => {
+                        errors.push(format!(
+                            "{}: string length {} exceeds maximum of {} bytes",
+                            path,
+                            s.len(),
+                            MAX_STRING_LENGTH
+                        ));
+                    }
+                    serde_json::Value::Array(a) if a.len() > MAX_ARRAY_ELEMENTS => {
+                        errors.push(format!(
+                            "{}: array has {} elements, maximum is {}",
+                            path,
+                            a.len(),
+                            MAX_ARRAY_ELEMENTS
+                        ));
+                    }
+                    _ => {}
+                }
+
+                // Check 6: Recurse into nested tables
                 if def.field_type == FieldType::Table {
                     if let Some(nested_fields) = &def.fields {
                         if let Some(nested_obj) = value.as_object() {
-                            validate_fields(nested_fields, nested_obj, &path, errors);
+                            validate_fields(nested_fields, nested_obj, &path, errors, depth + 1);
                         } else if def.required {
                             errors.push(format!(
                                 "{}: expected table, found {}",
@@ -144,9 +184,13 @@ fn type_matches(expected: &FieldType, value: &serde_json::Value) -> bool {
         (FieldType::Int, serde_json::Value::Number(n)) => n.is_i64(),
         (FieldType::Float, serde_json::Value::Number(n)) => n.is_f64(),
 
-        // Arrays — check container type (element check is future work)
-        (FieldType::StringArray, serde_json::Value::Array(_)) => true,
-        (FieldType::IntArray, serde_json::Value::Array(_)) => true,
+        // Arrays — check container type AND every element
+        (FieldType::StringArray, serde_json::Value::Array(arr)) => {
+            arr.iter().all(|v| v.is_string())
+        }
+        (FieldType::IntArray, serde_json::Value::Array(arr)) => {
+            arr.iter().all(|v| v.as_i64().is_some())
+        }
 
         // Tables
         (FieldType::Table, serde_json::Value::Object(_)) => true,
@@ -241,5 +285,106 @@ mod tests {
         let schema = simple_schema();
         let data: serde_json::Value = serde_json::json!({ "name": "Bistro" });
         assert!(validate_against_schema(&schema, &data).is_ok());
+    }
+
+    fn schema_with_string_array() -> SchemaDefinition {
+        let mut fields = IndexMap::new();
+        fields.insert(
+            "name".into(),
+            FieldDefinition {
+                field_type: FieldType::String,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+        fields.insert(
+            "tags".into(),
+            FieldDefinition {
+                field_type: FieldType::StringArray,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+        SchemaDefinition {
+            schema_id: "test.v1".into(),
+            version: 1,
+            fields,
+        }
+    }
+
+    fn schema_with_int_array() -> SchemaDefinition {
+        let mut fields = IndexMap::new();
+        fields.insert(
+            "name".into(),
+            FieldDefinition {
+                field_type: FieldType::String,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+        fields.insert(
+            "scores".into(),
+            FieldDefinition {
+                field_type: FieldType::IntArray,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+        SchemaDefinition {
+            schema_id: "test.v1".into(),
+            version: 1,
+            fields,
+        }
+    }
+
+    #[test]
+    fn test_string_array_valid() {
+        let schema = schema_with_string_array();
+        let data = serde_json::json!({ "name": "Test", "tags": ["a", "b", "c"] });
+        assert!(validate_against_schema(&schema, &data).is_ok());
+    }
+
+    #[test]
+    fn test_string_array_rejects_mixed_types() {
+        let schema = schema_with_string_array();
+        let data = serde_json::json!({ "name": "Test", "tags": [42, true, null, {"hack": true}] });
+        let err = validate_against_schema(&schema, &data).unwrap_err();
+        if let ValidationError::RequiredFieldsMissing(violations) = err {
+            assert!(violations.iter().any(|v| v.contains("tags")));
+        } else {
+            panic!("Expected RequiredFieldsMissing, got {:?}", err);
+        }
+    }
+
+    #[test]
+    fn test_string_array_rejects_int_element() {
+        let schema = schema_with_string_array();
+        let data = serde_json::json!({ "name": "Test", "tags": ["valid", 42] });
+        assert!(validate_against_schema(&schema, &data).is_err());
+    }
+
+    #[test]
+    fn test_int_array_valid() {
+        let schema = schema_with_int_array();
+        let data = serde_json::json!({ "name": "Test", "scores": [1, 2, 3] });
+        assert!(validate_against_schema(&schema, &data).is_ok());
+    }
+
+    #[test]
+    fn test_int_array_rejects_string_element() {
+        let schema = schema_with_int_array();
+        let data = serde_json::json!({ "name": "Test", "scores": [1, "two", 3] });
+        assert!(validate_against_schema(&schema, &data).is_err());
+    }
+
+    #[test]
+    fn test_int_array_rejects_bool_element() {
+        let schema = schema_with_int_array();
+        let data = serde_json::json!({ "name": "Test", "scores": [1, true, 3] });
+        assert!(validate_against_schema(&schema, &data).is_err());
     }
 }

@@ -100,6 +100,12 @@ impl GrmHeader {
     /// ```
     pub fn to_bytes(&self) -> Vec<u8> {
         let schema_bytes = self.schema_id.as_bytes();
+        assert!(
+            schema_bytes.len() <= u16::MAX as usize,
+            "Schema ID exceeds maximum length of {} bytes (got {})",
+            u16::MAX,
+            schema_bytes.len()
+        );
         let schema_len = schema_bytes.len() as u16;
 
         // Capacity: 4 (Magic) + 2 (Length) + n (Schema) + 64 (Signature)

@@ -161,7 +161,16 @@ fn prepare_field(
         }
 
         FieldType::Int => {
-            let v = value.as_i64().unwrap_or(0) as i32;
+            let v64 = value.as_i64().unwrap_or(0);
+            if v64 > i32::MAX as i64 || v64 < i32::MIN as i64 {
+                return Err(GermanicError::General(format!(
+                    "Integer overflow: {} exceeds i32 range [{}, {}]",
+                    v64,
+                    i32::MIN,
+                    i32::MAX
+                )));
+            }
+            let v = v64 as i32;
             let default: i32 = def
                 .default
                 .as_ref()
@@ -171,7 +180,14 @@ fn prepare_field(
         }
 
         FieldType::Float => {
-            let v = value.as_f64().unwrap_or(0.0) as f32;
+            let v64 = value.as_f64().unwrap_or(0.0);
+            let v = v64 as f32;
+            if v.is_infinite() && v64.is_finite() {
+                return Err(GermanicError::General(format!(
+                    "Float overflow: {} exceeds f32 range",
+                    v64
+                )));
+            }
             let default: f32 = def
                 .default
                 .as_ref()
@@ -194,7 +210,19 @@ fn prepare_field(
 
         FieldType::IntArray => match value.as_array() {
             Some(arr) if !arr.is_empty() => {
-                let values: Vec<i32> = arr.iter().map(|v| v.as_i64().unwrap_or(0) as i32).collect();
+                let mut values = Vec::with_capacity(arr.len());
+                for v in arr {
+                    let v64 = v.as_i64().unwrap_or(0);
+                    if v64 > i32::MAX as i64 || v64 < i32::MIN as i64 {
+                        return Err(GermanicError::General(format!(
+                            "Integer overflow in array element: {} exceeds i32 range [{}, {}]",
+                            v64,
+                            i32::MIN,
+                            i32::MAX
+                        )));
+                    }
+                    values.push(v64 as i32);
+                }
                 let vec_offset = builder.create_vector(&values);
                 Ok(PreparedField::Offset(vec_offset.value()))
             }
@@ -345,6 +373,58 @@ mod tests {
         let bytes = build_flatbuffer(&schema, &data).unwrap();
         assert!(!bytes.is_empty());
         assert!(bytes.len() > 20);
+    }
+
+    #[test]
+    fn test_build_int_overflow_rejected() {
+        let mut fields = IndexMap::new();
+        fields.insert(
+            "count".into(),
+            FieldDefinition {
+                field_type: FieldType::Int,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+
+        let schema = SchemaDefinition {
+            schema_id: "test.v1".into(),
+            version: 1,
+            fields,
+        };
+
+        let data = serde_json::json!({ "count": 3_000_000_000_i64 });
+        let result = build_flatbuffer(&schema, &data);
+        assert!(result.is_err());
+        assert!(
+            result.unwrap_err().to_string().contains("Integer overflow"),
+            "Must report integer overflow"
+        );
+    }
+
+    #[test]
+    fn test_build_int_negative_overflow_rejected() {
+        let mut fields = IndexMap::new();
+        fields.insert(
+            "count".into(),
+            FieldDefinition {
+                field_type: FieldType::Int,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+
+        let schema = SchemaDefinition {
+            schema_id: "test.v1".into(),
+            version: 1,
+            fields,
+        };
+
+        let data = serde_json::json!({ "count": -3_000_000_000_i64 });
+        let result = build_flatbuffer(&schema, &data);
+        assert!(result.is_err());
     }
 
     #[test]

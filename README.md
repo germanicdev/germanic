@@ -36,7 +36,7 @@ If your AI agent produces or consumes data — who validates it?
 
 **Your agent fills out a form.** It forgets the zip code. Nobody notices. The user gets a letter to an incomplete address. — With a schema contract, compilation fails. The agent *has* to ask.
 
-**Your agent scrapes a website.** The HTML contains: *"Ignore all previous instructions."* The agent executes it. — With a binary format, there's no interpretable text. No free text, no injection.
+**Your agent scrapes a website.** The HTML contains: *"Ignore all previous instructions."* The agent executes it. — With a binary format, there's no executable structure to exploit. No HTML tags, no script blocks, no JSON-LD `@context` hijacking. The data is typed fields at byte offsets — the consumer gets `field[0]: String(bytes)`, not a parseable document.
 
 **Your agent produces structured output.** The LLM returns `"yes"` instead of `true`. Everything downstream breaks. — With type checking, the schema catches the error at the source.
 
@@ -57,7 +57,7 @@ Every row is backed by a real test. Skeptics welcome: `cargo test --test vertrag
 | S1 | Required field missing | silent | silent | reports | **WON'T COMPILE** |
 | S2 | Required field empty `""` | silent | silent | silent¹ | **WON'T COMPILE** |
 | S3 | Wrong type: `"yes"` instead of `true` | silent | silent | reports | **WON'T COMPILE** |
-| S4 | Prompt injection in text field | executable | injectable | injectable | **binary bytes** |
+| S4 | Prompt injection in text field | executable | injectable | injectable | **typed fields**^5 |
 | S5 | Nested field missing | silent | silent | reports² | **WON'T COMPILE** |
 | S6 | String where int expected | silent | silent | reports | **WON'T COMPILE** |
 | S7 | Unknown extra field | absorbed | absorbed | accepted³ | **stripped** |
@@ -69,6 +69,7 @@ Eight ways your data can fail. JSON-LD catches zero. JSON Schema catches three. 
 > ² Only if nested `required` is correctly defined.
 > ³ `additionalProperties` defaults to `true`.
 > ⁴ Many implementations treat `null` laxly with `type: "string"`.
+> ^5 Binary format eliminates structural injection (HTML/script/`@context`). Content-level injection defense requires the consumer to treat typed fields as data. See [Limitations](#limitations).
 >
 > **Source:** [`tests/vertragsbeweis.rs`](crates/germanic/tests/vertragsbeweis.rs) — not benchmarks, but guarantees.
 
@@ -154,7 +155,8 @@ JSON-LD is for Google. GERMANIC is for the machines that have to *work* with the
 JSON ──► Schema Validation ──► FlatBuffer Builder ──► .grm
          (required? type?)     (zero-copy binary)    (header + payload)
 
-.grm = Magic Bytes + Schema-ID + Version + Signature Slot + FlatBuffer Payload
+.grm = Magic Bytes + Schema-ID + Version + Signature Slot* + FlatBuffer Payload
+                                          (* reserved for future use)
 ```
 
 Under the hood: FlatBuffers for zero-copy deserialization, Rust for type safety, proc macros for schema code generation. The `.grm` file is a container with header metadata and a FlatBuffer payload — readable without deserialization, validatable without the original compiler.
@@ -180,6 +182,16 @@ The code isn't perfect. But it works, it's tested, and it's honest. Just like th
 You'll notice some schema field names are German: `telefon`, `adresse`, `oeffnungszeiten`. That's not a bug. GERMANIC started with German healthcare data, and the field names stuck — as a running joke, and because a project called GERMANIC with exclusively English field names would just be a missed opportunity.
 
 All 42 domains ship in both German and English (`examples/de` and `examples/en`). The CLI, the API, and the documentation are English. The German schemas are the originals — the English ones are the translations. Just like the real world: the interface is international, the data is local.
+
+---
+
+## Limitations
+
+GERMANIC validates structure, presence, and type — not content. A schema can guarantee that `telefon` is a non-empty string, but not that it's a valid phone number. Content validation (regex patterns, format checks, range constraints) is planned for a future version.
+
+**Binary format and injection:** The `.grm` binary format prevents *structural* injection — HTML tags, script blocks, JSON-LD `@context` hijacking, CSS injection. These attack vectors are eliminated because the output is typed fields at byte offsets, not a parseable document. However, it does *not* prevent malicious content inside valid string fields (e.g., prompt injection text). That requires the consumer to treat typed fields as data, not instructions. This is the same limitation that applies to any format that stores strings — including databases.
+
+**Signatures:** The `.grm` header reserves a 64-byte slot for Ed25519 signatures. Sign and verify functions are not yet implemented. The slot exists for forward compatibility.
 
 ---
 
