@@ -44,7 +44,7 @@ darling = "0.21"
 # rand = "0.8"
 
 # MCP Server (optional, behind feature flag)
-rmcp = { version = "0.8", features = ["server", "transport-io", "macros"] }
+rmcp = { version = "0.15", features = ["server", "transport-io", "macros"] }
 tokio = { version = "1", features = ["full"] }
 schemars = "1.1"
 tracing = "0.1"
