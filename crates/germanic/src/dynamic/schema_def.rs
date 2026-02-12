@@ -129,57 +129,81 @@ mod tests {
 
     fn sample_restaurant_schema() -> SchemaDefinition {
         let mut fields = IndexMap::new();
-        fields.insert("name".into(), FieldDefinition {
-            field_type: FieldType::String,
-            required: true,
-            default: None,
-            fields: None,
-        });
-        fields.insert("cuisine".into(), FieldDefinition {
-            field_type: FieldType::String,
-            required: false,
-            default: None,
-            fields: None,
-        });
-        fields.insert("rating".into(), FieldDefinition {
-            field_type: FieldType::Float,
-            required: false,
-            default: None,
-            fields: None,
-        });
-        fields.insert("tags".into(), FieldDefinition {
-            field_type: FieldType::StringArray,
-            required: false,
-            default: None,
-            fields: None,
-        });
+        fields.insert(
+            "name".into(),
+            FieldDefinition {
+                field_type: FieldType::String,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+        fields.insert(
+            "cuisine".into(),
+            FieldDefinition {
+                field_type: FieldType::String,
+                required: false,
+                default: None,
+                fields: None,
+            },
+        );
+        fields.insert(
+            "rating".into(),
+            FieldDefinition {
+                field_type: FieldType::Float,
+                required: false,
+                default: None,
+                fields: None,
+            },
+        );
+        fields.insert(
+            "tags".into(),
+            FieldDefinition {
+                field_type: FieldType::StringArray,
+                required: false,
+                default: None,
+                fields: None,
+            },
+        );
 
         let mut addr_fields = IndexMap::new();
-        addr_fields.insert("street".into(), FieldDefinition {
-            field_type: FieldType::String,
-            required: true,
-            default: None,
-            fields: None,
-        });
-        addr_fields.insert("city".into(), FieldDefinition {
-            field_type: FieldType::String,
-            required: true,
-            default: None,
-            fields: None,
-        });
-        addr_fields.insert("country".into(), FieldDefinition {
-            field_type: FieldType::String,
-            required: false,
-            default: Some("DE".into()),
-            fields: None,
-        });
+        addr_fields.insert(
+            "street".into(),
+            FieldDefinition {
+                field_type: FieldType::String,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+        addr_fields.insert(
+            "city".into(),
+            FieldDefinition {
+                field_type: FieldType::String,
+                required: true,
+                default: None,
+                fields: None,
+            },
+        );
+        addr_fields.insert(
+            "country".into(),
+            FieldDefinition {
+                field_type: FieldType::String,
+                required: false,
+                default: Some("DE".into()),
+                fields: None,
+            },
+        );
 
-        fields.insert("address".into(), FieldDefinition {
-            field_type: FieldType::Table,
-            required: true,
-            default: None,
-            fields: Some(addr_fields),
-        });
+        fields.insert(
+            "address".into(),
+            FieldDefinition {
+                field_type: FieldType::Table,
+                required: true,
+                default: None,
+                fields: Some(addr_fields),
+            },
+        );
 
         SchemaDefinition {
             schema_id: "de.dining.restaurant.v1".into(),

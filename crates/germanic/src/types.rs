@@ -143,7 +143,7 @@ impl GrmHeader {
         }
 
         // 1. Check magic bytes
-        if &data[0..4] != &GRM_MAGIC {
+        if data[0..4] != GRM_MAGIC {
             return Err(HeaderParseError::InvalidMagicBytes {
                 received: [data[0], data[1], data[2], data[3]],
             });

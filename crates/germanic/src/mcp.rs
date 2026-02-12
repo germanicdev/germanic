@@ -20,11 +20,8 @@
 //! ```
 
 use rmcp::{
-    ServerHandler, ServiceExt,
-    handler::server::router::tool::ToolRouter,
-    handler::server::wrapper::Parameters,
-    model::*,
-    tool, tool_handler, tool_router,
+    ServerHandler, ServiceExt, handler::server::router::tool::ToolRouter,
+    handler::server::wrapper::Parameters, model::*, tool, tool_handler, tool_router,
 };
 use schemars::JsonSchema;
 use serde::Deserialize;
@@ -164,9 +161,8 @@ impl GermanicServer {
         &self,
         Parameters(params): Parameters<FileParams>,
     ) -> Result<CallToolResult, ErrorData> {
-        let data = std::fs::read(&params.file).map_err(|e| {
-            ErrorData::internal_error(format!("Read failed: {e}"), None)
-        })?;
+        let data = std::fs::read(&params.file)
+            .map_err(|e| ErrorData::internal_error(format!("Read failed: {e}"), None))?;
 
         match crate::validator::validate_grm(&data) {
             Ok(result) if result.valid => {
@@ -197,9 +193,8 @@ impl GermanicServer {
         &self,
         Parameters(params): Parameters<InspectParams>,
     ) -> Result<CallToolResult, ErrorData> {
-        let data = std::fs::read(&params.file).map_err(|e| {
-            ErrorData::internal_error(format!("Read failed: {e}"), None)
-        })?;
+        let data = std::fs::read(&params.file)
+            .map_err(|e| ErrorData::internal_error(format!("Read failed: {e}"), None))?;
 
         match crate::types::GrmHeader::from_bytes(&data) {
             Ok((header, header_len)) => {
@@ -245,21 +240,17 @@ impl GermanicServer {
         Parameters(params): Parameters<SchemasParams>,
     ) -> Result<CallToolResult, ErrorData> {
         let text = match params.name.as_deref() {
-            Some("practice" | "praxis") => {
-                "Schema: practice (praxis)\n\
+            Some("practice" | "praxis") => "Schema: practice (praxis)\n\
                  ID: de.gesundheit.praxis.v1\n\
                  Type: Healthcare practitioners\n\n\
                  Required: name, bezeichnung, adresse (strasse, plz, ort)\n\
                  Optional: telefon, email, website, schwerpunkte, ..."
-                    .to_string()
-            }
+                .to_string(),
             Some(name) => format!("Unknown schema: '{name}'\nAvailable: practice"),
-            None => {
-                "Available schemas:\n\n\
+            None => "Available schemas:\n\n\
                  Built-in:\n  practice -- Healthcare practitioners\n\n\
                  Dynamic: Any .schema.json file can be used"
-                    .to_string()
-            }
+                .to_string(),
         };
         Ok(CallToolResult::success(vec![Content::text(text)]))
     }
@@ -273,34 +264,26 @@ impl GermanicServer {
         &self,
         Parameters(params): Parameters<InitParams>,
     ) -> Result<CallToolResult, ErrorData> {
-        let json_str = std::fs::read_to_string(&params.from).map_err(|e| {
-            ErrorData::internal_error(format!("Read failed: {e}"), None)
-        })?;
-        let data: serde_json::Value = serde_json::from_str(&json_str).map_err(|e| {
-            ErrorData::internal_error(format!("Invalid JSON: {e}"), None)
-        })?;
+        let json_str = std::fs::read_to_string(&params.from)
+            .map_err(|e| ErrorData::internal_error(format!("Read failed: {e}"), None))?;
+        let data: serde_json::Value = serde_json::from_str(&json_str)
+            .map_err(|e| ErrorData::internal_error(format!("Invalid JSON: {e}"), None))?;
 
         let schema =
             crate::dynamic::infer::infer_schema(&data, &params.schema_id).ok_or_else(|| {
-                ErrorData::internal_error(
-                    "Could not infer -- input must be JSON object",
-                    None,
-                )
+                ErrorData::internal_error("Could not infer -- input must be JSON object", None)
             })?;
 
-        let output_path = params
-            .output
-            .map(PathBuf::from)
-            .unwrap_or_else(|| {
-                PathBuf::from(format!(
-                    "{}.schema.json",
-                    params.schema_id.replace('.', "_")
-                ))
-            });
+        let output_path = params.output.map(PathBuf::from).unwrap_or_else(|| {
+            PathBuf::from(format!(
+                "{}.schema.json",
+                params.schema_id.replace('.', "_")
+            ))
+        });
 
-        schema.to_file(&output_path).map_err(|e| {
-            ErrorData::internal_error(format!("Write failed: {e}"), None)
-        })?;
+        schema
+            .to_file(&output_path)
+            .map_err(|e| ErrorData::internal_error(format!("Write failed: {e}"), None))?;
 
         Ok(CallToolResult::success(vec![Content::text(format!(
             "Schema inferred\n  Output: {}\n  Fields: {}",
@@ -318,22 +301,19 @@ impl GermanicServer {
         &self,
         Parameters(params): Parameters<ConvertParams>,
     ) -> Result<CallToolResult, ErrorData> {
-        let input_str = std::fs::read_to_string(&params.input).map_err(|e| {
-            ErrorData::internal_error(format!("Read failed: {e}"), None)
-        })?;
+        let input_str = std::fs::read_to_string(&params.input)
+            .map_err(|e| ErrorData::internal_error(format!("Read failed: {e}"), None))?;
 
         match crate::dynamic::json_schema::convert_json_schema(&input_str) {
             Ok((schema, warnings)) => {
                 let output_path = params
                     .output
                     .map(PathBuf::from)
-                    .unwrap_or_else(|| {
-                        PathBuf::from(&params.input).with_extension("schema.json")
-                    });
+                    .unwrap_or_else(|| PathBuf::from(&params.input).with_extension("schema.json"));
 
-                schema.to_file(&output_path).map_err(|e| {
-                    ErrorData::internal_error(format!("Write failed: {e}"), None)
-                })?;
+                schema
+                    .to_file(&output_path)
+                    .map_err(|e| ErrorData::internal_error(format!("Write failed: {e}"), None))?;
 
                 let mut result = format!(
                     "Converted successfully\n  Output: {}\n  Fields: {}",
@@ -423,8 +403,7 @@ mod tests {
 
     #[test]
     fn test_compile_params_with_output() {
-        let json =
-            r#"{"schema": "test.schema.json", "data": "input.json", "output": "out.grm"}"#;
+        let json = r#"{"schema": "test.schema.json", "data": "input.json", "output": "out.grm"}"#;
         let params: CompileParams = serde_json::from_str(json).unwrap();
         assert_eq!(params.output, Some("out.grm".into()));
     }

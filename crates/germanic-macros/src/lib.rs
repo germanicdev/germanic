@@ -65,7 +65,7 @@
 mod schema;
 
 use proc_macro::TokenStream;
-use syn::{parse_macro_input, DeriveInput};
+use syn::{DeriveInput, parse_macro_input};
 
 /// # `#[derive(GermanicSchema)]`
 ///
@@ -120,6 +120,5 @@ pub fn derive_germanic_schema(input: TokenStream) -> TokenStream {
 
     // 2. Delegate to implementation in schema module
     //    On error: Compiler error with meaningful message
-    schema::implement_germanic_schema(ast)
-        .unwrap_or_else(|error| error.write_errors().into())
+    schema::implement_germanic_schema(ast).unwrap_or_else(|error| error.write_errors().into())
 }

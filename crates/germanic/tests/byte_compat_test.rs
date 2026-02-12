@@ -39,72 +39,198 @@ use indexmap::IndexMap;
 fn praxis_schema_def() -> SchemaDefinition {
     // Adresse sub-table (field order matches praxis.fbs Adresse table)
     let mut addr_fields = IndexMap::new();
-    addr_fields.insert("strasse".into(), FieldDefinition {
-        field_type: FieldType::String, required: true, default: None, fields: None,
-    });
-    addr_fields.insert("hausnummer".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: None, fields: None,
-    });
-    addr_fields.insert("plz".into(), FieldDefinition {
-        field_type: FieldType::String, required: true, default: None, fields: None,
-    });
-    addr_fields.insert("ort".into(), FieldDefinition {
-        field_type: FieldType::String, required: true, default: None, fields: None,
-    });
-    addr_fields.insert("land".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: Some("DE".into()), fields: None,
-    });
+    addr_fields.insert(
+        "strasse".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: true,
+            default: None,
+            fields: None,
+        },
+    );
+    addr_fields.insert(
+        "hausnummer".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    addr_fields.insert(
+        "plz".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: true,
+            default: None,
+            fields: None,
+        },
+    );
+    addr_fields.insert(
+        "ort".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: true,
+            default: None,
+            fields: None,
+        },
+    );
+    addr_fields.insert(
+        "land".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: Some("DE".into()),
+            fields: None,
+        },
+    );
 
     // Root table — field order MUST match praxis.fbs
     let mut fields = IndexMap::new();
-    fields.insert("name".into(), FieldDefinition {
-        field_type: FieldType::String, required: true, default: None, fields: None,
-    });
-    fields.insert("bezeichnung".into(), FieldDefinition {
-        field_type: FieldType::String, required: true, default: None, fields: None,
-    });
-    fields.insert("praxisname".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: None, fields: None,
-    });
-    fields.insert("adresse".into(), FieldDefinition {
-        field_type: FieldType::Table, required: true, default: None, fields: Some(addr_fields),
-    });
-    fields.insert("telefon".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: None, fields: None,
-    });
-    fields.insert("email".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: None, fields: None,
-    });
-    fields.insert("website".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: None, fields: None,
-    });
-    fields.insert("schwerpunkte".into(), FieldDefinition {
-        field_type: FieldType::StringArray, required: false, default: None, fields: None,
-    });
-    fields.insert("therapieformen".into(), FieldDefinition {
-        field_type: FieldType::StringArray, required: false, default: None, fields: None,
-    });
-    fields.insert("qualifikationen".into(), FieldDefinition {
-        field_type: FieldType::StringArray, required: false, default: None, fields: None,
-    });
-    fields.insert("terminbuchung_url".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: None, fields: None,
-    });
-    fields.insert("oeffnungszeiten".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: None, fields: None,
-    });
-    fields.insert("privatpatienten".into(), FieldDefinition {
-        field_type: FieldType::Bool, required: false, default: Some("false".into()), fields: None,
-    });
-    fields.insert("kassenpatienten".into(), FieldDefinition {
-        field_type: FieldType::Bool, required: false, default: Some("false".into()), fields: None,
-    });
-    fields.insert("sprachen".into(), FieldDefinition {
-        field_type: FieldType::StringArray, required: false, default: None, fields: None,
-    });
-    fields.insert("kurzbeschreibung".into(), FieldDefinition {
-        field_type: FieldType::String, required: false, default: None, fields: None,
-    });
+    fields.insert(
+        "name".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: true,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "bezeichnung".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: true,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "praxisname".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "adresse".into(),
+        FieldDefinition {
+            field_type: FieldType::Table,
+            required: true,
+            default: None,
+            fields: Some(addr_fields),
+        },
+    );
+    fields.insert(
+        "telefon".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "email".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "website".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "schwerpunkte".into(),
+        FieldDefinition {
+            field_type: FieldType::StringArray,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "therapieformen".into(),
+        FieldDefinition {
+            field_type: FieldType::StringArray,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "qualifikationen".into(),
+        FieldDefinition {
+            field_type: FieldType::StringArray,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "terminbuchung_url".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "oeffnungszeiten".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "privatpatienten".into(),
+        FieldDefinition {
+            field_type: FieldType::Bool,
+            required: false,
+            default: Some("false".into()),
+            fields: None,
+        },
+    );
+    fields.insert(
+        "kassenpatienten".into(),
+        FieldDefinition {
+            field_type: FieldType::Bool,
+            required: false,
+            default: Some("false".into()),
+            fields: None,
+        },
+    );
+    fields.insert(
+        "sprachen".into(),
+        FieldDefinition {
+            field_type: FieldType::StringArray,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
+    fields.insert(
+        "kurzbeschreibung".into(),
+        FieldDefinition {
+            field_type: FieldType::String,
+            required: false,
+            default: None,
+            fields: None,
+        },
+    );
 
     SchemaDefinition {
         schema_id: "de.gesundheit.praxis.v1".into(),
@@ -143,8 +269,8 @@ fn test_dynamic_praxis_readable_by_static_types() {
     let bytes = build_flatbuffer(&schema, &data).expect("Dynamic build failed");
 
     // Read back via static (flatc-generated) types
-    let praxis = flatbuffers::root::<FbPraxis>(&bytes)
-        .expect("Dynamic bytes not readable by static types!");
+    let praxis =
+        flatbuffers::root::<FbPraxis>(&bytes).expect("Dynamic bytes not readable by static types!");
 
     // Verify ALL fields match
     assert_eq!(praxis.name(), "Dr. Maria Sonnenschein");
@@ -173,7 +299,10 @@ fn test_dynamic_praxis_readable_by_static_types() {
     assert_eq!(sprachen.len(), 1);
     assert_eq!(sprachen.get(0), "Deutsch");
 
-    assert_eq!(praxis.kurzbeschreibung(), Some("Moderne Zahnmedizin in Beispielstadt"));
+    assert_eq!(
+        praxis.kurzbeschreibung(),
+        Some("Moderne Zahnmedizin in Beispielstadt")
+    );
 }
 
 #[test]

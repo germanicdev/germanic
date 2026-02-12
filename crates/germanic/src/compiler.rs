@@ -165,7 +165,7 @@ pub enum SchemaType {
 
 impl SchemaType {
     /// Parses a schema name from a string.
-    pub fn from_str(name: &str) -> Option<Self> {
+    pub fn parse(name: &str) -> Option<Self> {
         match name.to_lowercase().as_str() {
             "praxis" | "practice" => Some(Self::Practice),
             _ => None,
@@ -198,10 +198,10 @@ mod tests {
 
     #[test]
     fn test_schema_type_parsing() {
-        assert_eq!(SchemaType::from_str("praxis"), Some(SchemaType::Practice));
-        assert_eq!(SchemaType::from_str("practice"), Some(SchemaType::Practice));
-        assert_eq!(SchemaType::from_str("PRAXIS"), Some(SchemaType::Practice));
-        assert_eq!(SchemaType::from_str("unknown"), None);
+        assert_eq!(SchemaType::parse("praxis"), Some(SchemaType::Practice));
+        assert_eq!(SchemaType::parse("practice"), Some(SchemaType::Practice));
+        assert_eq!(SchemaType::parse("PRAXIS"), Some(SchemaType::Practice));
+        assert_eq!(SchemaType::parse("unknown"), None);
     }
 
     #[test]

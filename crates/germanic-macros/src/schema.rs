@@ -63,6 +63,7 @@ pub struct SchemaOptions {
     schema_id: String,
     /// Path to FlatBuffer type (optional, for later)
     #[darling(default)]
+    #[allow(dead_code)]
     flatbuffer: Option<String>,
 }
 

@@ -153,22 +153,16 @@ fn main() -> Result<()> {
         Commands::Inspect { file, hex } => cmd_inspect(&file, hex),
 
         #[cfg(feature = "mcp")]
-        Commands::ServeMcp => {
-            tokio::runtime::Runtime::new()
-                .expect("Failed to create tokio runtime")
-                .block_on(germanic::mcp::serve())
-                .map_err(|e| anyhow::anyhow!("MCP server error: {e}"))
-        }
+        Commands::ServeMcp => tokio::runtime::Runtime::new()
+            .expect("Failed to create tokio runtime")
+            .block_on(germanic::mcp::serve())
+            .map_err(|e| anyhow::anyhow!("MCP server error: {e}")),
     }
 }
 
 /// Compiles JSON to .grm (static mode)
-fn cmd_compile(
-    schema_name: &str,
-    input: &PathBuf,
-    output: Option<&std::path::Path>,
-) -> Result<()> {
-    use germanic::compiler::{compile_json, SchemaType};
+fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Path>) -> Result<()> {
+    use germanic::compiler::{SchemaType, compile_json};
     use germanic::schemas::PraxisSchema;
 
     println!("┌─────────────────────────────────────────");
@@ -178,7 +172,7 @@ fn cmd_compile(
     println!("│ Input:  {}", input.display());
 
     // 1. Validate schema type
-    let schema_type = SchemaType::from_str(schema_name).ok_or_else(|| {
+    let schema_type = SchemaType::parse(schema_name).ok_or_else(|| {
         anyhow::anyhow!(
             "Unknown schema: '{}'\n\
              Available schemas: practice, praxis\n\
@@ -192,7 +186,9 @@ fn cmd_compile(
 
     // 3. Compile schema-specifically
     let grm_bytes = match schema_type {
-        SchemaType::Practice => compile_json::<PraxisSchema>(&json).context("Compilation failed")?,
+        SchemaType::Practice => {
+            compile_json::<PraxisSchema>(&json).context("Compilation failed")?
+        }
     };
 
     // 4. Determine output path
@@ -218,7 +214,7 @@ fn cmd_compile(
 /// Format is auto-detected transparently.
 fn cmd_compile_dynamic(
     schema_path: &std::path::Path,
-    input: &PathBuf,
+    input: &std::path::Path,
     output: Option<&std::path::Path>,
 ) -> Result<()> {
     use germanic::dynamic::{compile_dynamic, load_schema_auto};
@@ -237,8 +233,7 @@ fn cmd_compile_dynamic(
         }
     }
 
-    let grm_bytes =
-        compile_dynamic(schema_path, input).context("Dynamic compilation failed")?;
+    let grm_bytes = compile_dynamic(schema_path, input).context("Dynamic compilation failed")?;
 
     let output_path = output
         .map(PathBuf::from)
@@ -256,11 +251,7 @@ fn cmd_compile_dynamic(
 }
 
 /// Infers a schema from example JSON
-fn cmd_init(
-    from: &PathBuf,
-    schema_id: &str,
-    output: Option<&std::path::Path>,
-) -> Result<()> {
+fn cmd_init(from: &PathBuf, schema_id: &str, output: Option<&std::path::Path>) -> Result<()> {
     use germanic::dynamic::infer::infer_schema;
 
     println!("┌─────────────────────────────────────────");
@@ -275,12 +266,10 @@ fn cmd_init(
     let schema = infer_schema(&data, schema_id)
         .ok_or_else(|| anyhow::anyhow!("Could not infer schema — input must be a JSON object"))?;
 
-    let output_path = output
-        .map(PathBuf::from)
-        .unwrap_or_else(|| {
-            let name = schema_id.replace('.', "_");
-            PathBuf::from(format!("{}.schema.json", name))
-        });
+    let output_path = output.map(PathBuf::from).unwrap_or_else(|| {
+        let name = schema_id.replace('.', "_");
+        PathBuf::from(format!("{}.schema.json", name))
+    });
 
     schema
         .to_file(&output_path)

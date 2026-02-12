@@ -36,7 +36,7 @@
 //! ```
 
 use crate::error::GermanicResult;
-use crate::types::{GrmHeader, GRM_MAGIC};
+use crate::types::{GRM_MAGIC, GrmHeader};
 
 // ============================================================================
 // .GRM VALIDATION
@@ -69,7 +69,7 @@ pub fn validate_grm(data: &[u8]) -> GermanicResult<GrmValidation> {
     }
 
     // 2. Check magic bytes
-    if &data[0..4] != &GRM_MAGIC {
+    if data[0..4] != GRM_MAGIC {
         return Ok(GrmValidation {
             valid: false,
             schema_id: None,

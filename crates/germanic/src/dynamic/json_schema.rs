@@ -129,9 +129,7 @@ pub fn is_json_schema(input: &str) -> bool {
 /// - The input is not valid JSON
 /// - The root type is not `"object"`
 /// - Array items have mixed/unsupported types
-pub fn convert_json_schema(
-    input: &str,
-) -> Result<(SchemaDefinition, Vec<String>), GermanicError> {
+pub fn convert_json_schema(input: &str) -> Result<(SchemaDefinition, Vec<String>), GermanicError> {
     let js: JsonSchema = serde_json::from_str(input)?;
     let mut warnings: Vec<String> = Vec::new();
 
@@ -198,7 +196,9 @@ fn convert_property(
 ) -> Result<FieldDefinition, GermanicError> {
     // Emit warnings for unsupported features
     if prop.reference.is_some() {
-        warnings.push(format!("Field \"{name}\": $ref not resolved (not supported)"));
+        warnings.push(format!(
+            "Field \"{name}\": $ref not resolved (not supported)"
+        ));
     }
     if prop.any_of.is_some() {
         warnings.push(format!("Field \"{name}\": anyOf not supported, ignored"));
@@ -210,9 +210,7 @@ fn convert_property(
         warnings.push(format!("Field \"{name}\": allOf not supported, ignored"));
     }
     if prop.enum_values.is_some() {
-        warnings.push(format!(
-            "Field \"{name}\": enum constraint ignored"
-        ));
+        warnings.push(format!("Field \"{name}\": enum constraint ignored"));
     }
 
     // Determine field type
@@ -557,10 +555,7 @@ mod tests {
         );
 
         // Bool
-        assert_eq!(
-            schema.fields["kassenpatienten"].field_type,
-            FieldType::Bool
-        );
+        assert_eq!(schema.fields["kassenpatienten"].field_type, FieldType::Bool);
     }
 
     #[test]

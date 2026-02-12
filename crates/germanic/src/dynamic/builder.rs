@@ -41,9 +41,9 @@ pub fn build_flatbuffer(
     schema: &SchemaDefinition,
     data: &serde_json::Value,
 ) -> Result<Vec<u8>, GermanicError> {
-    let obj = data.as_object().ok_or_else(|| {
-        GermanicError::General("Root data must be a JSON object".into())
-    })?;
+    let obj = data
+        .as_object()
+        .ok_or_else(|| GermanicError::General("Root data must be a JSON object".into()))?;
 
     let mut builder = FlatBufferBuilder::with_capacity(1024);
 
@@ -134,9 +134,7 @@ fn prepare_field(
         // Field not present — check for default
         return Ok(match &def.default {
             Some(d) => match def.field_type {
-                FieldType::String => {
-                    PreparedField::Offset(builder.create_string(d).value())
-                }
+                FieldType::String => PreparedField::Offset(builder.create_string(d).value()),
                 FieldType::Bool => PreparedField::Bool(d.parse().unwrap_or(false), false),
                 FieldType::Int => PreparedField::Int(d.parse().unwrap_or(0), 0),
                 FieldType::Float => PreparedField::Float(d.parse().unwrap_or(0.0), 0.0),
@@ -196,10 +194,7 @@ fn prepare_field(
 
         FieldType::IntArray => match value.as_array() {
             Some(arr) if !arr.is_empty() => {
-                let values: Vec<i32> = arr
-                    .iter()
-                    .map(|v| v.as_i64().unwrap_or(0) as i32)
-                    .collect();
+                let values: Vec<i32> = arr.iter().map(|v| v.as_i64().unwrap_or(0) as i32).collect();
                 let vec_offset = builder.create_vector(&values);
                 Ok(PreparedField::Offset(vec_offset.value()))
             }
