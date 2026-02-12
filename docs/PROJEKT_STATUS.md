@@ -50,7 +50,8 @@
 | 4.1 README | ⬜ TODO | Needs personalization |
 | 4.2 Benchmark JSON-LD vs .grm | ⬜ TODO | |
 | 4.3 OpenClaw SKILL.md | ⬜ TODO | Needs working CLI (available) |
-| 4.4 Cargo.toml cleanup for crates.io | ⬜ TODO | |
+| 4.4 Contract Proof (Vertragsbeweis) | ✅ DONE | AP-4.4: validate.rs hardened, 10 scenario tests, README table |
+| 4.4b Cargo.toml cleanup for crates.io | ⬜ TODO | |
 | 4.5 MCP Server | ✅ DONE | AP-4.2: mcp.rs with 6 tools, rmcp 0.8, feature-flagged |
 | 4.6 GitHub public + crates.io publish | ⬜ TODO | |
 | 4.6 Universality examples | ✅ DONE | AP-4.6: 42 schemas + 42 examples, 11 domains |
@@ -58,7 +59,7 @@
 | 4.7 JSON Schema Draft 7 Adapter | ✅ DONE | AP-4.7: json_schema.rs + CLI auto-detect, 23 tests |
 
 ## Test Summary
-- **Total tests:** 91 (73 unit w/ MCP + 11 macro + 5 proc-macro + 2 integration)
+- **Total tests:** 101 (65 unit + 11 macro + 5 proc-macro + 10 vertragsbeweis + 2 integration + 8 MCP)
 - **All passing:** ✅ (both `cargo test` and `cargo test --features mcp`)
 - **No compiler errors:** ✅
 - **No warnings in project code:** ✅ (only pre-existing unused field in germanic-macros)
@@ -77,6 +78,18 @@
 8. JSON Schema Draft 7 as second input format (adapter, not replacement)
 
 ## Completed Work Log
+
+### 2026-02-12: Contract Proof / Vertragsbeweis (AP-4.4)
+- ✅ Hardened `validate.rs` with 5-check validation chain (missing → null → type → empty → nested)
+- ✅ New `type_matches()` function: JSON value must match schema FieldType exactly
+- ✅ New `field_type_name()` function: human-readable names for error messages
+- ✅ Descriptive error messages: `"telefon: required field missing"` instead of bare `"telefon"`
+- ✅ Null detection: `null` on required field now caught (previously slipped through)
+- ✅ Type mismatch detection: `"ja"` instead of `true` now caught (previously slipped through)
+- ✅ 10 integration tests in `tests/vertragsbeweis.rs` (S0-S8 + bonus multi-violation)
+- ✅ 4 existing unit tests adapted for new descriptive error format
+- ✅ README updated with Contract Proof comparison table
+- ✅ All 93 tests passing (without MCP), 101 with MCP
 
 ### 2026-02-12: MCP Server (AP-4.2)
 - ✅ New module `crates/germanic/src/mcp.rs` (~490 lines, behind `#[cfg(feature = "mcp")]`)

@@ -1,7 +1,6 @@
 # GERMANIC Workspace
 # ==================
-# Proprietäre Software - Alle Rechte vorbehalten
-#
+
 # Struktur:
 #   crates/germanic        → CLI + Library (Hauptcrate)
 #   crates/germanic-macros → Proc-Macro für #[derive(GermanicSchema)]
