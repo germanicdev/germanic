@@ -5,7 +5,7 @@
 //! ## Main Workflow
 //!
 //! ```bash
-//! # Compile practice JSON to .grm (static mode)
+//! # Compile practice JSON to .grm
 //! germanic compile --schema practice --input practice.json --output practice.grm
 //!
 //! # Infer schema from example JSON (dynamic mode)
@@ -60,8 +60,8 @@ enum Commands {
     /// Reads a JSON file, validates it against the schema,
     /// and creates a .grm binary file.
     ///
-    /// Static mode: --schema practice (or praxis)
-    /// Dynamic mode: --schema path/to/schema.json
+    /// Built-in: --schema practice (or praxis)
+    /// Custom:   --schema path/to/schema.json
     Compile {
         /// Schema name (e.g. "practice") or path to .schema.json
         #[arg(short, long)]
@@ -160,10 +160,9 @@ fn main() -> Result<()> {
     }
 }
 
-/// Compiles JSON to .grm (static mode)
+/// Compiles JSON to .grm (built-in schema, routed through Dynamic Mode)
 fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Path>) -> Result<()> {
-    use germanic::compiler::{SchemaType, compile_json};
-    use germanic::schemas::PraxisSchema;
+    use germanic::compiler::SchemaType;
 
     println!("┌─────────────────────────────────────────");
     println!("│ GERMANIC Compiler");
@@ -172,7 +171,7 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
     println!("│ Input:  {}", input.display());
 
     // 1. Validate schema type
-    let schema_type = SchemaType::parse(schema_name).ok_or_else(|| {
+    let _schema_type = SchemaType::parse(schema_name).ok_or_else(|| {
         anyhow::anyhow!(
             "Unknown schema: '{}'\n\
              Available schemas: practice, praxis\n\
@@ -184,11 +183,21 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
     // 2. Read JSON
     let json = std::fs::read_to_string(input).context("Could not read JSON file")?;
 
-    // 3. Compile schema-specifically
-    let grm_bytes = match schema_type {
-        SchemaType::Practice => {
-            compile_json::<PraxisSchema>(&json).context("Compilation failed")?
-        }
+    // 3. Compile via Dynamic Mode (unified validation pipeline)
+    let grm_bytes = {
+        // Embedded schema definition (compile-time)
+        let schema_json = include_str!(
+            "../../../schemas/definitions/de/de.gesundheit.praxis.v1.schema.json"
+        );
+        let schema: germanic::dynamic::schema_def::SchemaDefinition =
+            serde_json::from_str(schema_json)
+                .context("Built-in practice schema definition invalid")?;
+
+        let data: serde_json::Value =
+            serde_json::from_str(&json).context("Invalid JSON")?;
+
+        germanic::dynamic::compile_dynamic_from_values(&schema, &data)
+            .context("Compilation failed")?
     };
 
     // 4. Determine output path
