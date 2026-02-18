@@ -111,10 +111,18 @@ pub fn compile_json<S>(json: &str) -> GermanicResult<Vec<u8>>
 where
     S: DeserializeOwned + SchemaMetadata + Validate + GermanicSerialize,
 {
-    // 1. Parse JSON to Rust struct
-    let schema: S = serde_json::from_str(json)?;
+    // 1. Parse JSON to Value (for pre-validation)
+    let value: serde_json::Value = serde_json::from_str(json)?;
 
-    // 2. Delegate to compile()
+    // 2. Pre-validate structural limits (size, depth, array length)
+    crate::pre_validate::pre_validate(json, &value).map_err(|errors| {
+        GermanicError::Validation(crate::error::ValidationError::RequiredFieldsMissing(errors))
+    })?;
+
+    // 3. Deserialize Value to typed struct
+    let schema: S = serde_json::from_value(value)?;
+
+    // 4. Delegate to compile()
     compile(&schema)
 }
 

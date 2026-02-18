@@ -91,6 +91,9 @@ pub mod compiler;
 /// Compiles JSON to .grm using runtime schema definitions.
 pub mod dynamic;
 
+/// Pre-validation: schema-agnostic size and depth limits.
+pub mod pre_validate;
+
 /// Validation of JSON against schema.
 pub mod validator;
 

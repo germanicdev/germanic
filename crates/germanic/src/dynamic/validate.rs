@@ -12,15 +12,7 @@
 
 use crate::dynamic::schema_def::{FieldDefinition, FieldType, SchemaDefinition};
 use crate::error::ValidationError;
-
-/// Maximum nesting depth for nested tables (prevents stack overflow via recursion).
-const MAX_NESTING_DEPTH: usize = 32;
-
-/// Maximum allowed length for a single string value in bytes.
-const MAX_STRING_LENGTH: usize = 1_048_576; // 1 MB
-
-/// Maximum allowed number of elements in an array.
-const MAX_ARRAY_ELEMENTS: usize = 10_000;
+use crate::pre_validate::{MAX_ARRAY_ELEMENTS, MAX_NESTING_DEPTH, MAX_STRING_LENGTH};
 
 /// Validates JSON data against a schema definition.
 ///
