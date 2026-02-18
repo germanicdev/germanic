@@ -8,7 +8,7 @@
 
 [package]
 name = "germanic"
-version.workspace = true
+version = "0.2.0"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
@@ -38,7 +38,7 @@ mcp = ["dep:rmcp", "dep:tokio", "dep:schemars", "dep:tracing", "dep:tracing-subs
 
 [dependencies]
 # Re-export our macros so users only need `use germanic::GermanicSchema`
-germanic-macros = { path = "../germanic-macros", version = "0.2.0" }
+germanic-macros = { path = "../germanic-macros", version = "0.1.1" }
 
 # Serialization
 serde.workspace = true

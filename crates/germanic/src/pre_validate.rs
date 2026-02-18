@@ -98,11 +98,7 @@ fn check_value(value: &serde_json::Value, path: &str, errors: &mut Vec<String>, 
                 ));
             }
             for (i, item) in arr.iter().enumerate() {
-                let item_path = format!(
-                    "{}[{}]",
-                    if path.is_empty() { "(root)" } else { path },
-                    i
-                );
+                let item_path = format!("{}[{}]", if path.is_empty() { "(root)" } else { path }, i);
                 check_value(item, &item_path, errors, depth + 1);
             }
         }
@@ -162,7 +158,9 @@ mod tests {
 
     #[test]
     fn test_pre_validate_array_too_large() {
-        let elements: Vec<String> = (0..MAX_ARRAY_ELEMENTS + 1).map(|i| format!("\"x{}\"", i)).collect();
+        let elements: Vec<String> = (0..MAX_ARRAY_ELEMENTS + 1)
+            .map(|i| format!("\"x{}\"", i))
+            .collect();
         let json = format!(r#"{{"items": [{}]}}"#, elements.join(","));
         let value: serde_json::Value = serde_json::from_str(&json).unwrap();
         let err = pre_validate(&json, &value).unwrap_err();
@@ -184,7 +182,9 @@ mod tests {
     #[test]
     fn test_pre_validate_collects_all_errors() {
         let long_string = "x".repeat(MAX_STRING_LENGTH + 1);
-        let elements: Vec<String> = (0..MAX_ARRAY_ELEMENTS + 1).map(|i| format!("\"x{}\"", i)).collect();
+        let elements: Vec<String> = (0..MAX_ARRAY_ELEMENTS + 1)
+            .map(|i| format!("\"x{}\"", i))
+            .collect();
         let json = format!(
             r#"{{"big": "{}", "many": [{}]}}"#,
             long_string,
@@ -193,7 +193,12 @@ mod tests {
         let value: serde_json::Value = serde_json::from_str(&json).unwrap();
         let err = pre_validate(&json, &value).unwrap_err();
         // Should have at least 2 errors: string too long + array too large
-        assert!(err.len() >= 2, "Expected at least 2 errors, got {}: {:?}", err.len(), err);
+        assert!(
+            err.len() >= 2,
+            "Expected at least 2 errors, got {}: {:?}",
+            err.len(),
+            err
+        );
     }
 
     #[test]

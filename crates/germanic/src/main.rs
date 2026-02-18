@@ -186,15 +186,12 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
     // 3. Compile via Dynamic Mode (unified validation pipeline)
     let grm_bytes = {
         // Embedded schema definition (compile-time)
-        let schema_json = include_str!(
-            "../../../schemas/definitions/de/de.gesundheit.praxis.v1.schema.json"
-        );
+        let schema_json = include_str!("../schemas/de.gesundheit.praxis.v1.schema.json");
         let schema: germanic::dynamic::schema_def::SchemaDefinition =
             serde_json::from_str(schema_json)
                 .context("Built-in practice schema definition invalid")?;
 
-        let data: serde_json::Value =
-            serde_json::from_str(&json).context("Invalid JSON")?;
+        let data: serde_json::Value = serde_json::from_str(&json).context("Invalid JSON")?;
 
         germanic::dynamic::compile_dynamic_from_values(&schema, &data)
             .context("Compilation failed")?
