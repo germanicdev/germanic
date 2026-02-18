@@ -8,7 +8,7 @@ description: >
   Accepts JSON Schema Draft 7 and GERMANIC native format.
   Security: binary output prevents structural injection —
   data cannot be reinterpreted as instructions.
-version: 0.1.1
+version: 0.2.0
 metadata: { "openclaw": { "emoji": "🤝", "requires": { "bins": ["germanic"] }, "install": [{ "id": "cargo-install", "kind": "shell", "command": "cargo install germanic", "bins": ["germanic"], "label": "Install GERMANIC CLI (cargo)" }] } }
 ---
 
@@ -22,7 +22,7 @@ Compile JSON to validated binary. Schema contract enforced at build time.
 cargo install germanic
 ```
 
-Verify: `germanic --version` should print `0.1.1`.
+Verify: `germanic --version` should print `0.2.0`.
 
 ## When to Use
 
@@ -83,7 +83,8 @@ germanic validate output.grm
 
 ## Error Handling
 
-GERMANIC collects ALL errors, not just the first. Example output:
+GERMANIC collects all errors and reports them at once — missing fields,
+type mismatches, size violations, all in a single pass. Example output:
 
 ```text
 Error: Required fields missing:
