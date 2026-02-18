@@ -1,5 +1,5 @@
 {
-  "name": "MusterTech Solutions GmbH",
+  "firmenname": "MusterTech Solutions GmbH",
   "legal_form": "GmbH",
   "industry": "IT & Software",
   "address": {
@@ -12,7 +12,7 @@
   "phone": "+49 711 9998877",
   "email": "info@mustertech.example",
   "website": "https://mustertech.example",
-  "managing_directors": "Dr. Martin Schreiber",
+  "managing_directors": ["Dr. Martin Schreiber"],
   "founded_year": 2012,
   "mitarbeiteranzahl": 85,
   "umsatz_kategorie": "5-10 Mio. EUR",
