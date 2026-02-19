@@ -40,8 +40,12 @@ Do NOT use GERMANIC for:
 
 ```text
 "I have JSON data" →
-  Known schema (practice, restaurant...)? → germanic compile --schema <n>
-  New domain? → germanic init → edit .schema.json → germanic compile --schema file.json
+  Known built-in schema? → germanic compile --schema practice --input data.json
+  Not built-in? → Check workspace schemas first:
+    find /workspace -name "*.schema.json" 2>/dev/null | grep -i <domain>
+    Found? → germanic compile --schema <path-to-schema> --input data.json
+  No schema exists? → germanic init --from data.json --schema-id <id>
+    → edit .schema.json (mark required fields) → germanic compile
   Just inspect a .grm? → germanic inspect <file.grm>
   Validate without compiling? → germanic validate <file.grm>
 ```
@@ -101,6 +105,19 @@ Error: Required fields missing:
 
 **Do NOT** try to "fix" the schema to match broken data.
 If the schema says `telefon` is required, it's required for a reason.
+
+## File Not Found
+
+If a file path fails, search before giving up:
+
+```bash
+find /workspace -name '<filename>' 2>/dev/null
+```
+
+Common locations:
+- Schemas: `/workspace/data/schemas/de/` and `/workspace/data/schemas/en/`
+- Examples: `/workspace/data/examples/de/` and `/workspace/data/examples/en/`
+- Compiled: `/workspace/` (same directory as input, with .grm extension)
 
 ## Schema Fields Are German
 
