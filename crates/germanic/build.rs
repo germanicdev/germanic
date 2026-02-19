@@ -28,13 +28,11 @@ fn main() {
 /// Source of truth: schemas/definitions/de/de.gesundheit.praxis.v1.schema.json
 /// Copy target:     crates/germanic/schemas/de.gesundheit.praxis.v1.schema.json
 fn copy_practice_schema() {
-    let manifest_dir =
-        std::env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not set");
+    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not set");
     let manifest = Path::new(&manifest_dir);
 
     // Source: workspace root → schemas/definitions/de/
-    let source = manifest
-        .join("../../schemas/definitions/de/de.gesundheit.praxis.v1.schema.json");
+    let source = manifest.join("../../schemas/definitions/de/de.gesundheit.praxis.v1.schema.json");
 
     // Target: crate-local schemas/
     let target_dir = manifest.join("schemas");
