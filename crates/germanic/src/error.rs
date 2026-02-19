@@ -101,14 +101,22 @@ pub enum ValidationError {
     /// Field value has wrong type.
     #[error("Type error in field '{field}': expected {expected}, found {found}")]
     TypeError {
+        /// The field path that has the wrong type.
         field: String,
+        /// The expected type name.
         expected: String,
+        /// The actual type name found.
         found: String,
     },
 
     /// Field value violates constraints.
     #[error("Constraint violation in field '{field}': {message}")]
-    ConstraintViolation { field: String, message: String },
+    ConstraintViolation {
+        /// The field path that violates the constraint.
+        field: String,
+        /// Description of the constraint violation.
+        message: String,
+    },
 }
 
 /// Helper function: formats field list as comma-separated string.
@@ -129,15 +137,24 @@ fn field_list(fields: &[String]) -> String {
 pub enum CompilationError {
     /// Input file not found.
     #[error("Input file not found: {path}")]
-    FileNotFound { path: String },
+    FileNotFound {
+        /// The path that was not found.
+        path: String,
+    },
 
     /// Output could not be written.
     #[error("Output error: {message}")]
-    OutputError { message: String },
+    OutputError {
+        /// Description of the output error.
+        message: String,
+    },
 
     /// FlatBuffer serialization failed.
     #[error("Serialization failed: {message}")]
-    SerializationError { message: String },
+    SerializationError {
+        /// Description of the serialization failure.
+        message: String,
+    },
 }
 
 // ============================================================================

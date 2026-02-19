@@ -205,12 +205,23 @@ impl GrmHeader {
 /// Error when parsing a .grm header.
 #[derive(Debug, Clone, thiserror::Error)]
 pub enum HeaderParseError {
+    /// Not enough bytes to parse the header.
     #[error("Insufficient data: expected {expected}, received {received}")]
-    InsufficientData { expected: usize, received: usize },
+    InsufficientData {
+        /// Minimum number of bytes expected.
+        expected: usize,
+        /// Actual number of bytes received.
+        received: usize,
+    },
 
+    /// The first 4 bytes do not match the GRM magic bytes.
     #[error("Invalid magic bytes: received {:02X?}", received)]
-    InvalidMagicBytes { received: [u8; 4] },
+    InvalidMagicBytes {
+        /// The 4 bytes that were found instead of `GRM\x01`.
+        received: [u8; 4],
+    },
 
+    /// The schema ID field is not valid UTF-8.
     #[error("Invalid schema ID (not valid UTF-8)")]
     InvalidSchemaId,
 }
