@@ -24,6 +24,19 @@ cargo install germanic
 
 Verify: `germanic --version` should print `0.2.0`.
 
+## Workspace
+
+GERMANIC operates relative to the current working directory.
+All paths in this document are relative to the workspace root.
+
+```bash
+# Find available schemas
+find . -name "*.schema.json" -type f
+
+# Find example data
+find . -name "*.json" -path "*/examples/*" -type f
+```
+
 ## When to Use
 
 Use GERMANIC when you need to:
@@ -42,7 +55,7 @@ Do NOT use GERMANIC for:
 "I have JSON data" →
   Known built-in schema? → germanic compile --schema practice --input data.json
   Not built-in? → Check workspace schemas first:
-    find /workspace -name "*.schema.json" 2>/dev/null | grep -i <domain>
+    find . -name "*.schema.json" 2>/dev/null | grep -i <domain>
     Found? → germanic compile --schema <path-to-schema> --input data.json
   No schema exists? → germanic init --from data.json --schema-id <id>
     → edit .schema.json (mark required fields) → germanic compile
@@ -111,13 +124,13 @@ If the schema says `telefon` is required, it's required for a reason.
 If a file path fails, search before giving up:
 
 ```bash
-find /workspace -name '<filename>' 2>/dev/null
+find . -name '<filename>' 2>/dev/null
 ```
 
 Common locations:
-- Schemas: `/workspace/data/schemas/de/` and `/workspace/data/schemas/en/`
-- Examples: `/workspace/data/examples/de/` and `/workspace/data/examples/en/`
-- Compiled: `/workspace/` (same directory as input, with .grm extension)
+- Schemas: `data/schemas/de/` and `data/schemas/en/`
+- Examples: `data/examples/de/` and `data/examples/en/`
+- Compiled: same directory as input, with `.grm` extension
 
 ## Schema Fields Are German
 
