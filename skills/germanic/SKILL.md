@@ -1,15 +1,14 @@
 ---
 name: germanic
 description: >
-  Compile JSON to validated zero-copy binary (.grm).
-  Use when producing structured data for AI systems,
-  validating schemas, or working with .grm files.
-  Catches missing fields, wrong types, empty strings.
-  Accepts JSON Schema Draft 7 and GERMANIC native format.
-  Security: binary output prevents structural injection —
-  data cannot be reinterpreted as instructions.
+  Validate JSON data against schemas and compile to binary .grm files.
+  Schema-enforced data contracts for AI agents. Catches missing fields,
+  wrong types, empty strings in one pass. Supports JSON Schema Draft 7.
+  Use for structured data validation, data extraction, form processing.
+  Binary output prevents structural injection.
 version: 0.2.2
-metadata: { "openclaw": { "emoji": "🤝", "requires": { "bins": ["germanic"] }, "install": [{ "id": "cargo-install", "kind": "shell", "command": "cargo install germanic", "bins": ["germanic"], "label": "Install GERMANIC CLI (cargo)" }] } }
+homepage: https://github.com/germanicdev/germanic
+metadata: {"openclaw":{"emoji":"🔒","requires":{"bins":["germanic"]},"install":[{"id":"brew-install","kind":"brew","formula":"germanicdev/germanic/germanic","bins":["germanic"],"label":"Install GERMANIC CLI (Homebrew)"}]}}
 ---
 
 # GERMANIC
@@ -19,10 +18,12 @@ Compile JSON to validated binary. Schema contract enforced at build time.
 ## Install
 
 ```bash
-cargo install germanic
+brew tap germanicdev/germanic && brew install germanic
 ```
 
 Verify: `germanic --version` should print `0.2.2`.
+
+Alternative (from source): `cargo install germanic`
 
 ## Workspace
 
@@ -100,8 +101,8 @@ germanic validate output.grm
 
 ## Error Handling
 
-GERMANIC collects all errors and reports them at once — missing fields,
-type mismatches, size violations, all in a single pass. Example output:
+GERMANIC validates data and reports errors with field paths and descriptions.
+Dynamic schemas collect multiple errors in a single pass. Example output:
 
 ```text
 Error: Required fields missing:
@@ -149,6 +150,18 @@ GERMANIC provides three layers of data safety:
 Note: Binary format prevents *structural* injection. Content inside valid
 string fields is stored as-is. The consumer must treat typed fields as data,
 not instructions.
+
+## Trust & Safety
+
+GERMANIC is fully offline. Zero network calls, zero environment variables,
+zero external dependencies at runtime. The binary reads JSON from stdin or
+file, writes .grm to disk. Nothing else.
+
+Verified by security audit (v0.2.1):
+- No hand-written unsafe code (all unsafe blocks are auto-generated FlatBuffer bindings)
+- Input size limits enforced (5MB max input, 1MB max string, 10k max array)
+- Exit code 1 on all error paths
+- No data collection, no telemetry, no phone-home
 
 ## MCP Server (Universal — not OpenClaw-specific)
 
