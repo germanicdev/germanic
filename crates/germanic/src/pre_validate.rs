@@ -68,6 +68,29 @@ pub fn pre_validate(raw_json: &str, value: &serde_json::Value) -> Result<(), Vec
     }
 }
 
+/// Value-only structural validation (no raw-string size check).
+///
+/// Use when the raw JSON string is not available (e.g. pre-parsed `Value`).
+/// Checks string lengths, array sizes, and nesting depth.
+pub fn pre_validate_value(value: &serde_json::Value) -> Result<(), Vec<String>> {
+    let mut errors = Vec::new();
+
+    if !value.is_object() {
+        errors.push(format!(
+            "expected JSON object at root, found {}",
+            value_type_name(value)
+        ));
+    }
+
+    check_value(value, "", &mut errors, 0);
+
+    if errors.is_empty() {
+        Ok(())
+    } else {
+        Err(errors)
+    }
+}
+
 /// Recursively checks a JSON value for size/depth violations.
 fn check_value(value: &serde_json::Value, path: &str, errors: &mut Vec<String>, depth: usize) {
     if depth > MAX_NESTING_DEPTH {
@@ -209,5 +232,19 @@ mod tests {
         let value: serde_json::Value = serde_json::from_str(&json).unwrap();
         let err = pre_validate(&json, &value).unwrap_err();
         assert!(err.iter().any(|e| e.contains("input size")));
+    }
+
+    #[test]
+    fn test_pre_validate_value_string_too_long() {
+        let long_string = "x".repeat(MAX_STRING_LENGTH + 1);
+        let value = serde_json::json!({"name": long_string});
+        let err = pre_validate_value(&value).unwrap_err();
+        assert!(err.iter().any(|e| e.contains("string length")));
+    }
+
+    #[test]
+    fn test_pre_validate_value_valid() {
+        let value = serde_json::json!({"name": "Test", "value": 42});
+        assert!(pre_validate_value(&value).is_ok());
     }
 }

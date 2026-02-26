@@ -77,7 +77,9 @@ where
 
     // 2. Create header
     let header = GrmHeader::new(schema.schema_id());
-    let header_bytes = header.to_bytes();
+    let header_bytes = header
+        .to_bytes()
+        .map_err(|e| GermanicError::General(e.to_string()))?;
 
     // 3. Serialize schema to FlatBuffer
     let payload_bytes = schema.to_bytes();

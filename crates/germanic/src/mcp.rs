@@ -86,6 +86,34 @@ pub struct ConvertParams {
 }
 
 // ---------------------------------------------------------------------------
+// File size guard
+// ---------------------------------------------------------------------------
+
+fn check_file_size(path: &std::path::Path) -> Result<(), ErrorData> {
+    use crate::pre_validate::MAX_INPUT_SIZE;
+    match std::fs::metadata(path) {
+        Ok(meta) => {
+            if meta.len() > MAX_INPUT_SIZE as u64 {
+                Err(ErrorData::internal_error(
+                    format!(
+                        "file size {} bytes exceeds maximum of {} bytes",
+                        meta.len(),
+                        MAX_INPUT_SIZE
+                    ),
+                    None,
+                ))
+            } else {
+                Ok(())
+            }
+        }
+        Err(e) => Err(ErrorData::internal_error(
+            format!("cannot read file metadata: {e}"),
+            None,
+        )),
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Server struct
 // ---------------------------------------------------------------------------
 
@@ -128,6 +156,9 @@ impl GermanicServer {
         let schema_path = std::path::Path::new(&params.schema);
         let input_path = PathBuf::from(&params.data);
 
+        check_file_size(&input_path)?;
+        check_file_size(schema_path)?;
+
         match crate::dynamic::compile_dynamic(schema_path, &input_path) {
             Ok(grm_bytes) => {
                 let output_path = params
@@ -161,6 +192,7 @@ impl GermanicServer {
         &self,
         Parameters(params): Parameters<FileParams>,
     ) -> Result<CallToolResult, ErrorData> {
+        check_file_size(std::path::Path::new(&params.file))?;
         let data = std::fs::read(&params.file)
             .map_err(|e| ErrorData::internal_error(format!("Read failed: {e}"), None))?;
 
@@ -193,6 +225,7 @@ impl GermanicServer {
         &self,
         Parameters(params): Parameters<InspectParams>,
     ) -> Result<CallToolResult, ErrorData> {
+        check_file_size(std::path::Path::new(&params.file))?;
         let data = std::fs::read(&params.file)
             .map_err(|e| ErrorData::internal_error(format!("Read failed: {e}"), None))?;
 
@@ -264,6 +297,7 @@ impl GermanicServer {
         &self,
         Parameters(params): Parameters<InitParams>,
     ) -> Result<CallToolResult, ErrorData> {
+        check_file_size(std::path::Path::new(&params.from))?;
         let json_str = std::fs::read_to_string(&params.from)
             .map_err(|e| ErrorData::internal_error(format!("Read failed: {e}"), None))?;
         let data: serde_json::Value = serde_json::from_str(&json_str)
@@ -301,6 +335,7 @@ impl GermanicServer {
         &self,
         Parameters(params): Parameters<ConvertParams>,
     ) -> Result<CallToolResult, ErrorData> {
+        check_file_size(std::path::Path::new(&params.input))?;
         let input_str = std::fs::read_to_string(&params.input)
             .map_err(|e| ErrorData::internal_error(format!("Read failed: {e}"), None))?;
 

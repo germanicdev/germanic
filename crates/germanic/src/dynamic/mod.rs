@@ -42,19 +42,32 @@ pub fn compile_dynamic(schema_path: &Path, data_path: &Path) -> GermanicResult<V
     // 1. Load schema (auto-detect JSON Schema Draft 7 vs GERMANIC native)
     let (schema, _warnings) = load_schema_auto(schema_path)?;
 
-    // 2. Load data
+    // 2. Load data (size check BEFORE parsing to avoid DoS via huge files)
     let json_str = std::fs::read_to_string(data_path)?;
+    if json_str.len() > crate::pre_validate::MAX_INPUT_SIZE {
+        return Err(GermanicError::General(format!(
+            "input size {} bytes exceeds maximum of {} bytes",
+            json_str.len(),
+            crate::pre_validate::MAX_INPUT_SIZE
+        )));
+    }
     let data: serde_json::Value = serde_json::from_str(&json_str)?;
 
-    // 3. Validate
+    // 3. Pre-validate structural limits (string length, array size, nesting depth)
+    crate::pre_validate::pre_validate(&json_str, &data)
+        .map_err(|errors| GermanicError::General(errors.join("; ")))?;
+
+    // 4. Validate against schema
     validate::validate_against_schema(&schema, &data).map_err(GermanicError::Validation)?;
 
-    // 4. Build FlatBuffer
+    // 5. Build FlatBuffer
     let payload = builder::build_flatbuffer(&schema, &data)?;
 
-    // 5. Prepend header
+    // 6. Prepend header
     let header = GrmHeader::new(&schema.schema_id);
-    let header_bytes = header.to_bytes();
+    let header_bytes = header
+        .to_bytes()
+        .map_err(|e| GermanicError::General(e.to_string()))?;
 
     let mut output = Vec::with_capacity(header_bytes.len() + payload.len());
     output.extend_from_slice(&header_bytes);
@@ -70,15 +83,21 @@ pub fn compile_dynamic_from_values(
     schema: &schema_def::SchemaDefinition,
     data: &serde_json::Value,
 ) -> GermanicResult<Vec<u8>> {
-    // 1. Validate
+    // 1. Pre-validate structural limits (string length, array size, nesting depth)
+    crate::pre_validate::pre_validate_value(data)
+        .map_err(|errors| GermanicError::General(errors.join("; ")))?;
+
+    // 2. Validate against schema
     validate::validate_against_schema(schema, data).map_err(GermanicError::Validation)?;
 
-    // 2. Build FlatBuffer
+    // 3. Build FlatBuffer
     let payload = builder::build_flatbuffer(schema, data)?;
 
-    // 3. Prepend header
+    // 4. Prepend header
     let header = GrmHeader::new(&schema.schema_id);
-    let header_bytes = header.to_bytes();
+    let header_bytes = header
+        .to_bytes()
+        .map_err(|e| GermanicError::General(e.to_string()))?;
 
     let mut output = Vec::with_capacity(header_bytes.len() + payload.len());
     output.extend_from_slice(&header_bytes);

@@ -83,11 +83,34 @@ pub fn validate_grm(data: &[u8]) -> GermanicResult<GrmValidation> {
 
     // 3. Parse header
     match GrmHeader::from_bytes(data) {
-        Ok((header, _length)) => Ok(GrmValidation {
-            valid: true,
-            schema_id: Some(header.schema_id),
-            error: None,
-        }),
+        Ok((header, header_len)) => {
+            // 4. Payload plausibility checks
+            let payload = &data[header_len..];
+            if payload.is_empty() {
+                return Ok(GrmValidation {
+                    valid: false,
+                    schema_id: Some(header.schema_id),
+                    error: Some("Header valid but payload is empty".to_string()),
+                });
+            }
+            // FlatBuffer minimum: 4 bytes (root offset) + 4 bytes (vtable offset)
+            if payload.len() < 8 {
+                return Ok(GrmValidation {
+                    valid: false,
+                    schema_id: Some(header.schema_id),
+                    error: Some(format!(
+                        "Payload too short for valid FlatBuffer: {} bytes (minimum: 8)",
+                        payload.len()
+                    )),
+                });
+            }
+
+            Ok(GrmValidation {
+                valid: true,
+                schema_id: Some(header.schema_id),
+                error: None,
+            })
+        }
         Err(e) => Ok(GrmValidation {
             valid: false,
             schema_id: None,
@@ -166,9 +189,31 @@ mod tests {
     }
 
     #[test]
+    fn test_validate_grm_empty_payload() {
+        let header = GrmHeader::new("test.v1");
+        let bytes = header.to_bytes().unwrap();
+        let result = validate_grm(&bytes).unwrap();
+
+        assert!(!result.valid);
+        assert!(result.error.unwrap().contains("payload is empty"));
+    }
+
+    #[test]
+    fn test_validate_grm_payload_too_short() {
+        let header = GrmHeader::new("test.v1");
+        let mut bytes = header.to_bytes().unwrap();
+        bytes.extend_from_slice(&[0x00; 4]); // Only 4 bytes, need 8
+        let result = validate_grm(&bytes).unwrap();
+
+        assert!(!result.valid);
+        assert!(result.error.unwrap().contains("Payload too short"));
+    }
+
+    #[test]
     fn test_validate_grm_valid() {
         let header = GrmHeader::new("test.v1");
-        let bytes = header.to_bytes();
+        let mut bytes = header.to_bytes().unwrap();
+        bytes.extend_from_slice(&[0x00; 16]); // Enough for a minimal FlatBuffer
         let result = validate_grm(&bytes).unwrap();
 
         assert!(result.valid);

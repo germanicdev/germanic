@@ -74,6 +74,16 @@ jobs:
           toolchain: "1.85"
       - run: cargo check --workspace
 
+  # Separater Job: Security Audit
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rustsec/audit-check@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   # Separater Job: Publish Dry-Run
   publish-check:
     name: Publish Dry-Run

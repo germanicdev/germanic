@@ -98,14 +98,14 @@ impl GrmHeader {
     /// ```text
     /// [Magic 4B][Schema-ID length 2B][Schema-ID nB][Signature 64B]
     /// ```
-    pub fn to_bytes(&self) -> Vec<u8> {
+    pub fn to_bytes(&self) -> Result<Vec<u8>, HeaderParseError> {
         let schema_bytes = self.schema_id.as_bytes();
-        assert!(
-            schema_bytes.len() <= u16::MAX as usize,
-            "Schema ID exceeds maximum length of {} bytes (got {})",
-            u16::MAX,
-            schema_bytes.len()
-        );
+        if schema_bytes.len() > u16::MAX as usize {
+            return Err(HeaderParseError::SchemaIdTooLong {
+                len: schema_bytes.len(),
+                max: u16::MAX as usize,
+            });
+        }
         let schema_len = schema_bytes.len() as u16;
 
         // Capacity: 4 (Magic) + 2 (Length) + n (Schema) + 64 (Signature)
@@ -127,7 +127,7 @@ impl GrmHeader {
             None => bytes.extend_from_slice(&[0u8; SIGNATURE_SIZE]),
         }
 
-        bytes
+        Ok(bytes)
     }
 
     /// Parses a header from bytes.
@@ -224,6 +224,15 @@ pub enum HeaderParseError {
     /// The schema ID field is not valid UTF-8.
     #[error("Invalid schema ID (not valid UTF-8)")]
     InvalidSchemaId,
+
+    /// The schema ID exceeds the maximum length for the header format.
+    #[error("Schema ID too long: {len} bytes (maximum: {max})")]
+    SchemaIdTooLong {
+        /// Actual length in bytes.
+        len: usize,
+        /// Maximum allowed length in bytes.
+        max: usize,
+    },
 }
 
 // ============================================================================
@@ -243,7 +252,7 @@ mod tests {
     #[test]
     fn test_header_roundtrip() {
         let original = GrmHeader::new("de.gesundheit.praxis.v1");
-        let bytes = original.to_bytes();
+        let bytes = original.to_bytes().unwrap();
         let (parsed, length) = GrmHeader::from_bytes(&bytes).unwrap();
 
         assert_eq!(parsed.schema_id, original.schema_id);
@@ -255,7 +264,7 @@ mod tests {
     fn test_header_with_signature() {
         let signature = [0xAB; SIGNATURE_SIZE];
         let original = GrmHeader::signed("test.v1", signature);
-        let bytes = original.to_bytes();
+        let bytes = original.to_bytes().unwrap();
         let (parsed, _) = GrmHeader::from_bytes(&bytes).unwrap();
 
         assert_eq!(parsed.signature, Some(signature));
@@ -269,6 +278,16 @@ mod tests {
         assert!(matches!(
             result,
             Err(HeaderParseError::InvalidMagicBytes { .. })
+        ));
+    }
+
+    #[test]
+    fn test_header_rejects_oversized_schema_id() {
+        let huge_id = "x".repeat(u16::MAX as usize + 1);
+        let header = GrmHeader::new(&huge_id);
+        assert!(matches!(
+            header.to_bytes(),
+            Err(HeaderParseError::SchemaIdTooLong { .. })
         ));
     }
 }

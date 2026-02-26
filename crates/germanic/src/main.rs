@@ -180,8 +180,15 @@ fn cmd_compile(schema_name: &str, input: &PathBuf, output: Option<&std::path::Pa
         )
     })?;
 
-    // 2. Read JSON
+    // 2. Read JSON (size check BEFORE parsing)
     let json = std::fs::read_to_string(input).context("Could not read JSON file")?;
+    if json.len() > germanic::pre_validate::MAX_INPUT_SIZE {
+        anyhow::bail!(
+            "input size {} bytes exceeds maximum of {} bytes",
+            json.len(),
+            germanic::pre_validate::MAX_INPUT_SIZE
+        );
+    }
 
     // 3. Compile via Dynamic Mode (unified validation pipeline)
     let grm_bytes = {
@@ -358,14 +365,17 @@ fn cmd_validate(file: &PathBuf) -> Result<()> {
         if let Some(id) = result.schema_id {
             println!("  Schema-ID: {}", id);
         }
+        Ok(())
     } else {
         println!("✗ File is invalid");
-        if let Some(error) = result.error {
+        if let Some(ref error) = result.error {
             println!("  Error: {}", error);
         }
+        Err(anyhow::anyhow!(
+            "Validation failed: {}",
+            result.error.unwrap_or_else(|| "unknown error".to_string())
+        ))
     }
-
-    Ok(())
 }
 
 /// Shows header and metadata of a .grm file
@@ -413,6 +423,8 @@ fn cmd_inspect(file: &PathBuf, hex: bool) -> Result<()> {
         }
         Err(e) => {
             println!("│ ✗ Header error: {}", e);
+            println!("└─────────────────────────────────────────");
+            return Err(anyhow::anyhow!("Header parse error: {}", e));
         }
     }
 

@@ -8,7 +8,7 @@ description: >
   Accepts JSON Schema Draft 7 and GERMANIC native format.
   Security: binary output prevents structural injection —
   data cannot be reinterpreted as instructions.
-version: 0.2.0
+version: 0.2.1
 metadata: { "openclaw": { "emoji": "🤝", "requires": { "bins": ["germanic"] }, "install": [{ "id": "cargo-install", "kind": "shell", "command": "cargo install germanic", "bins": ["germanic"], "label": "Install GERMANIC CLI (cargo)" }] } }
 ---
 
