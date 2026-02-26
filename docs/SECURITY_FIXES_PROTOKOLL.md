@@ -39,6 +39,32 @@
 - `cargo fmt --all -- --check`: clean
 - `cargo audit`: not installed locally (CI job added)
 
+## Integration Tests (Nachtrag)
+
+Neuer Testfile: `crates/germanic/tests/security_integration.rs`
+
+Tests hinzugefuegt:
+- `compile_dynamic_rejects_oversized_input`: Beweist dass pre_validate() in compile_dynamic() verdrahtet ist (>5MB abgelehnt) — ✅
+- `compile_dynamic_boundary_at_limit`: Off-by-One Guard — Input knapp unter 5MB darf nicht wegen Groesse abgelehnt werden — ✅
+- `compile_from_values_rejects_oversized_string`: Beweist dass pre_validate_value() in compile_dynamic_from_values() verdrahtet ist (String >1MB) — ✅
+- `compile_from_values_rejects_oversized_array`: Array >10.000 Elemente wird abgelehnt — ✅
+- `cli_validate_exit_1_on_invalid_grm`: Exit 1 bei korrupter .grm — ✅
+- `cli_validate_exit_0_on_valid_grm`: Exit 0 bei gueltiger .grm (compile + validate Roundtrip) — ✅
+- `cli_inspect_exit_1_on_invalid_grm`: Exit 1 bei korrupter .grm — ✅
+- `cli_compile_rejects_oversized_input`: CLI compile lehnt >5MB ab mit Exit 1 — ✅
+- `header_to_bytes_returns_result`: Compile-time Guard — bricht wenn to_bytes() nicht Result zurueckgibt — ✅
+
+Ergebnis:
+- `cargo test --workspace`: 122 tests, 0 failures (85 unit + 9 security integration + 28 other integration)
+- `cargo test --workspace --features mcp`: 130 tests, 0 failures
+- `cargo clippy --workspace --all-targets -- -D warnings`: clean
+- `cargo clippy --workspace --all-targets --features mcp -- -D warnings`: clean
+- `cargo fmt --all -- --check`: clean
+
+Abweichungen vom AP:
+- **Boundary-Test (1b)**: Option A gewaehlt — viele kleine Felder (je 500 Bytes, unter MAX_STRING_LENGTH) statt einem grossen String. Zusaetzlich Sanity-Assert dass die Testdaten tatsaechlich nahe am Limit sind (> MAX_INPUT_SIZE - 1000). Robuster als der im AP vorgeschlagene Single-String-Ansatz.
+- **Keine Abweichung bei Teststruktur**: Alle 4 Gruppen wie im AP spezifiziert implementiert.
+
 ## Publish Dry-Run:
 
 - germanic-macros: OK (v0.1.1, no changes)
