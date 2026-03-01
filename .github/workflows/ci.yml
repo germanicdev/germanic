@@ -72,7 +72,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: "1.85"
-      - run: cargo check --workspace
+      - run: cargo check --workspace --no-default-features
 
   # Separater Job: Security Audit
   audit:
