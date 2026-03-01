@@ -6,7 +6,7 @@ description: >
   wrong types, empty strings in one pass. Supports JSON Schema Draft 7.
   Use for structured data validation, data extraction, form processing.
   Binary output prevents structural injection.
-version: 0.2.2
+version: 0.2.3
 homepage: https://github.com/germanicdev/germanic
 metadata: {"openclaw":{"emoji":"🔒","requires":{"bins":["germanic"]},"install":[{"id":"brew-install","kind":"brew","formula":"germanicdev/germanic/germanic","bins":["germanic"],"label":"Install GERMANIC CLI (Homebrew)"}]}}
 ---
@@ -21,7 +21,7 @@ Compile JSON to validated binary. Schema contract enforced at build time.
 brew tap germanicdev/germanic && brew install germanic
 ```
 
-Verify: `germanic --version` should print `0.2.2`.
+Verify: `germanic --version` should print `0.2.3`.
 
 Alternative (from source): `cargo install germanic`
 

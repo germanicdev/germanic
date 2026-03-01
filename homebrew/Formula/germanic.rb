@@ -1,7 +1,7 @@
 class Germanic < Formula
   desc "Schema-validated binary data for AI agents"
   homepage "https://github.com/germanicdev/germanic"
-  version "0.2.2"
+  version "0.2.3"
   license "MIT"
 
   on_macos do
