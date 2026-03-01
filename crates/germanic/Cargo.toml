@@ -8,7 +8,7 @@
 
 [package]
 name = "germanic"
-version = "0.2.2"
+version = "0.2.3"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
@@ -33,7 +33,7 @@ name = "germanic"
 path = "src/lib.rs"
 
 [features]
-default = []
+default = ["mcp"]
 mcp = ["dep:rmcp", "dep:tokio", "dep:schemars", "dep:tracing", "dep:tracing-subscriber"]
 
 [dependencies]
