@@ -19,6 +19,9 @@ on:
       - '**.json'
       - '**.schema.json'
 
+permissions:
+  contents: read
+
 # Customize: Set to false to skip .grm generation
 env:
   GENERATE_GRM: "true"
@@ -45,13 +48,13 @@ jobs:
           #   output: output/restaurant.grm
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
 
       - name: Cache germanic binary
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.cargo/bin/germanic
           key: germanic-${{ runner.os }}-v0.1.0
@@ -76,7 +79,7 @@ jobs:
 
       - name: Upload .grm artifact
         if: env.GENERATE_GRM == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: grm-${{ matrix.schema }}
           path: ${{ matrix.output }}
