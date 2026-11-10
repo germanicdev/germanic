@@ -1,0 +1,5 @@
+# rmcp 0.15: both advisories concern the Streamable HTTP transport. germanic enables only
+# the "server", "transport-io" and "macros" features and serves over stdio, so the affected
+# code is not built. Remove these entries when rmcp is upgraded (fixed in >= 3.9.0).
+[advisories]
+ignore = ["RUSTSEC-2026-0462", "RUSTSEC-2026-0189"]

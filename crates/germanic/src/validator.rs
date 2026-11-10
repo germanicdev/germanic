@@ -76,7 +76,7 @@ pub fn validate_grm(data: &[u8]) -> GermanicResult<GrmValidation> {
             error: Some(format!(
                 "Invalid magic bytes: {:02X?} (expected: {:02X?})",
                 &data[0..4],
-                &GRM_MAGIC
+                GRM_MAGIC
             )),
         });
     }
